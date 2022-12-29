@@ -22,20 +22,20 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: widthButton,
       height: heightButton,
       child: TextButton(
           onPressed: onPressed,
+          style: TextButton.styleFrom(
+              backgroundColor: buttonColor,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(radiusButton))),
           child: Text(
             buttonText,
             style:
                 whiteText.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
-          ),
-          style: TextButton.styleFrom(
-              backgroundColor: buttonColor,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(radiusButton)))),
+          )),
     );
   }
 }

@@ -65,8 +65,7 @@ class SignInPage extends StatelessWidget {
               ),
               Text(
                 "Email Address",
-                style: secondaryColorText.copyWith(
-                    fontSize: 16, fontWeight: medium),
+                style: darkText.copyWith(fontSize: 16, fontWeight: medium),
               ),
               const SizedBox(
                 height: 12,
@@ -77,8 +76,7 @@ class SignInPage extends StatelessWidget {
               ),
               Text(
                 "Password",
-                style: secondaryColorText.copyWith(
-                    fontSize: 16, fontWeight: medium),
+                style: darkText.copyWith(fontSize: 16, fontWeight: medium),
               ),
               const SizedBox(
                 height: 12,

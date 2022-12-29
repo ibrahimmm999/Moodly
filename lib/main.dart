@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moodly/pages_user/home_user.dart';
 
 import 'sign_up_page.dart';
 import 'splash_screen.dart';
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const SplashScreen(),
         '/sign-up': (context) => SignUpPage(),
         '/sign-in': (context) => SignInPage(),
+        '/home-user': (context) => const HomeUser(),
       },
     );
   }
