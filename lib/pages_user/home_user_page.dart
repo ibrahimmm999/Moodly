@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:moodly/shared/theme.dart';
+import 'package:moodly/widgets/article_tile_user.dart';
 import 'package:moodly/widgets/bar_chart.dart';
 
-class HomeUser extends StatelessWidget {
-  const HomeUser({super.key});
+class HomeUserPage extends StatelessWidget {
+  const HomeUserPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -223,11 +224,13 @@ class HomeUser extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Daily Mood',
+                  'New Articles',
                   style: darkText.copyWith(fontWeight: medium, fontSize: 14),
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(context, '/article-user');
+                  },
                   child: Text(
                     'More Articles',
                     style: secondaryColorText.copyWith(
@@ -236,7 +239,14 @@ class HomeUser extends StatelessWidget {
                 ),
               ],
             ),
-            Column(),
+            const SizedBox(height: 8),
+            Column(
+              children: const [
+                ArticleTileUser(),
+                ArticleTileUser(),
+                ArticleTileUser(),
+              ],
+            ),
           ],
         ),
       );
