@@ -24,7 +24,7 @@ class SupportMessageUserPage extends StatelessWidget {
           iconSize: 16,
         ),
         title: Text(
-          'Messages Support',
+          'Support Messages',
           style: primaryColorText.copyWith(
             fontSize: 18,
             fontWeight: medium,
