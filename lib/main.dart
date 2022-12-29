@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:moodly/pages_user/articles_user_page.dart';
+import 'package:moodly/pages_user/consultant_user_page.dart';
 import 'package:moodly/pages_user/home_user_page.dart';
+import 'package:moodly/pages_user/tracking_page.dart';
 
 import 'sign_up_page.dart';
 import 'splash_screen.dart';
@@ -23,6 +25,8 @@ class MyApp extends StatelessWidget {
         '/sign-in': (context) => SignInPage(),
         '/home-user': (context) => const HomeUserPage(),
         '/article-user': (context) => const ArticlesUserPage(),
+        '/tracking': (context) => const TrackingPage(),
+        '/consultant-user': (context) => const ConsultantUserPage(),
       },
     );
   }

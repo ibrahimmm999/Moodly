@@ -34,27 +34,23 @@ class ArticlesUserPage extends StatelessWidget {
     }
 
     Widget content() {
-      return Expanded(
-        child: ListView(
-          padding: EdgeInsets.only(
-              top: 24, left: defaultMargin, right: defaultMargin),
-          children: const [
-            ArticleTileUser(),
-            ArticleTileUser(),
-            ArticleTileUser(),
-            ArticleTileUser(),
-            ArticleTileUser(),
-            ArticleTileUser(),
-          ],
-        ),
+      return ListView(
+        padding:
+            EdgeInsets.only(top: 24, left: defaultMargin, right: defaultMargin),
+        children: const [
+          ArticleTileUser(),
+          ArticleTileUser(),
+          ArticleTileUser(),
+          ArticleTileUser(),
+          ArticleTileUser(),
+          ArticleTileUser(),
+        ],
       );
     }
 
     return Scaffold(
       appBar: header(),
-      body: Column(
-        children: [content()],
-      ),
+      body: content(),
     );
   }
 }

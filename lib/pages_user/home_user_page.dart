@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:moodly/pages_user/support_message_user_page.dart';
 import 'package:moodly/shared/theme.dart';
 import 'package:moodly/widgets/article_tile_user.dart';
 import 'package:moodly/widgets/bar_chart.dart';
@@ -9,6 +10,8 @@ class HomeUserPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDailyTracking = false;
+
     Widget header() {
       return Row(
         children: [
@@ -131,7 +134,9 @@ class HomeUserPage extends StatelessWidget {
                         SizedBox(
                           width: 120,
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/consultant-user');
+                            },
                             style: TextButton.styleFrom(
                               backgroundColor: dark,
                               shape: RoundedRectangleBorder(
@@ -154,6 +159,58 @@ class HomeUserPage extends StatelessWidget {
               ),
             )
           ],
+        ),
+      );
+    }
+
+    Widget dailyMoodEmpty() {
+      return GestureDetector(
+        onTap: () => Navigator.pushNamed(context, '/tracking'),
+        child: Container(
+          margin: EdgeInsets.only(top: defaultMargin),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Daily Mood',
+                style: darkText.copyWith(fontWeight: medium, fontSize: 14),
+              ),
+              Container(
+                padding: const EdgeInsets.all(24),
+                margin: const EdgeInsets.only(top: 8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(defaultRadius),
+                  color: primaryColor,
+                ),
+                child: Row(
+                  children: [
+                    Image.asset('assets/mood_tracking.png', width: 128),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Text(
+                            'Tracking Your Daily',
+                            style: whiteText.copyWith(
+                              fontSize: 12,
+                              fontWeight: medium,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Mood',
+                            style: whiteText.copyWith(
+                              fontSize: 24,
+                              fontWeight: bold,
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       );
     }
@@ -252,14 +309,44 @@ class HomeUserPage extends StatelessWidget {
       );
     }
 
+    Widget floatingButton() {
+      return Material(
+        color: primaryColor,
+        borderRadius: BorderRadius.circular(100),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(100),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const SupportMessageUserPage(),
+              ),
+            );
+          },
+          child: SizedBox(
+            height: 54,
+            width: 54,
+            child: Center(
+              child: Image.asset(
+                'assets/icon_chat_floating.png',
+                width: 30,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       backgroundColor: white2,
+      floatingActionButton: floatingButton(),
       body: SafeArea(
         child: ListView(
           padding: EdgeInsets.all(defaultMargin),
           children: [
             header(),
-            dailyMood(),
+            // ignore: dead_code
+            !isDailyTracking ? dailyMood() : dailyMoodEmpty(),
             weeklyMood(),
             newArticles(),
           ],
