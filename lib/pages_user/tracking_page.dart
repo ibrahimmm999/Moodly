@@ -100,12 +100,22 @@ class TrackingPage extends StatelessWidget {
       );
     }
 
+    Widget submitButton() {
+      return CustomButton(
+          radiusButton: defaultRadius,
+          buttonColor: primaryColor,
+          buttonText: "Submit",
+          widthButton: double.infinity,
+          onPressed: () {},
+          heightButton: 50);
+    }
+
     Widget content() {
       return Container(
         color: white2,
         child: ListView(
           padding: EdgeInsets.only(
-              top: 24, left: defaultMargin, right: defaultMargin),
+              top: 24, left: defaultMargin, right: defaultMargin, bottom: 50),
           children: [
             trackingQuestion(),
             trackingAnswer(),
@@ -113,6 +123,7 @@ class TrackingPage extends StatelessWidget {
             trackingAnswer(),
             trackingQuestion(),
             trackingAnswer(),
+            submitButton()
           ],
         ),
       );
