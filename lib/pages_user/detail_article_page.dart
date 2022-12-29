@@ -45,7 +45,7 @@ class DetailArticlePage extends StatelessWidget {
                     Text(
                       "Kesehatan Mental : Gejala, Faktor dan Penanganan",
                       overflow: TextOverflow.clip,
-                      style: primaryColorText.copyWith(
+                      style: darkText.copyWith(
                           fontSize: 14, fontWeight: FontWeight.w600),
                     ),
                     const SizedBox(
@@ -53,14 +53,14 @@ class DetailArticlePage extends StatelessWidget {
                     ),
                     Text(
                       "19 september 2022",
-                      style: secondaryColorText.copyWith(fontSize: 12),
+                      style: darkText.copyWith(fontSize: 12),
                     ),
                     const SizedBox(
                       height: 4,
                     ),
                     Text(
                       "Yuni Rahmawati",
-                      style: greyText.copyWith(fontSize: 12),
+                      style: secondaryColorText.copyWith(fontSize: 12),
                     )
                   ],
                 ),
@@ -86,8 +86,7 @@ class DetailArticlePage extends StatelessWidget {
           margin: const EdgeInsets.only(top: 28),
           child: Text(
             "Sahabat Ukhuwah, sepertinya sudah tidak heran jika mendengar kata depresi, stres dan frustasi. Bukan cuma mendengar, mungkin Sahabat pernah bertemu dengan orang-orang yang memiliki atau penyintas gangguan seperti ini. Hal ini berhubungan dengan kesehatan mental seseorang. Bagaimana mengetahui kesehatan mental seseorang? Dan sebenarnya, perlu kah kita menjaga kesehatan mental kita? Mari simak artikel ini sampai habis.\n\nApa itu Kesehatan Mental? Menurt World Health Organization (WHO), kesehatan mental adalah kondisi sejahtera seseorang. Dimana, individu mampu nyadari kemampuan yang ia miliki. Mengatasi tekanan dan stres dalam kehidupan sehari-hari, bekerja produktif, dan mampu berkontribusi aktif di lingkungan atau komunitasnya. Ada beberapa hal yang mencakup kesehatan mental seperti, kenyamanan emosional, psikologi dan hubungan sosial. Dan itu semua dapat mempengaruhi cara berfikir seseorang, Dan juga mempengaruhi cara mengatasi stress, menjalani hubungan dengan orang lain dan membuat keputusan. Kesehatan mental merupakan hal yang penting mulai dari anak-anak, remaja hingga dewasa.",
-            style:
-                secondaryColorText.copyWith(color: Colors.black, fontSize: 12),
+            style: darkText.copyWith(fontSize: 12),
           ),
         );
       }
