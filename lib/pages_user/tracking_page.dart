@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:moodly/widgets/custom_button.dart';
 import '../shared/theme.dart';
 
 class TrackingPage extends StatelessWidget {
@@ -82,16 +82,27 @@ class TrackingPage extends StatelessWidget {
       );
     }
 
+    Widget submitButton() {
+      return CustomButton(
+          radiusButton: defaultRadius,
+          buttonColor: primaryColor,
+          buttonText: "Submit",
+          widthButton: double.infinity,
+          onPressed: () {},
+          heightButton: 50);
+    }
+
     Widget content() {
       return Container(
         color: white2,
         child: ListView(
           padding: EdgeInsets.only(
-              top: 24, left: defaultMargin, right: defaultMargin),
+              top: 24, left: defaultMargin, right: defaultMargin, bottom: 50),
           children: [
             trackingQuestion(),
             trackingQuestion(),
             trackingQuestion(),
+            submitButton()
           ],
         ),
       );
