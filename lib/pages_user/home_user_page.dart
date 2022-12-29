@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:moodly/pages_user/help_message_user_page.dart';
 import 'package:moodly/pages_user/support_message_user_page.dart';
 import 'package:moodly/shared/theme.dart';
 import 'package:moodly/widgets/article_tile_user.dart';
@@ -72,16 +73,21 @@ class HomeUserPage extends StatelessWidget {
               borderRadius: BorderRadius.circular(defaultRadius),
             ),
             elevation: 4,
+            onSelected: (value) {
+              if (value == 0) {
+                Navigator.pushNamed(context, '/edit-profile');
+              } else {}
+            },
             itemBuilder: (context) => [
               PopupMenuItem(
-                onTap: () {},
+                value: 0,
                 child: Text(
                   'Edit Profile',
                   style: darkText,
                 ),
               ),
               PopupMenuItem(
-                onTap: () {},
+                value: 1,
                 child: Text(
                   'Logout',
                   style: primaryColorText,
@@ -355,6 +361,13 @@ class HomeUserPage extends StatelessWidget {
             ),
           ),
           SpeedDialChild(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const HelpMessageUserPage()),
+              );
+            },
             elevation: 4,
             backgroundColor: secondaryColor,
             label: 'Help Center',
