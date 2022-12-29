@@ -127,14 +127,12 @@ class ConsultantUserPage extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: defaultMargin),
         children: [
           location(),
-          Expanded(
-            child: Column(
-              children: [
-                consultantTile(),
-                consultantTile(),
-                consultantTile(),
-              ],
-            ),
+          Column(
+            children: [
+              consultantTile(),
+              consultantTile(),
+              consultantTile(),
+            ],
           )
         ],
       );
