@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moodly/sign_up_page.dart';
 import 'package:moodly/splash_screen.dart';
 
 void main() {
@@ -10,8 +11,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: SplashScreen(),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      routes: {
+        '/': (context) => const SplashScreen(),
+        '/sign-up': (context) => const SignUpPage(),
+      },
     );
   }
 }
