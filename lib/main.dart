@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moodly/pages_admin/chat_list_admin_page.dart';
+import 'package:moodly/pages_admin/consultant_admin_page.dart';
 import 'package:moodly/pages_admin/home_admin_page.dart';
 import 'package:moodly/pages_user/articles_user_page.dart';
 import 'package:moodly/pages_user/consultant_user_page.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
         '/edit-profile': (context) => EditProfilePage(),
         '/home-admin': (context) => const HomeAdminPage(),
         '/chat-list-admin': (context) => const ChatListAdminPage(),
+        '/consultant-admin': (context) => const ConsultantAdminPage(),
       },
     );
   }

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:moodly/shared/theme.dart';
 import 'package:moodly/widgets/chat_bubble.dart';
 
-class HelpMessageUserPage extends StatelessWidget {
-  const HelpMessageUserPage({super.key});
+class ChatAdminPage extends StatelessWidget {
+  const ChatAdminPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,6 @@ class HelpMessageUserPage extends StatelessWidget {
       return AppBar(
         toolbarHeight: 70,
         backgroundColor: white,
-        centerTitle: true,
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -23,19 +22,23 @@ class HelpMessageUserPage extends StatelessWidget {
           color: primaryColor,
           iconSize: 16,
         ),
-        title: Column(
+        title: Row(
           children: [
-            Text(
-              'Help Center',
-              style: darkText.copyWith(
-                fontSize: 18,
-                fontWeight: medium,
+            ClipRRect(
+              borderRadius: BorderRadius.circular(100),
+              child: Image.asset(
+                'assets/example/user_profile.png',
+                width: 54,
+                fit: BoxFit.cover,
               ),
             ),
+            const SizedBox(
+              width: 12,
+            ),
             Text(
-              'Uncomplete Status',
+              'Budiman',
               style: primaryColorText.copyWith(
-                fontSize: 12,
+                fontSize: 16,
                 fontWeight: medium,
               ),
             ),

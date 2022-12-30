@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:moodly/shared/theme.dart';
 import 'package:moodly/widgets/chat_bubble.dart';
 
-class SupportMessageUserPage extends StatelessWidget {
-  const SupportMessageUserPage({super.key});
+class HelpChatUserPage extends StatelessWidget {
+  const HelpChatUserPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +23,23 @@ class SupportMessageUserPage extends StatelessWidget {
           color: primaryColor,
           iconSize: 16,
         ),
-        title: Text(
-          'Support Messages',
-          style: primaryColorText.copyWith(
-            fontSize: 18,
-            fontWeight: medium,
-          ),
+        title: Column(
+          children: [
+            Text(
+              'Help Center',
+              style: darkText.copyWith(
+                fontSize: 18,
+                fontWeight: medium,
+              ),
+            ),
+            Text(
+              'Uncomplete Status',
+              style: primaryColorText.copyWith(
+                fontSize: 12,
+                fontWeight: medium,
+              ),
+            ),
+          ],
         ),
         elevation: 0,
         automaticallyImplyLeading: false,

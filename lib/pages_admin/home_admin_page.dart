@@ -135,7 +135,9 @@ class HomeAdminPage extends StatelessWidget {
               title: 'Articles',
             ),
             FeatureAdminTile(
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, '/consultant-admin');
+              },
               icon: Icons.group,
               color: dark,
               subtitle: 'Manage',

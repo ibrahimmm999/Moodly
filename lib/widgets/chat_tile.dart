@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moodly/pages_admin/chat_admin_page.dart';
 import 'package:moodly/shared/theme.dart';
 
 class ChatTile extends StatelessWidget {
@@ -7,18 +8,25 @@ class ChatTile extends StatelessWidget {
       required this.imageUrl,
       this.isCompleted = false,
       this.isHelpMessage = false,
+      this.unreadCount = 0,
       Key? key})
       : super(key: key);
 
   final String imageUrl;
   final String name;
+  final int unreadCount;
   final bool isCompleted;
   final bool isHelpMessage;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ChatAdminPage()),
+        );
+      },
       child: Container(
         margin: const EdgeInsets.only(
           top: 16,
@@ -87,16 +95,20 @@ class ChatTile extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Container(
-                      margin: const EdgeInsets.only(right: 8),
-                      padding: const EdgeInsets.all(8),
-                      decoration:
-                          BoxDecoration(shape: BoxShape.circle, color: dark),
-                      child: Text(
-                        '3',
-                        style: whiteText,
-                      ),
-                    ),
+                    unreadCount == 0
+                        ? const SizedBox()
+                        : Container(
+                            margin: const EdgeInsets.only(right: 8),
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle, color: dark),
+                            child: Center(
+                              child: Text(
+                                unreadCount.toString(),
+                                style: whiteText,
+                              ),
+                            ),
+                          ),
                     Text(
                       '12.00',
                       style: greyText.copyWith(fontSize: 10),

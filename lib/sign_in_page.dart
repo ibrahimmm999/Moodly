@@ -96,7 +96,7 @@ class SignInPage extends StatelessWidget {
                 children: [
                   Text(
                     "Don't have an account?",
-                    style: secondaryColorText.copyWith(fontSize: 12),
+                    style: greyText.copyWith(fontSize: 12),
                   ),
                   TextButton(
                       onPressed: () {
@@ -104,7 +104,7 @@ class SignInPage extends StatelessWidget {
                       },
                       child: Text(
                         "Sign Up",
-                        style: primaryColorText.copyWith(
+                        style: secondaryColorText.copyWith(
                             fontSize: 12, fontWeight: medium),
                       ))
                 ],

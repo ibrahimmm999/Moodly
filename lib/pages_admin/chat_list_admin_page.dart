@@ -141,8 +141,8 @@ class ChatListAdminPage extends StatelessWidget {
               child: ListView(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 children: const [
-                  ChatTile(name: 'name', imageUrl: 'imageUrl'),
-                  ChatTile(name: 'name', imageUrl: 'imageUrl'),
+                  ChatTile(name: 'name', imageUrl: 'imageUrl', unreadCount: 3),
+                  ChatTile(name: 'name', imageUrl: 'imageUrl', unreadCount: 5),
                   ChatTile(name: 'name', imageUrl: 'imageUrl'),
                   ChatTile(name: 'name', imageUrl: 'imageUrl'),
                   ChatTile(name: 'name', imageUrl: 'imageUrl'),
