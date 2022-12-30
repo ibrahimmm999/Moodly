@@ -2,11 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:moodly/shared/theme.dart';
 
 class ChatTile extends StatelessWidget {
-  const ChatTile({required this.name, required this.imageUrl, Key? key})
+  const ChatTile(
+      {required this.name,
+      required this.imageUrl,
+      this.isCompleted = false,
+      this.isHelpMessage = false,
+      Key? key})
       : super(key: key);
 
   final String imageUrl;
   final String name;
+  final bool isCompleted;
+  final bool isHelpMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +21,7 @@ class ChatTile extends StatelessWidget {
       onTap: () {},
       child: Container(
         margin: const EdgeInsets.only(
-          top: 24,
+          top: 16,
         ),
         child: Column(
           children: [
@@ -47,18 +54,59 @@ class ChatTile extends StatelessWidget {
                           fontWeight: light,
                         ),
                         overflow: TextOverflow.ellipsis,
-                      )
+                      ),
+                      isHelpMessage
+                          ? Material(
+                              color:
+                                  isCompleted ? secondaryColor : primaryColor,
+                              borderRadius:
+                                  BorderRadius.circular(defaultRadius),
+                              child: InkWell(
+                                onTap: () {},
+                                borderRadius:
+                                    BorderRadius.circular(defaultRadius),
+                                child: Container(
+                                  padding: const EdgeInsets.all(4),
+                                  child: isCompleted
+                                      ? Text(
+                                          'Completed',
+                                          style:
+                                              whiteText.copyWith(fontSize: 8),
+                                        )
+                                      : Text(
+                                          'Uncompleted',
+                                          style:
+                                              whiteText.copyWith(fontSize: 8),
+                                        ),
+                                ),
+                              ),
+                            )
+                          : const SizedBox(),
                     ],
                   ),
                 ),
-                Text(
-                  '12.00',
-                  style: greyText.copyWith(fontSize: 10),
+                Row(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(right: 8),
+                      padding: const EdgeInsets.all(8),
+                      decoration:
+                          BoxDecoration(shape: BoxShape.circle, color: dark),
+                      child: Text(
+                        '3',
+                        style: whiteText,
+                      ),
+                    ),
+                    Text(
+                      '12.00',
+                      style: greyText.copyWith(fontSize: 10),
+                    ),
+                  ],
                 )
               ],
             ),
             const SizedBox(
-              height: 12,
+              height: 8,
             ),
             Divider(
               thickness: 1,

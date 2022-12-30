@@ -7,7 +7,9 @@ class ChatListAdminPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isEmptyChat = true;
+    bool isEmptyHelpChat = true;
+    int index = 0;
+    bool isEmptySupportChat = true;
 
     PreferredSizeWidget header() {
       return AppBar(
@@ -51,13 +53,13 @@ class ChatListAdminPage extends StatelessWidget {
                     const SizedBox(),
                     Text(
                       'Support Messages',
-                      style: primaryColorText,
+                      style: index == 0 ? primaryColorText : greyText,
                     ),
                     Container(
                       height: 2,
                       width: MediaQuery.of(context).size.width * 0.5,
                       decoration: BoxDecoration(
-                        color: primaryColor,
+                        color: index == 0 ? primaryColor : Colors.transparent,
                         borderRadius: BorderRadius.circular(18),
                       ),
                     )
@@ -75,13 +77,13 @@ class ChatListAdminPage extends StatelessWidget {
                     const SizedBox(),
                     Text(
                       'Help Center',
-                      style: greyText,
+                      style: index == 1 ? primaryColorText : greyText,
                     ),
                     Container(
                       height: 2,
                       width: MediaQuery.of(context).size.width * 0.5,
                       decoration: BoxDecoration(
-                        color: Colors.transparent,
+                        color: index == 1 ? primaryColor : Colors.transparent,
                         borderRadius: BorderRadius.circular(18),
                       ),
                     )
@@ -130,23 +132,61 @@ class ChatListAdminPage extends StatelessWidget {
       );
     }
 
+    Widget supportChat() {
+      return isEmptySupportChat
+          ? emptyChat()
+          // ignore: dead_code
+          : Expanded(
+              child: ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                children: const [
+                  ChatTile(name: 'name', imageUrl: 'imageUrl'),
+                  ChatTile(name: 'name', imageUrl: 'imageUrl'),
+                  ChatTile(name: 'name', imageUrl: 'imageUrl'),
+                  ChatTile(name: 'name', imageUrl: 'imageUrl'),
+                  ChatTile(name: 'name', imageUrl: 'imageUrl'),
+                  ChatTile(name: 'name', imageUrl: 'imageUrl'),
+                  ChatTile(name: 'name', imageUrl: 'imageUrl'),
+                  ChatTile(name: 'name', imageUrl: 'imageUrl'),
+                ],
+              ),
+            );
+    }
+
+    Widget helpChat() {
+      return isEmptyHelpChat
+          ? emptyChat()
+          // ignore: dead_code
+          : Expanded(
+              child: ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                children: const [
+                  ChatTile(
+                    name: 'name',
+                    imageUrl: 'imageUrl',
+                    isHelpMessage: true,
+                    isCompleted: false,
+                  ),
+                  ChatTile(
+                    name: 'name',
+                    imageUrl: 'imageUrl',
+                    isHelpMessage: true,
+                    isCompleted: true,
+                  ),
+                ],
+              ),
+            );
+    }
+
     Widget content() {
-      return Expanded(
-        child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          children: const [
-            ChatTile(name: 'name', imageUrl: 'imageUrl'),
-            ChatTile(name: 'name', imageUrl: 'imageUrl'),
-            ChatTile(name: 'name', imageUrl: 'imageUrl'),
-            ChatTile(name: 'name', imageUrl: 'imageUrl'),
-            ChatTile(name: 'name', imageUrl: 'imageUrl'),
-            ChatTile(name: 'name', imageUrl: 'imageUrl'),
-            ChatTile(name: 'name', imageUrl: 'imageUrl'),
-            ChatTile(name: 'name', imageUrl: 'imageUrl'),
-            ChatTile(name: 'name', imageUrl: 'imageUrl'),
-          ],
-        ),
-      );
+      switch (index) {
+        case 0:
+          return supportChat();
+        case 1:
+          return helpChat();
+        default:
+          return supportChat();
+      }
     }
 
     return Scaffold(
@@ -155,8 +195,7 @@ class ChatListAdminPage extends StatelessWidget {
       body: Column(
         children: [
           switchContent(),
-          // ignore: dead_code
-          !isEmptyChat ? emptyChat() : content(),
+          content(),
         ],
       ),
     );
