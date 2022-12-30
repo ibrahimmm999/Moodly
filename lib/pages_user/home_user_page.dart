@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:moodly/pages_user/help_message_user_page.dart';
 import 'package:moodly/pages_user/support_message_user_page.dart';
 import 'package:moodly/shared/theme.dart';
 import 'package:moodly/widgets/article_tile_user.dart';
@@ -62,14 +64,36 @@ class HomeUserPage extends StatelessWidget {
               ],
             ),
           ),
-          InkWell(
-            borderRadius: BorderRadius.circular(100),
-            onTap: () {},
-            child: Icon(
+          PopupMenuButton(
+            icon: Icon(
               Icons.settings,
-              size: 20,
               color: grey,
             ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(defaultRadius),
+            ),
+            elevation: 4,
+            onSelected: (value) {
+              if (value == 0) {
+                Navigator.pushNamed(context, '/edit-profile');
+              } else {}
+            },
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: 0,
+                child: Text(
+                  'Edit Profile',
+                  style: darkText,
+                ),
+              ),
+              PopupMenuItem(
+                value: 1,
+                child: Text(
+                  'Logout',
+                  style: primaryColorText,
+                ),
+              ),
+            ],
           )
         ],
       );
@@ -310,29 +334,54 @@ class HomeUserPage extends StatelessWidget {
     }
 
     Widget floatingButton() {
-      return Material(
-        color: primaryColor,
-        borderRadius: BorderRadius.circular(100),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(100),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const SupportMessageUserPage(),
-              ),
-            );
-          },
-          child: SizedBox(
-            height: 54,
-            width: 54,
-            child: Center(
-              child: Image.asset(
-                'assets/icon_chat_floating.png',
-                width: 30,
-              ),
+      return SpeedDial(
+        elevation: 4,
+        backgroundColor: primaryColor,
+        childrenButtonSize: const Size(60, 60),
+        spaceBetweenChildren: 16,
+        buttonSize: const Size(54, 54),
+        activeChild: const Icon(Icons.close),
+        children: [
+          SpeedDialChild(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const SupportMessageUserPage()),
+              );
+            },
+            elevation: 4,
+            backgroundColor: secondaryColor,
+            label: 'Support Messages',
+            labelBackgroundColor: white,
+            labelStyle: darkText,
+            child: Icon(
+              Icons.forum_rounded,
+              color: white,
             ),
           ),
+          SpeedDialChild(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const HelpMessageUserPage()),
+              );
+            },
+            elevation: 4,
+            backgroundColor: secondaryColor,
+            label: 'Help Center',
+            labelBackgroundColor: white,
+            labelStyle: darkText,
+            child: Icon(
+              Icons.contact_support_rounded,
+              color: white,
+            ),
+          )
+        ],
+        child: Image.asset(
+          'assets/icon_chat_floating.png',
+          width: 30,
         ),
       );
     }
