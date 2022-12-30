@@ -21,8 +21,7 @@ class ArticleTileAdmin extends StatelessWidget {
       },
       child: Container(
         padding: const EdgeInsets.all(4),
-        width: 315,
-        height: 110,
+        width: double.infinity,
         margin: const EdgeInsets.only(bottom: 24),
         decoration: BoxDecoration(
             color: white, borderRadius: BorderRadius.circular(12)),
@@ -67,6 +66,51 @@ class ArticleTileAdmin extends StatelessWidget {
                     )
                   ],
                 ),
+              ),
+            ),
+            Container(
+              color: white,
+              child: Column(
+                children: [
+                  Material(
+                    color: white,
+                    borderRadius: BorderRadius.circular(defaultRadius),
+                    child: InkWell(
+                      onTap: () {},
+                      borderRadius: BorderRadius.circular(defaultRadius),
+                      child: SizedBox(
+                        height: 30,
+                        width: 30,
+                        child: Center(
+                          child: Icon(
+                            Icons.edit,
+                            color: secondaryColor,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Material(
+                    color: white,
+                    borderRadius: BorderRadius.circular(defaultRadius),
+                    child: InkWell(
+                      onTap: () {},
+                      borderRadius: BorderRadius.circular(defaultRadius),
+                      child: SizedBox(
+                        height: 30,
+                        width: 30,
+                        child: Center(
+                          child: Icon(
+                            Icons.delete,
+                            color: primaryColor,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             )
           ],
