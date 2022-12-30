@@ -21,8 +21,7 @@ class ArticleTileAdmin extends StatelessWidget {
       },
       child: Container(
         padding: const EdgeInsets.all(4),
-        width: 315,
-        height: 110,
+        width: double.infinity,
         margin: const EdgeInsets.only(bottom: 24),
         decoration: BoxDecoration(
             color: white, borderRadius: BorderRadius.circular(12)),
@@ -67,6 +66,44 @@ class ArticleTileAdmin extends StatelessWidget {
                     )
                   ],
                 ),
+              ),
+            ),
+            Container(
+              color: white,
+              child: Column(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const DetailArticleAdminPage()));
+                    },
+                    child: Container(
+                      height: 20,
+                      width: 20,
+                      decoration: const BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage("assets/edit_icon.png"),
+                              fit: BoxFit.cover)),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  InkWell(
+                    onTap: () {},
+                    child: Container(
+                      height: 16,
+                      width: 14,
+                      decoration: const BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage("assets/delete_icon.png"),
+                              fit: BoxFit.cover)),
+                    ),
+                  )
+                ],
               ),
             )
           ],

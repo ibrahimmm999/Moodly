@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:moodly/pages_admin/detail_article_admin_page.dart';
 import 'package:moodly/widgets/article_tile_admin.dart';
+import 'package:moodly/widgets/custom_button.dart';
 
 import '../shared/theme.dart';
 
@@ -33,10 +35,31 @@ class ArticlesAdminPage extends StatelessWidget {
       );
     }
 
+    Widget addArticleButton() {
+      return CustomButton(
+          radiusButton: defaultRadius,
+          buttonColor: primaryColor,
+          buttonText: "Add Article",
+          widthButton: double.infinity,
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const DetailArticleAdminPage()));
+          },
+          heightButton: 50);
+    }
+
     Widget content() {
       return ListView(
         padding: EdgeInsets.symmetric(vertical: 24, horizontal: defaultMargin),
-        children: const [ArticleTileAdmin(), ArticleTileAdmin()],
+        children: [
+          const ArticleTileAdmin(),
+          const ArticleTileAdmin(),
+          const ArticleTileAdmin(),
+          const ArticleTileAdmin(),
+          addArticleButton()
+        ],
       );
     }
 
