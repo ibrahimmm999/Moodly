@@ -121,7 +121,9 @@ class HomeAdminPage extends StatelessWidget {
               isChat: true,
             ),
             FeatureAdminTile(
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, '/tracking-admin');
+              },
               icon: Icons.analytics,
               color: grey,
               subtitle: 'Manage',

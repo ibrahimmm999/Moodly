@@ -4,6 +4,7 @@ import 'package:moodly/cubit/image_file_cubit.dart';
 import 'package:moodly/pages_admin/chat_list_admin_page.dart';
 import 'package:moodly/pages_admin/consultant_admin_page.dart';
 import 'package:moodly/pages_admin/home_admin_page.dart';
+import 'package:moodly/pages_admin/tracking_question_page.dart';
 import 'package:moodly/pages_user/articles_user_page.dart';
 import 'package:moodly/pages_user/consultant_user_page.dart';
 import 'package:moodly/pages_user/edit_profile_page.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
           '/home-admin': (context) => const HomeAdminPage(),
           '/chat-list-admin': (context) => const ChatListAdminPage(),
           '/consultant-admin': (context) => const ConsultantAdminPage(),
+          '/tracking-admin': (context) => TrackingQuestionPage(),
         },
       ),
     );
