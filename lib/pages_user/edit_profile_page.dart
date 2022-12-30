@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moodly/service/image_service.dart';
 import 'package:moodly/shared/theme.dart';
 import 'package:moodly/widgets/custom_text_form_field.dart';
 
@@ -12,6 +13,8 @@ class EditProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ImageTool imageTool = ImageTool();
+
     PreferredSizeWidget header() {
       return AppBar(
         toolbarHeight: 70,
@@ -97,7 +100,9 @@ class EditProfilePage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(defaultRadius),
                   child: InkWell(
                     borderRadius: BorderRadius.circular(defaultRadius),
-                    onTap: () {},
+                    onTap: () {
+                      imageTool.pickImage();
+                    },
                     child: SizedBox(
                       width: 50,
                       height: 35,
