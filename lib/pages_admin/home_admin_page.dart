@@ -130,7 +130,9 @@ class HomeAdminPage extends StatelessWidget {
               title: 'Question Tracking',
             ),
             FeatureAdminTile(
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, '/article-admin');
+              },
               icon: Icons.edit,
               color: secondaryColor,
               subtitle: 'Manage',

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:moodly/pages_user/detail_article_user_page.dart';
 import 'package:moodly/shared/theme.dart';
 
-class ArticleTileUser extends StatelessWidget {
-  const ArticleTileUser({
+import '../pages_admin/detail_article_admin_page.dart';
+
+class ArticleTileAdmin extends StatelessWidget {
+  const ArticleTileAdmin({
     Key? key,
   }) : super(key: key);
 
@@ -14,7 +15,7 @@ class ArticleTileUser extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const DetailArticleUserPage(),
+            builder: (context) => const DetailArticleAdminPage(),
           ),
         );
       },

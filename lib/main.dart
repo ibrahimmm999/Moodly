@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moodly/cubit/image_file_cubit.dart';
+import 'package:moodly/pages_admin/articles_admin_page.dart';
 import 'package:moodly/pages_admin/chat_list_admin_page.dart';
 import 'package:moodly/pages_admin/consultant_admin_page.dart';
 import 'package:moodly/pages_admin/home_admin_page.dart';
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
           '/chat-list-admin': (context) => const ChatListAdminPage(),
           '/consultant-admin': (context) => const ConsultantAdminPage(),
           '/tracking-admin': (context) => TrackingQuestionPage(),
+          '/article-admin': (context) => ArticlesAdminPage(),
         },
       ),
     );
