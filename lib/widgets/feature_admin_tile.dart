@@ -69,19 +69,16 @@ class FeatureAdminTile extends StatelessWidget {
                       Text('unread', style: whiteText),
                       Container(
                         margin: const EdgeInsets.only(left: 8),
-                        width: 35,
-                        height: 35,
+                        padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: white,
                         ),
-                        child: Center(
-                          child: Text(
-                            '10',
-                            style: primaryColorText.copyWith(
-                              fontWeight: medium,
-                              fontSize: 12,
-                            ),
+                        child: Text(
+                          '10',
+                          style: primaryColorText.copyWith(
+                            fontWeight: medium,
+                            fontSize: 12,
                           ),
                         ),
                       )
