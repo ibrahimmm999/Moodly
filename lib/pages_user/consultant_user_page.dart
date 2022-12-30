@@ -77,45 +77,47 @@ class ConsultantUserPage extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 8),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Mr. Budi, S.Psi.',
-                  style: darkText.copyWith(
-                    fontSize: 16,
-                    fontWeight: semibold,
-                  ),
-                ),
-                const Text(
-                  'Open 24 Jam',
-                  style: TextStyle(
-                    color: Color(0xFF6BCBB8),
-                    fontSize: 12,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.phone,
-                      color: secondaryColor,
-                      size: 20,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Mr. Budi, S.Psi.',
+                    style: darkText.copyWith(
+                      fontSize: 16,
+                      fontWeight: semibold,
                     ),
-                    Text(
-                      '0812345678',
-                      style: darkText.copyWith(fontSize: 12),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Jl. Diponegoro No.47A, Mlati, Sleman',
-                  style: darkText.copyWith(
-                    fontSize: 10,
                   ),
-                )
-              ],
+                  const Text(
+                    'Open 24 Jam',
+                    style: TextStyle(
+                      color: Color(0xFF6BCBB8),
+                      fontSize: 12,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.phone,
+                        color: secondaryColor,
+                        size: 20,
+                      ),
+                      Text(
+                        '0812345678',
+                        style: darkText.copyWith(fontSize: 12),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Jl. Diponegoro No.47A, Mlati, Sleman',
+                    style: darkText.copyWith(
+                      fontSize: 10,
+                    ),
+                  )
+                ],
+              ),
             )
           ],
         ),
