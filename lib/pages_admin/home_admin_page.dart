@@ -20,7 +20,7 @@ class HomeAdminPage extends StatelessWidget {
                   decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                        image: AssetImage('assets/example/user_profile.png'),
+                        image: AssetImage('assets/profile_default.png'),
                         fit: BoxFit.cover,
                       )),
                 ),

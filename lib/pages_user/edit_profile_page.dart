@@ -91,7 +91,7 @@ class EditProfilePage extends StatelessWidget {
                   DecorationImage imageProfile() {
                     if (imageFile == null) {
                       return const DecorationImage(
-                        image: AssetImage('assets/example/user_profile.png'),
+                        image: AssetImage('assets/profile_default.png'),
                         fit: BoxFit.cover,
                       );
                     } else {

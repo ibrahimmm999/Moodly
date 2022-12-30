@@ -38,7 +38,7 @@ class ChatTile extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(100),
                   child: Image.asset(
-                    'assets/example/user_profile.png',
+                    'assets/profile_default.png',
                     width: 54,
                     fit: BoxFit.cover,
                   ),
