@@ -7,9 +7,9 @@ class ChatListAdminPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isEmptyHelpChat = true;
+    bool isEmptyHelpChat = false;
     int index = 0;
-    bool isEmptySupportChat = true;
+    bool isEmptySupportChat = false;
 
     PreferredSizeWidget header() {
       return AppBar(
@@ -134,6 +134,7 @@ class ChatListAdminPage extends StatelessWidget {
 
     Widget supportChat() {
       return isEmptySupportChat
+          // ignore: dead_code
           ? emptyChat()
           // ignore: dead_code
           : Expanded(
@@ -155,6 +156,7 @@ class ChatListAdminPage extends StatelessWidget {
 
     Widget helpChat() {
       return isEmptyHelpChat
+          // ignore: dead_code
           ? emptyChat()
           // ignore: dead_code
           : Expanded(
