@@ -40,7 +40,9 @@ class SignInPage extends StatelessWidget {
           buttonColor: primaryColor,
           buttonText: "Sign In",
           widthButton: double.infinity,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, '/home-admin');
+          },
           heightButton: 50);
     }
 
@@ -94,7 +96,7 @@ class SignInPage extends StatelessWidget {
                 children: [
                   Text(
                     "Don't have an account?",
-                    style: secondaryColorText.copyWith(fontSize: 12),
+                    style: greyText.copyWith(fontSize: 12),
                   ),
                   TextButton(
                       onPressed: () {
@@ -102,7 +104,7 @@ class SignInPage extends StatelessWidget {
                       },
                       child: Text(
                         "Sign Up",
-                        style: primaryColorText.copyWith(
+                        style: secondaryColorText.copyWith(
                             fontSize: 12, fontWeight: medium),
                       ))
                 ],

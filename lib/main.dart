@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moodly/cubit/image_file_cubit.dart';
+import 'package:moodly/pages_admin/chat_list_admin_page.dart';
+import 'package:moodly/pages_admin/consultant_admin_page.dart';
+import 'package:moodly/pages_admin/home_admin_page.dart';
 import 'package:moodly/pages_user/articles_user_page.dart';
 import 'package:moodly/pages_user/consultant_user_page.dart';
 import 'package:moodly/pages_user/edit_profile_page.dart';
@@ -18,18 +23,26 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      routes: {
-        '/': (context) => const SplashScreen(),
-        '/sign-up': (context) => SignUpPage(),
-        '/sign-in': (context) => SignInPage(),
-        '/home-user': (context) => const HomeUserPage(),
-        '/article-user': (context) => const ArticlesUserPage(),
-        '/tracking': (context) => const TrackingPage(),
-        '/consultant-user': (context) => const ConsultantUserPage(),
-        '/edit-profile': (context) => EditProfilePage(),
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => ImageFileCubit()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        routes: {
+          '/': (context) => const SplashScreen(),
+          '/sign-up': (context) => SignUpPage(),
+          '/sign-in': (context) => SignInPage(),
+          '/home-user': (context) => const HomeUserPage(),
+          '/article-user': (context) => const ArticlesUserPage(),
+          '/tracking': (context) => const TrackingPage(),
+          '/consultant-user': (context) => const ConsultantUserPage(),
+          '/edit-profile': (context) => EditProfilePage(),
+          '/home-admin': (context) => const HomeAdminPage(),
+          '/chat-list-admin': (context) => const ChatListAdminPage(),
+          '/consultant-admin': (context) => const ConsultantAdminPage(),
+        },
+      ),
     );
   }
 }

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:moodly/shared/theme.dart';
 import 'package:moodly/widgets/chat_bubble.dart';
 
-class HelpMessageUserPage extends StatelessWidget {
-  const HelpMessageUserPage({super.key});
+class HelpChatUserPage extends StatelessWidget {
+  const HelpChatUserPage({super.key});
 
   @override
   Widget build(BuildContext context) {

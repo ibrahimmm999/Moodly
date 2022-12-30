@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:moodly/shared/theme.dart';
 
-class ConsultantUserPage extends StatelessWidget {
-  const ConsultantUserPage({super.key});
+class ConsultantAdminPage extends StatelessWidget {
+  const ConsultantAdminPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,33 +31,7 @@ class ConsultantUserPage extends StatelessWidget {
       );
     }
 
-    Widget location() {
-      return Container(
-        margin: const EdgeInsets.only(top: 12, bottom: 24),
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(defaultRadius), color: white),
-        child: Row(
-          children: [
-            Icon(
-              Icons.location_pin,
-              size: 20,
-              color: primaryColor,
-            ),
-            const SizedBox(width: 12),
-            Text(
-              'Yogyakarta',
-              style: darkText.copyWith(
-                fontSize: 12,
-                fontWeight: medium,
-              ),
-            )
-          ],
-        ),
-      );
-    }
-
-    Widget consultantTile() {
+    Widget consultantAdminTile() {
       return Container(
         margin: const EdgeInsets.only(bottom: 24),
         padding: const EdgeInsets.all(8),
@@ -118,6 +92,48 @@ class ConsultantUserPage extends StatelessWidget {
                   )
                 ],
               ),
+            ),
+            Column(
+              children: [
+                Material(
+                  color: white,
+                  borderRadius: BorderRadius.circular(defaultRadius),
+                  child: InkWell(
+                    onTap: () {},
+                    borderRadius: BorderRadius.circular(defaultRadius),
+                    child: SizedBox(
+                      height: 30,
+                      width: 30,
+                      child: Center(
+                        child: Icon(
+                          Icons.edit,
+                          color: secondaryColor,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Material(
+                  color: white,
+                  borderRadius: BorderRadius.circular(defaultRadius),
+                  child: InkWell(
+                    onTap: () {},
+                    borderRadius: BorderRadius.circular(defaultRadius),
+                    child: SizedBox(
+                      height: 30,
+                      width: 30,
+                      child: Center(
+                        child: Icon(
+                          Icons.delete,
+                          color: primaryColor,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             )
           ],
         ),
@@ -128,12 +144,12 @@ class ConsultantUserPage extends StatelessWidget {
       return ListView(
         padding: EdgeInsets.symmetric(horizontal: defaultMargin),
         children: [
-          location(),
+          const SizedBox(height: 24),
           Column(
             children: [
-              consultantTile(),
-              consultantTile(),
-              consultantTile(),
+              consultantAdminTile(),
+              consultantAdminTile(),
+              consultantAdminTile(),
             ],
           )
         ],

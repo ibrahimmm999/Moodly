@@ -69,8 +69,7 @@ class SignUpPage extends StatelessWidget {
           buttonText: "Sign Up",
           widthButton: double.infinity,
           onPressed: () {
-            Navigator.pushNamedAndRemoveUntil(
-                context, '/home-user', (route) => false);
+            Navigator.pushNamed(context, '/home-user');
           },
           heightButton: 50);
     }

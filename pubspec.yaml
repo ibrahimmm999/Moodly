@@ -36,6 +36,10 @@ dependencies:
   cloud_firestore: ^4.2.0
   intl: ^0.18.0
   flutter_speed_dial: ^6.2.0
+  image_picker: ^0.8.6
+  image_cropper: ^3.0.1
+  bloc: ^8.1.0
+  flutter_bloc: ^8.1.1
 
 dev_dependencies:
   # The "flutter_lints" package below contains a set of recommended lints to

@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:moodly/pages_user/help_message_user_page.dart';
-import 'package:moodly/pages_user/support_message_user_page.dart';
+import 'package:moodly/pages_user/help_chat_user_page.dart';
+import 'package:moodly/pages_user/support_chat_user_page.dart';
 import 'package:moodly/shared/theme.dart';
 import 'package:moodly/widgets/article_tile_user.dart';
 import 'package:moodly/widgets/bar_chart.dart';
@@ -27,7 +27,7 @@ class HomeUserPage extends StatelessWidget {
                   decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                        image: AssetImage('assets/example/user_profile.png'),
+                        image: AssetImage('assets/profile_default.png'),
                         fit: BoxFit.cover,
                       )),
                 ),
@@ -347,7 +347,7 @@ class HomeUserPage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const SupportMessageUserPage()),
+                    builder: (context) => const SupportChatUserPage()),
               );
             },
             elevation: 4,
@@ -365,7 +365,7 @@ class HomeUserPage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const HelpMessageUserPage()),
+                    builder: (context) => const HelpChatUserPage()),
               );
             },
             elevation: 4,
