@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moodly/cubit/chat_admin_page_cubit.dart';
 import 'package:moodly/shared/theme.dart';
 import 'package:moodly/widgets/chat_tile.dart';
 
@@ -7,9 +9,11 @@ class ChatListAdminPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // INISIALISASI
     bool isEmptyHelpChat = false;
-    int index = 0;
     bool isEmptySupportChat = false;
+    ChatAdminPageCubit chatAdminPageCubit = context.read<ChatAdminPageCubit>();
+    chatAdminPageCubit.changeChatAdminPage(0);
 
     PreferredSizeWidget header() {
       return AppBar(
@@ -36,7 +40,7 @@ class ChatListAdminPage extends StatelessWidget {
       );
     }
 
-    Widget switchContent() {
+    Widget switchContent(int index) {
       return SizedBox(
         width: double.infinity,
         height: 60,
@@ -44,7 +48,9 @@ class ChatListAdminPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                chatAdminPageCubit.changeChatAdminPage(0);
+              },
               child: Container(
                 color: white,
                 child: Column(
@@ -68,7 +74,9 @@ class ChatListAdminPage extends StatelessWidget {
               ),
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                chatAdminPageCubit.changeChatAdminPage(1);
+              },
               child: Container(
                 color: white,
                 child: Column(
@@ -180,7 +188,7 @@ class ChatListAdminPage extends StatelessWidget {
             );
     }
 
-    Widget content() {
+    Widget content(int index) {
       switch (index) {
         case 0:
           return supportChat();
@@ -194,11 +202,15 @@ class ChatListAdminPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: white2,
       appBar: header(),
-      body: Column(
-        children: [
-          switchContent(),
-          content(),
-        ],
+      body: BlocBuilder<ChatAdminPageCubit, int>(
+        builder: (context, state) {
+          return Column(
+            children: [
+              switchContent(state),
+              content(state),
+            ],
+          );
+        },
       ),
     );
   }

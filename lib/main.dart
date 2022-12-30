@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moodly/cubit/chat_admin_page_cubit.dart';
 import 'package:moodly/cubit/image_file_cubit.dart';
 import 'package:moodly/pages_admin/articles_admin_page.dart';
 import 'package:moodly/pages_admin/chat_list_admin_page.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => ImageFileCubit()),
+        BlocProvider(create: (context) => ChatAdminPageCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -44,7 +46,7 @@ class MyApp extends StatelessWidget {
           '/chat-list-admin': (context) => const ChatListAdminPage(),
           '/consultant-admin': (context) => const ConsultantAdminPage(),
           '/tracking-admin': (context) => TrackingQuestionPage(),
-          '/article-admin': (context) => ArticlesAdminPage(),
+          '/article-admin': (context) => const ArticlesAdminPage(),
         },
       ),
     );
