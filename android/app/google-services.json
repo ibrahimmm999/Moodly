@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "998477752139",
+    "project_id": "moodly-70761",
+    "storage_bucket": "moodly-70761.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:998477752139:android:575bcc0fcb359374172ace",
+        "android_client_info": {
+          "package_name": "com.agatha.moodly"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "998477752139-u6ne1gvvap1q8qbmgtb1nrb2s0g97hb2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvZ2peeMtg_BP1Sl9ibk4ySdalcTZZYBI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "998477752139-u6ne1gvvap1q8qbmgtb1nrb2s0g97hb2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

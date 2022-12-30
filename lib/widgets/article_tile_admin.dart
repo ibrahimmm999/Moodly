@@ -72,37 +72,44 @@ class ArticleTileAdmin extends StatelessWidget {
               color: white,
               child: Column(
                 children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const DetailArticleAdminPage()));
-                    },
-                    child: Container(
-                      height: 20,
-                      width: 20,
-                      decoration: const BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage("assets/edit_icon.png"),
-                              fit: BoxFit.cover)),
+                  Material(
+                    color: white,
+                    borderRadius: BorderRadius.circular(defaultRadius),
+                    child: InkWell(
+                      onTap: () {},
+                      borderRadius: BorderRadius.circular(defaultRadius),
+                      child: SizedBox(
+                        height: 30,
+                        width: 30,
+                        child: Center(
+                          child: Icon(
+                            Icons.edit,
+                            color: secondaryColor,
+                            size: 20,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      height: 16,
-                      width: 14,
-                      decoration: const BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage("assets/delete_icon.png"),
-                              fit: BoxFit.cover)),
+                  Material(
+                    color: white,
+                    borderRadius: BorderRadius.circular(defaultRadius),
+                    child: InkWell(
+                      onTap: () {},
+                      borderRadius: BorderRadius.circular(defaultRadius),
+                      child: SizedBox(
+                        height: 30,
+                        width: 30,
+                        child: Center(
+                          child: Icon(
+                            Icons.delete,
+                            color: primaryColor,
+                            size: 20,
+                          ),
+                        ),
+                      ),
                     ),
-                  )
+                  ),
                 ],
               ),
             )
