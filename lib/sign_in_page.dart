@@ -40,7 +40,9 @@ class SignInPage extends StatelessWidget {
           buttonColor: primaryColor,
           buttonText: "Sign In",
           widthButton: double.infinity,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, '/home-admin');
+          },
           heightButton: 50);
     }
 
