@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moodly/pages_admin/add_consultant_page.dart';
 import 'package:moodly/pages_admin/detail_article_admin_page.dart';
 import 'package:moodly/shared/theme.dart';
 import 'package:moodly/widgets/feature_admin_tile.dart';
@@ -135,7 +136,7 @@ class HomeAdminPage extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => DetailArticleAdminPage()));
+                        builder: (context) => AddConsultantPage()));
               },
               icon: Icons.edit,
               color: secondaryColor,
