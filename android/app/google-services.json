@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "998477752139",
-    "project_id": "moodly-70761",
-    "storage_bucket": "moodly-70761.appspot.com"
+    "project_number": "217475452761",
+    "project_id": "moodly-dda16",
+    "storage_bucket": "moodly-dda16.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:998477752139:android:575bcc0fcb359374172ace",
+        "mobilesdk_app_id": "1:217475452761:android:9b7cc0835823fd93e80648",
         "android_client_info": {
           "package_name": "com.agatha.moodly"
         }
       },
       "oauth_client": [
         {
-          "client_id": "998477752139-u6ne1gvvap1q8qbmgtb1nrb2s0g97hb2.apps.googleusercontent.com",
+          "client_id": "217475452761-c5t4misaesgkf63ovjd44mrv2bla97h9.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBvZ2peeMtg_BP1Sl9ibk4ySdalcTZZYBI"
+          "current_key": "AIzaSyCLZpK3bDNnlSr1E7XSW4wtVkKNdOTX9RI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "998477752139-u6ne1gvvap1q8qbmgtb1nrb2s0g97hb2.apps.googleusercontent.com",
+              "client_id": "217475452761-c5t4misaesgkf63ovjd44mrv2bla97h9.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
