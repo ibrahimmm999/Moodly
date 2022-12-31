@@ -69,7 +69,7 @@ class _ArticlesAdminPageState extends State<ArticlesAdminPage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const DetailArticleAdminPage()));
+                    builder: (context) => DetailArticleAdminPage()));
           },
           heightButton: 50);
     }
