@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:moodly/model/article_model.dart';
 import 'package:moodly/shared/theme.dart';
 
 import '../pages_admin/detail_article_admin_page.dart';
+import '../service/time_converter.dart';
 
 class ArticleTileAdmin extends StatelessWidget {
-  const ArticleTileAdmin({
-    Key? key,
-  }) : super(key: key);
+  const ArticleTileAdmin({required this.article, Key? key}) : super(key: key);
+  final ArticleModel article;
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +34,8 @@ class ArticleTileAdmin extends StatelessWidget {
               margin: const EdgeInsets.only(right: 8),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  image: const DecorationImage(
-                      image: AssetImage("assets/example/article1_example.png"),
+                  image: DecorationImage(
+                      image: NetworkImage(article.thumbnail),
                       fit: BoxFit.cover)),
             ),
             Expanded(
@@ -45,7 +46,7 @@ class ArticleTileAdmin extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Kesehatan Mental : Gejala, Faktor, dan Penanganan",
+                      article.title,
                       style: darkText.copyWith(
                           fontSize: 13, fontWeight: FontWeight.w600),
                       overflow: TextOverflow.clip,
@@ -54,14 +55,14 @@ class ArticleTileAdmin extends StatelessWidget {
                       height: 4,
                     ),
                     Text(
-                      "19 September 2022",
+                      ConvertTime().convertToAgo(article.date),
                       style: darkText.copyWith(fontSize: 8),
                     ),
                     const SizedBox(
                       height: 4,
                     ),
                     Text(
-                      "Yuni Rahmawati",
+                      article.author,
                       style: secondaryColorText.copyWith(fontSize: 8),
                     )
                   ],

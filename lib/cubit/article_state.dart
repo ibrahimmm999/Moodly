@@ -1,6 +1,6 @@
 part of 'article_cubit.dart';
 
-abstract class ArticleState extends Equatable {
+abstract class ArticleState {
   const ArticleState();
 
   @override
@@ -12,16 +12,16 @@ class ArticleInitial extends ArticleState {}
 class ArticleLoading extends ArticleState {}
 
 class ArticleSuccess extends ArticleState {
-  final List<ArticleModel> article;
+  final List<ArticleModel> articles;
 
-  const ArticleSuccess(this.article);
+  ArticleSuccess(this.articles);
   @override
-  List<Object> get props => [article];
+  List<Object> get props => [articles];
 }
 
 class ArticleFailed extends ArticleState {
   final String error;
-  const ArticleFailed(this.error);
+  ArticleFailed(this.error);
   @override
   List<Object> get props => [error];
 }

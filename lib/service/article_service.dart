@@ -23,9 +23,41 @@ class ArticleService {
           id: id,
           title: snapshot['title'],
           content: snapshot['content'],
+          thumbnail: snapshot['thumbnail'],
+          author: snapshot['author'],
           date: snapshot['date']);
     } catch (e) {
       rethrow;
     }
   }
+
+//   Future<void> addArticle(String title, String content, Timestamp date,
+//       String thumbnail, String author) async {
+//     try {
+//       await _articlesReference.add({
+//         'title': title,
+//         'thumbnail': thumbnail,
+//         'content': content,
+//         'date': date,
+//         'author': author,
+//       });
+//     } catch (e) {
+//       rethrow;
+//     }
+//   }
+
+//   Future<void> updateArticle(String id, String title, String content,
+//       Timestamp date, String thumbnail, String author) async {
+//     try {
+//       await _articlesReference.doc(id).update({
+//         'title': title,
+//         'author': author,
+//         'date': date,
+//         'content': content,
+//         'thumbnail': thumbnail,
+//       });
+//     } catch (e) {
+//       rethrow;
+//     }
+//   }
 }

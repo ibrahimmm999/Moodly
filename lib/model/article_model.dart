@@ -6,11 +6,13 @@ class ArticleModel extends Equatable {
   final String thumbnail;
   final String title;
   final String content;
+  final String author;
   final Timestamp date;
   const ArticleModel({
     required this.id,
     this.title = '',
     this.content = '',
+    this.author = '',
     this.thumbnail = '',
     required this.date,
   });
@@ -21,6 +23,7 @@ class ArticleModel extends Equatable {
         title: json['title'],
         content: json['content'],
         thumbnail: json['thumbnail'],
+        author: json['thumbnail'],
         date: json['date'],
       );
 
@@ -29,6 +32,7 @@ class ArticleModel extends Equatable {
         'title': title,
         'content': content,
         'thumbnail': thumbnail,
+        'author': author,
         'date': date,
       };
 
@@ -38,6 +42,7 @@ class ArticleModel extends Equatable {
         title,
         content,
         thumbnail,
+        author,
         date,
       ];
 }

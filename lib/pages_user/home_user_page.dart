@@ -322,11 +322,7 @@ class HomeUserPage extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Column(
-              children: const [
-                ArticleTileUser(),
-                ArticleTileUser(),
-                ArticleTileUser(),
-              ],
+              children: const [],
             ),
           ],
         ),

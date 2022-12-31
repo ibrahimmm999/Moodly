@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moodly/cubit/article_cubit.dart';
 import 'package:moodly/cubit/chat_admin_page_cubit.dart';
 import 'package:moodly/cubit/chat_input_cubit.dart';
 import 'package:moodly/cubit/image_file_cubit.dart';
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => ImageFileCubit()),
+        BlocProvider(create: (context) => ArticleCubit()),
         BlocProvider(create: (context) => ChatAdminPageCubit()),
         BlocProvider(create: (context) => ChatInputCubit()),
       ],

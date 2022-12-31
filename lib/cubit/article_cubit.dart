@@ -8,10 +8,11 @@ part 'article_state.dart';
 class ArticleCubit extends Cubit<ArticleState> {
   ArticleCubit() : super(ArticleInitial());
 
-  void fetchArticle() async {
+  void fetchArticles() async {
     try {
       emit(ArticleLoading());
       List<ArticleModel> article = await ArticleService().fetchArticles();
+      print(article);
       emit(ArticleSuccess(article));
     } catch (e) {
       emit(ArticleFailed(e.toString()));

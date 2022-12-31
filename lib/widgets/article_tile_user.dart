@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:moodly/pages_user/detail_article_user_page.dart';
-import 'package:moodly/shared/theme.dart';
+
+import '../model/article_model.dart';
+import '../service/time_converter.dart';
+import '../shared/theme.dart';
 
 class ArticleTileUser extends StatelessWidget {
-  const ArticleTileUser({
-    Key? key,
-  }) : super(key: key);
+  const ArticleTileUser({required this.article, super.key});
+
+  final ArticleModel article;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +17,7 @@ class ArticleTileUser extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const DetailArticleUserPage(),
+            builder: (context) => DetailArticleUserPage(),
           ),
         );
       },
@@ -33,20 +36,20 @@ class ArticleTileUser extends StatelessWidget {
               margin: const EdgeInsets.only(right: 8),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  image: const DecorationImage(
-                      image: AssetImage("assets/example/article1_example.png"),
+                  image: DecorationImage(
+                      image: NetworkImage(article.thumbnail),
                       fit: BoxFit.cover)),
             ),
             Expanded(
-              child: SizedBox(
+              child: Container(
                 width: 193,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Kesehatan Mental : Gejala, Faktor, dan Penanganan",
-                      style: darkText.copyWith(
+                      article.title,
+                      style: primaryColorText.copyWith(
                           fontSize: 13, fontWeight: FontWeight.w600),
                       overflow: TextOverflow.clip,
                     ),
@@ -54,15 +57,15 @@ class ArticleTileUser extends StatelessWidget {
                       height: 4,
                     ),
                     Text(
-                      "19 September 2022",
-                      style: darkText.copyWith(fontSize: 8),
+                      ConvertTime().convertToAgo(article.date),
+                      style: secondaryColorText.copyWith(fontSize: 8),
                     ),
                     const SizedBox(
                       height: 4,
                     ),
                     Text(
-                      "Yuni Rahmawati",
-                      style: secondaryColorText.copyWith(fontSize: 8),
+                      article.author,
+                      style: greyText.copyWith(fontSize: 8),
                     )
                   ],
                 ),
