@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moodly/cubit/image_file_cubit.dart';
+import 'package:moodly/service/article_service.dart';
 import 'package:moodly/service/image_service.dart';
 import 'package:moodly/widgets/form_consultant_article.dart';
 
@@ -35,8 +37,12 @@ class DetailArticleAdminPage extends StatelessWidget {
         TextEditingController(text: author);
 
     ImageTool imageTool = ImageTool();
+    ArticleService articleService = ArticleService();
+
     ImageFileCubit imageFileCubit = context.read<ImageFileCubit>();
     imageFileCubit.changeImageFile(null);
+
+    String newThumbnail = thumbnail;
 
     PreferredSizeWidget header() {
       return AppBar(
@@ -47,8 +53,59 @@ class DetailArticleAdminPage extends StatelessWidget {
           Container(
             margin: const EdgeInsets.only(right: 10, bottom: 3),
             child: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
+              onPressed: () async {
+                final navigator = Navigator.of(context);
+                final messanger = ScaffoldMessenger.of(context);
+                if ((imageFileCubit.state == null && thumbnail.isEmpty) ||
+                    titleController.text.isEmpty ||
+                    contentController.text.isEmpty ||
+                    authorController.text.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: primaryColor,
+                      content: const Text('Form is required!'),
+                    ),
+                  );
+                } else {
+                  try {
+                    if (imageFileCubit.state != null) {
+                      if (thumbnail.isNotEmpty) {
+                        await imageTool.deleteImage(thumbnail);
+                      }
+                      await imageTool.uploadImage(
+                          imageFileCubit.state!, 'article');
+                      newThumbnail = imageTool.imageUrl!;
+                    }
+
+                    if (id.isEmpty) {
+                      await articleService.addArticle(
+                          titleController.text,
+                          contentController.text,
+                          Timestamp.now(),
+                          newThumbnail,
+                          authorController.text);
+                    } else {
+                      await articleService.updateArticle(
+                          id,
+                          titleController.text,
+                          contentController.text,
+                          Timestamp.now(),
+                          newThumbnail,
+                          authorController.text);
+                    }
+                    // Berhasil
+                    navigator.pop();
+                    messanger.showSnackBar(const SnackBar(
+                        content: Text('Data saved successfully!')));
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: primaryColor,
+                        content: Text(e.toString()),
+                      ),
+                    );
+                  }
+                }
               },
               icon: const Icon(
                 Icons.check_rounded,
@@ -62,9 +119,9 @@ class DetailArticleAdminPage extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          icon: const Icon(Icons.clear_rounded),
+          iconSize: 24,
           color: primaryColor,
-          iconSize: 16,
         ),
         title: Text(
           'Write Article',
