@@ -4,7 +4,6 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:moodly/pages_user/help_chat_user_page.dart';
 import 'package:moodly/pages_user/support_chat_user_page.dart';
 import 'package:moodly/shared/theme.dart';
-import 'package:moodly/widgets/article_tile_user.dart';
 import 'package:moodly/widgets/bar_chart.dart';
 
 class HomeUserPage extends StatelessWidget {

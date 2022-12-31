@@ -20,6 +20,7 @@ class _ArticlesUserPageState extends State<ArticlesUserPage> {
     super.initState();
   }
 
+  @override
   Widget build(BuildContext context) {
     PreferredSizeWidget header() {
       return AppBar(

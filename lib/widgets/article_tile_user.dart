@@ -17,7 +17,7 @@ class ArticleTileUser extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => DetailArticleUserPage(),
+            builder: (context) => const DetailArticleUserPage(),
           ),
         );
       },
@@ -41,7 +41,7 @@ class ArticleTileUser extends StatelessWidget {
                       fit: BoxFit.cover)),
             ),
             Expanded(
-              child: Container(
+              child: SizedBox(
                 width: 193,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

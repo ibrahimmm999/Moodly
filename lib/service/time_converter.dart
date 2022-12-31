@@ -5,20 +5,13 @@ class ConvertTime {
   String convertToAgo(Timestamp input) {
     Duration diff = DateTime.now().difference(input.toDate());
 
-    if (diff.inDays >= 1) {
-      if (diff.inDays > 7) {
-        return (DateFormat('dd MMMM yyyy').format(input.toDate())).toString();
-      } else {
-        return '${diff.inDays} days ago';
-      }
-    } else if (diff.inHours >= 1) {
-      return '${diff.inHours} hours ago';
-    } else if (diff.inMinutes >= 1) {
-      return '${diff.inMinutes} minutes ago';
-    } else if (diff.inSeconds >= 1) {
-      return '${diff.inSeconds} seconds ago';
+    if (diff.inDays > 1) {
+      return DateFormat('dd-MM-yyyy').format(input.toDate()).toString();
+    } else if (DateFormat('dd-MM-yyyy').format(input.toDate()) ==
+        DateFormat('dd-MM-yyyy').format(DateTime.now())) {
+      return DateFormat('Hm').format(input.toDate()).toString();
     } else {
-      return 'just now';
+      return 'Yesterday';
     }
   }
 }

@@ -50,7 +50,6 @@ class _ArticlesAdminPageState extends State<ArticlesAdminPage> {
     }
 
     Widget articleList(List<ArticleModel> articles) {
-      print(articles);
       articles.sort(
         (a, b) => a.date.compareTo(b.date),
       );
@@ -86,7 +85,6 @@ class _ArticlesAdminPageState extends State<ArticlesAdminPage> {
       },
       builder: (context, state) {
         if (state is ArticleSuccess) {
-          print(state.articles);
           return Scaffold(
             appBar: header(),
             body: articleList(state.articles),
