@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:moodly/shared/theme.dart';
 import 'package:moodly/widgets/chat_bubble.dart';
+import 'package:moodly/widgets/chat_input.dart';
 
 class HelpChatUserPage extends StatelessWidget {
   const HelpChatUserPage({super.key});
@@ -61,58 +62,11 @@ class HelpChatUserPage extends StatelessWidget {
       );
     }
 
-    Widget chatInput() {
-      return Container(
-          constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height,
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          color: white,
-          child: Row(
-            children: [
-              Expanded(
-                child: TextFormField(
-                  controller: chatController,
-                  keyboardType: TextInputType.multiline,
-                  maxLines: 5,
-                  minLines: 1,
-                  cursorColor: primaryColor,
-                  decoration: InputDecoration(
-                    hintText: 'Write message...',
-                    hintStyle: greyText,
-                    focusColor: primaryColor,
-                    contentPadding: const EdgeInsets.all(8),
-                    border: OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.all(Radius.circular(defaultRadius)),
-                      borderSide: BorderSide(color: grey),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(defaultRadius),
-                      borderSide: BorderSide(color: primaryColor),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 8),
-              GestureDetector(
-                  child: Image.asset(
-                    'assets/send_button.png',
-                    width: 45,
-                  ),
-                  onTap: () {
-                    chatController.clear();
-                    FocusManager.instance.primaryFocus?.unfocus();
-                  }),
-            ],
-          ));
-    }
-
     Widget content() {
       return Column(
         children: [
           Expanded(child: chat()),
-          chatInput(),
+          ChatInput(chatController: chatController),
         ],
       );
     }

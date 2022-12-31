@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moodly/cubit/chat_admin_page_cubit.dart';
+import 'package:moodly/cubit/chat_input_cubit.dart';
 import 'package:moodly/cubit/image_file_cubit.dart';
 import 'package:moodly/pages_admin/articles_admin_page.dart';
 import 'package:moodly/pages_admin/chat_list_admin_page.dart';
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => ImageFileCubit()),
         BlocProvider(create: (context) => ChatAdminPageCubit()),
+        BlocProvider(create: (context) => ChatInputCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
