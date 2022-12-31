@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moodly/pages_user/detail_article_user_page.dart';
 
-import '../model/article_model.dart';
+import '../models/article_model.dart';
 import '../service/time_converter.dart';
 import '../shared/theme.dart';
 

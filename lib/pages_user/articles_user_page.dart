@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../widgets/article_tile_user.dart';
 import '../../shared/theme.dart';
 import '../cubit/article_cubit.dart';
-import '../model/article_model.dart';
+import '../models/article_model.dart';
 
 class ArticlesUserPage extends StatefulWidget {
   const ArticlesUserPage({super.key});
@@ -30,7 +30,7 @@ class _ArticlesUserPageState extends State<ArticlesUserPage> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.arrow_back_ios_new_rounded),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
           color: secondaryColor,
           iconSize: 16,
         ),
@@ -81,7 +81,7 @@ class _ArticlesUserPageState extends State<ArticlesUserPage> {
             body: articleList(state.articles),
           );
         } else {
-          return Scaffold(
+          return const Scaffold(
             body: Center(
               child: CircularProgressIndicator(),
             ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:moodly/model/article_model.dart';
+import 'package:moodly/models/article_model.dart';
 import 'package:moodly/shared/theme.dart';
 
 import '../pages_admin/detail_article_admin_page.dart';

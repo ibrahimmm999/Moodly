@@ -5,7 +5,7 @@ import 'package:moodly/pages_admin/detail_article_admin_page.dart';
 import 'package:moodly/widgets/article_tile_admin.dart';
 import 'package:moodly/widgets/custom_button.dart';
 
-import '../model/article_model.dart';
+import '../models/article_model.dart';
 import '../shared/theme.dart';
 
 class ArticlesAdminPage extends StatefulWidget {
@@ -86,6 +86,7 @@ class _ArticlesAdminPageState extends State<ArticlesAdminPage> {
       },
       builder: (context, state) {
         if (state is ArticleSuccess) {
+          print(state.articles);
           return Scaffold(
             appBar: header(),
             body: articleList(state.articles),

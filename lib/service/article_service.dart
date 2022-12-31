@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:moodly/model/article_model.dart';
+import 'package:moodly/models/article_model.dart';
 
 class ArticleService {
   final CollectionReference _articlesReference =
