@@ -49,8 +49,8 @@ class ArticleTileUser extends StatelessWidget {
                   children: [
                     Text(
                       article.title,
-                      style: primaryColorText.copyWith(
-                          fontSize: 13, fontWeight: FontWeight.w600),
+                      style: darkText.copyWith(
+                          fontSize: 12, fontWeight: FontWeight.w600),
                       overflow: TextOverflow.clip,
                     ),
                     const SizedBox(
@@ -58,14 +58,14 @@ class ArticleTileUser extends StatelessWidget {
                     ),
                     Text(
                       ConvertTime().convertToAgo(article.date),
-                      style: secondaryColorText.copyWith(fontSize: 8),
+                      style: secondaryColorText.copyWith(fontSize: 10),
                     ),
                     const SizedBox(
                       height: 4,
                     ),
                     Text(
                       article.author,
-                      style: greyText.copyWith(fontSize: 8),
+                      style: primaryColorText.copyWith(fontSize: 10),
                     )
                   ],
                 ),

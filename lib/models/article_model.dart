@@ -23,7 +23,7 @@ class ArticleModel extends Equatable {
         title: json['title'],
         content: json['content'],
         thumbnail: json['thumbnail'],
-        author: json['thumbnail'],
+        author: json['author'],
         date: json['date'],
       );
 

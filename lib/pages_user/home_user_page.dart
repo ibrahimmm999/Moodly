@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:moodly/models/article_model.dart';
 import 'package:moodly/pages_user/help_chat_user_page.dart';
 import 'package:moodly/pages_user/support_chat_user_page.dart';
 import 'package:moodly/shared/theme.dart';
+import 'package:moodly/widgets/article_tile_user.dart';
 import 'package:moodly/widgets/bar_chart.dart';
 
 class HomeUserPage extends StatelessWidget {
@@ -320,8 +322,33 @@ class HomeUserPage extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 8),
-            Column(
-              children: const [],
+            StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+              stream:
+                  FirebaseFirestore.instance.collection('articles').snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  var articles = snapshot.data!.docs.map((e) {
+                    return ArticleModel.fromJson(e.id, e.data());
+                  }).toList();
+                  articles.sort(
+                    (b, a) => a.date.compareTo(b.date),
+                  );
+                  if (articles.length > 5) {
+                    articles.getRange(0, 4);
+                  }
+                  return Column(
+                    children: articles.map(
+                      (e) {
+                        return ArticleTileUser(
+                          article: e,
+                        );
+                      },
+                    ).toList(),
+                  );
+                } else {
+                  return Text('Nothing Articles', style: darkText);
+                }
+              },
             ),
           ],
         ),

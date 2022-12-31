@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moodly/models/article_model.dart';
+import 'package:moodly/pages_user/detail_article_user_page.dart';
 import 'package:moodly/shared/theme.dart';
 
 import '../pages_admin/detail_article_admin_page.dart';
@@ -16,7 +17,7 @@ class ArticleTileAdmin extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => DetailArticleAdminPage(),
+            builder: (context) => const DetailArticleUserPage(),
           ),
         );
       },
@@ -48,7 +49,7 @@ class ArticleTileAdmin extends StatelessWidget {
                     Text(
                       article.title,
                       style: darkText.copyWith(
-                          fontSize: 13, fontWeight: FontWeight.w600),
+                          fontSize: 12, fontWeight: FontWeight.w600),
                       overflow: TextOverflow.clip,
                     ),
                     const SizedBox(
@@ -56,14 +57,14 @@ class ArticleTileAdmin extends StatelessWidget {
                     ),
                     Text(
                       ConvertTime().convertToAgo(article.date),
-                      style: darkText.copyWith(fontSize: 8),
+                      style: secondaryColorText.copyWith(fontSize: 10),
                     ),
                     const SizedBox(
                       height: 4,
                     ),
                     Text(
                       article.author,
-                      style: secondaryColorText.copyWith(fontSize: 8),
+                      style: primaryColorText.copyWith(fontSize: 10),
                     )
                   ],
                 ),
@@ -77,7 +78,14 @@ class ArticleTileAdmin extends StatelessWidget {
                     color: white,
                     borderRadius: BorderRadius.circular(defaultRadius),
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailArticleAdminPage(),
+                          ),
+                        );
+                      },
                       borderRadius: BorderRadius.circular(defaultRadius),
                       child: SizedBox(
                         height: 30,
