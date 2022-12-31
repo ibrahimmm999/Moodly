@@ -326,7 +326,7 @@ class HomeUserPage extends StatelessWidget {
               stream:
                   FirebaseFirestore.instance.collection('articles').snapshots(),
               builder: (context, snapshot) {
-                if (snapshot.hasData) {
+                if (snapshot.connectionState == ConnectionState.active) {
                   var articles = snapshot.data!.docs.map((e) {
                     return ArticleModel.fromJson(e.id, e.data());
                   }).toList();
@@ -345,9 +345,12 @@ class HomeUserPage extends StatelessWidget {
                       },
                     ).toList(),
                   );
-                } else {
-                  return Text('Nothing Articles', style: darkText);
                 }
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: dark,
+                  ),
+                );
               },
             ),
           ],

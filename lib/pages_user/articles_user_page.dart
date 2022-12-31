@@ -39,13 +39,7 @@ class ArticlesUserPage extends StatelessWidget {
       return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         stream: FirebaseFirestore.instance.collection('articles').snapshots(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: dark,
-              ),
-            );
-          } else {
+          if (snapshot.connectionState == ConnectionState.active) {
             var articles = snapshot.data!.docs.map((e) {
               return ArticleModel.fromJson(e.id, e.data());
             }).toList();
@@ -67,6 +61,11 @@ class ArticlesUserPage extends StatelessWidget {
               ).toList(),
             );
           }
+          return Center(
+            child: CircularProgressIndicator(
+              color: dark,
+            ),
+          );
         },
       );
     }

@@ -82,7 +82,13 @@ class ArticleTileAdmin extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => DetailArticleAdminPage(),
+                            builder: (context) => DetailArticleAdminPage(
+                              id: article.id,
+                              author: article.author,
+                              title: article.title,
+                              text: article.content,
+                              thumbnail: article.thumbnail,
+                            ),
                           ),
                         );
                       },

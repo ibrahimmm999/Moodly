@@ -1,6 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moodly/cubit/article_cubit.dart';
+import 'package:moodly/models/article_model.dart';
 import 'package:moodly/pages_admin/detail_article_admin_page.dart';
 import 'package:moodly/widgets/article_tile_admin.dart';
 import 'package:moodly/widgets/custom_button.dart';
@@ -12,10 +12,6 @@ class ArticlesAdminPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Inisialisasi
-    ArticleCubit articleCubit = context.read<ArticleCubit>();
-    articleCubit.fetchArticles();
-
     PreferredSizeWidget header() {
       return AppBar(
         toolbarHeight: 70,
@@ -42,33 +38,36 @@ class ArticlesAdminPage extends StatelessWidget {
     }
 
     Widget articleList() {
-      return BlocConsumer<ArticleCubit, ArticleState>(
-        bloc: articleCubit,
-        listener: (context, state) {
-          if (state is ArticleFailed) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.error),
-                backgroundColor: primaryColor,
-              ),
-            );
-          }
-        },
-        builder: (context, state) {
-          if (state is ArticleSuccess) {
-            state.articles.sort(
+      return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream: FirebaseFirestore.instance.collection('articles').snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            var articles = snapshot.data!.docs.map((e) {
+              return ArticleModel.fromJson(e.id, e.data());
+            }).toList();
+            articles.sort(
               (b, a) => a.date.compareTo(b.date),
             );
             return ListView(
               padding: EdgeInsets.only(
-                  top: 24, left: defaultMargin, right: defaultMargin),
-              children: state.articles
-                  .map((e) => ArticleTileAdmin(article: e))
-                  .toList(),
+                top: 24,
+                left: defaultMargin,
+                right: defaultMargin,
+              ),
+              children: articles.map(
+                (e) {
+                  return ArticleTileAdmin(
+                    article: e,
+                  );
+                },
+              ).toList(),
             );
-          } else {
-            return Center(child: CircularProgressIndicator(color: dark));
           }
+          return Center(
+            child: CircularProgressIndicator(
+              color: dark,
+            ),
+          );
         },
       );
     }
@@ -85,7 +84,7 @@ class ArticlesAdminPage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => DetailArticleAdminPage(),
+                  builder: (context) => const DetailArticleAdminPage(),
                 ),
               );
             },

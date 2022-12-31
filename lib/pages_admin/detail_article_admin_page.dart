@@ -1,19 +1,43 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moodly/cubit/image_file_cubit.dart';
+import 'package:moodly/service/image_service.dart';
 import 'package:moodly/widgets/form_consultant_article.dart';
 
 import '../shared/theme.dart';
 
 class DetailArticleAdminPage extends StatelessWidget {
-  DetailArticleAdminPage({super.key});
+  const DetailArticleAdminPage({
+    this.id = '',
+    this.thumbnail = '',
+    this.author = '',
+    this.title = '',
+    this.text = '',
+    super.key,
+  });
 
-  final TextEditingController titleController = TextEditingController(text: '');
-  final TextEditingController contentController =
-      TextEditingController(text: '');
-  final TextEditingController authorController =
-      TextEditingController(text: '');
+  final String id;
+  final String thumbnail;
+  final String title;
+  final String author;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
+    // Inisialisasi
+    final TextEditingController titleController =
+        TextEditingController(text: title);
+    final TextEditingController contentController =
+        TextEditingController(text: text);
+    final TextEditingController authorController =
+        TextEditingController(text: author);
+
+    ImageTool imageTool = ImageTool();
+    ImageFileCubit imageFileCubit = context.read<ImageFileCubit>();
+    imageFileCubit.changeImageFile(null);
+
     PreferredSizeWidget header() {
       return AppBar(
         toolbarHeight: 70,
@@ -24,7 +48,7 @@ class DetailArticleAdminPage extends StatelessWidget {
             margin: const EdgeInsets.only(right: 10, bottom: 3),
             child: IconButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/home-admin');
+                Navigator.pop(context);
               },
               icon: const Icon(
                 Icons.check_rounded,
@@ -56,12 +80,43 @@ class DetailArticleAdminPage extends StatelessWidget {
 
     Widget content() {
       Widget banner() {
-        return Container(
-          height: 200,
-          width: 200,
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("assets/example/article1_example.png"))),
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            BlocBuilder<ImageFileCubit, File?>(
+              builder: (context, imageFile) {
+                DecorationImage imageThumbnail() {
+                  if (imageFile == null) {
+                    if (thumbnail.isEmpty) {
+                      return const DecorationImage(
+                        image: AssetImage("assets/empty_image.png"),
+                        fit: BoxFit.cover,
+                      );
+                    } else {
+                      return DecorationImage(
+                        image: NetworkImage(thumbnail),
+                        fit: BoxFit.cover,
+                      );
+                    }
+                  } else {
+                    return DecorationImage(
+                      image: FileImage(imageFile),
+                      fit: BoxFit.cover,
+                    );
+                  }
+                }
+
+                return Container(
+                  height: 200,
+                  width: 200,
+                  decoration: BoxDecoration(
+                    image: imageThumbnail(),
+                    borderRadius: BorderRadius.circular(defaultRadius),
+                  ),
+                );
+              },
+            ),
+          ],
         );
       }
 
@@ -91,10 +146,22 @@ class DetailArticleAdminPage extends StatelessWidget {
               borderRadius: BorderRadius.circular(defaultRadius),
               child: InkWell(
                 borderRadius: BorderRadius.circular(defaultRadius),
-                onTap: () {},
+                onTap: () async {
+                  try {
+                    await imageTool.pickImage();
+                    imageFileCubit.changeImageFile(imageTool.imagetFile);
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: primaryColor,
+                        content: Text(e.toString()),
+                      ),
+                    );
+                  }
+                },
                 child: SizedBox(
-                  width: 42,
-                  height: 26,
+                  width: 50,
+                  height: 35,
                   child: Icon(Icons.edit, color: white, size: 20),
                 ),
               ),
@@ -125,6 +192,9 @@ class DetailArticleAdminPage extends StatelessWidget {
       );
     }
 
-    return Scaffold(appBar: header(), body: content());
+    return Scaffold(
+      appBar: header(),
+      body: content(),
+    );
   }
 }
