@@ -10,13 +10,14 @@ class ArticleModel extends Equatable {
   final Timestamp date;
   const ArticleModel({
     required this.id,
-    this.title = '',
-    this.content = '',
-    this.author = '',
-    this.thumbnail = '',
+    required this.title,
+    required this.content,
+    required this.author,
+    required this.thumbnail,
     required this.date,
   });
 
+  // get
   factory ArticleModel.fromJson(String id, Map<String, dynamic> json) =>
       ArticleModel(
         id: id,
@@ -27,8 +28,8 @@ class ArticleModel extends Equatable {
         date: json['date'],
       );
 
+  // post
   Map<String, dynamic> toJson() => {
-        'id': id,
         'title': title,
         'content': content,
         'thumbnail': thumbnail,

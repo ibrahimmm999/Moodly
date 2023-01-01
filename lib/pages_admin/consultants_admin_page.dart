@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:moodly/models/consultant_model.dart';
+import 'package:moodly/pages_admin/detail_consultant_admin_page.dart';
 import 'package:moodly/shared/theme.dart';
+import 'package:moodly/widgets/custom_button.dart';
 
-class ConsultantAdminPage extends StatelessWidget {
-  const ConsultantAdminPage({super.key});
+class ConsultantsAdminPage extends StatelessWidget {
+  const ConsultantsAdminPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +35,7 @@ class ConsultantAdminPage extends StatelessWidget {
       );
     }
 
-    Widget consultantAdminTile() {
+    Widget consultantTileAdmin(ConsultantModel consultant) {
       return Container(
         margin: const EdgeInsets.only(bottom: 24),
         padding: const EdgeInsets.all(8),
@@ -43,8 +47,8 @@ class ConsultantAdminPage extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(defaultRadius),
-              child: Image.asset(
-                'assets/example/profile_pict_example.png',
+              child: Image.network(
+                consultant.photoUrl,
                 width: 102,
                 height: 102,
                 fit: BoxFit.cover,
@@ -56,15 +60,16 @@ class ConsultantAdminPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Mr. Budi, S.Psi.',
+                    consultant.name,
                     style: darkText.copyWith(
                       fontSize: 16,
                       fontWeight: semibold,
                     ),
                   ),
-                  const Text(
-                    'Open 24 Jam',
-                    style: TextStyle(
+                  const SizedBox(height: 8),
+                  Text(
+                    consultant.openTime,
+                    style: const TextStyle(
                       color: Color(0xFF6BCBB8),
                       fontSize: 12,
                     ),
@@ -78,14 +83,14 @@ class ConsultantAdminPage extends StatelessWidget {
                         size: 20,
                       ),
                       Text(
-                        '0812345678',
+                        consultant.phone,
                         style: darkText.copyWith(fontSize: 12),
                       )
                     ],
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Jl. Diponegoro No.47A, Mlati, Sleman',
+                    consultant.address,
                     style: darkText.copyWith(
                       fontSize: 10,
                     ),
@@ -99,7 +104,22 @@ class ConsultantAdminPage extends StatelessWidget {
                   color: white,
                   borderRadius: BorderRadius.circular(defaultRadius),
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DetailConsultantAdminPage(
+                            id: consultant.id,
+                            name: consultant.name,
+                            photoUrl: consultant.photoUrl,
+                            phone: consultant.phone,
+                            openTime: consultant.openTime,
+                            address: consultant.address,
+                            province: consultant.province,
+                          ),
+                        ),
+                      );
+                    },
                     borderRadius: BorderRadius.circular(defaultRadius),
                     child: SizedBox(
                       height: 30,
@@ -140,26 +160,71 @@ class ConsultantAdminPage extends StatelessWidget {
       );
     }
 
-    Widget content() {
-      return ListView(
-        padding: EdgeInsets.symmetric(horizontal: defaultMargin),
-        children: [
-          const SizedBox(height: 24),
-          Column(
-            children: [
-              consultantAdminTile(),
-              consultantAdminTile(),
-              consultantAdminTile(),
-            ],
-          )
-        ],
+    Widget consultantList() {
+      return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream:
+            FirebaseFirestore.instance.collection('consultants').snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            var consultans = snapshot.data!.docs.map((e) {
+              return ConsultantModel.fromJson(e.id, e.data());
+            }).toList();
+            consultans.sort(
+              (a, b) => a.name.compareTo(b.name),
+            );
+            return ListView(
+              padding: EdgeInsets.only(
+                top: 24,
+                left: defaultMargin,
+                right: defaultMargin,
+              ),
+              children: consultans.map(
+                (e) {
+                  return consultantTileAdmin(e);
+                },
+              ).toList(),
+            );
+          }
+          return Center(
+            child: CircularProgressIndicator(
+              color: dark,
+            ),
+          );
+        },
+      );
+    }
+
+    Widget addArticleButton() {
+      return Container(
+        margin: EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 16),
+        child: CustomButton(
+            radiusButton: defaultRadius,
+            buttonColor: primaryColor,
+            buttonText: "Add Consultant",
+            widthButton: double.infinity,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const DetailConsultantAdminPage(),
+                ),
+              );
+            },
+            heightButton: 50),
       );
     }
 
     return Scaffold(
       backgroundColor: white2,
       appBar: header(),
-      body: content(),
+      body: Column(
+        children: [
+          Expanded(
+            child: consultantList(),
+          ),
+          addArticleButton(),
+        ],
+      ),
     );
   }
 }

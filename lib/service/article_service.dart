@@ -19,43 +19,23 @@ class ArticleService {
   Future<ArticleModel> getArticleById(String id) async {
     try {
       DocumentSnapshot snapshot = await _articlesReference.doc(id).get();
-      return ArticleModel(
-          id: id,
-          title: snapshot['title'],
-          content: snapshot['content'],
-          thumbnail: snapshot['thumbnail'],
-          author: snapshot['author'],
-          date: snapshot['date']);
+      return ArticleModel.fromJson(id, snapshot.data() as Map<String, dynamic>);
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<void> addArticle(String title, String content, Timestamp date,
-      String thumbnail, String author) async {
+  Future<void> addArticle(ArticleModel article) async {
     try {
-      await _articlesReference.add({
-        'title': title,
-        'thumbnail': thumbnail,
-        'content': content,
-        'date': date,
-        'author': author,
-      });
+      await _articlesReference.add(article.toJson());
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<void> updateArticle(String id, String title, String content,
-      Timestamp date, String thumbnail, String author) async {
+  Future<void> updateArticle(ArticleModel article) async {
     try {
-      await _articlesReference.doc(id).update({
-        'title': title,
-        'author': author,
-        'date': date,
-        'content': content,
-        'thumbnail': thumbnail,
-      });
+      await _articlesReference.doc(article.id).update(article.toJson());
     } catch (e) {
       rethrow;
     }

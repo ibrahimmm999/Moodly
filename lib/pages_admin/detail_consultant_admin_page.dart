@@ -1,49 +1,55 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moodly/cubit/image_file_cubit.dart';
-import 'package:moodly/models/article_model.dart';
-import 'package:moodly/service/article_service.dart';
+import 'package:moodly/models/consultant_model.dart';
+import 'package:moodly/service/consultant_service.dart';
 import 'package:moodly/service/image_service.dart';
 import 'package:moodly/widgets/form_consultant_article.dart';
 
 import '../shared/theme.dart';
 
-class DetailArticleAdminPage extends StatelessWidget {
-  const DetailArticleAdminPage({
+class DetailConsultantAdminPage extends StatelessWidget {
+  const DetailConsultantAdminPage({
     this.id = '',
-    this.thumbnail = '',
-    this.author = '',
-    this.title = '',
-    this.text = '',
+    this.photoUrl = '',
+    this.name = '',
+    this.phone = '',
+    this.openTime = '',
+    this.address = '',
+    this.province = '',
     super.key,
   });
 
   final String id;
-  final String thumbnail;
-  final String title;
-  final String author;
-  final String text;
+  final String photoUrl;
+  final String name;
+  final String phone;
+  final String openTime;
+  final String address;
+  final String province;
 
   @override
   Widget build(BuildContext context) {
     // Inisialisasi
-    final TextEditingController titleController =
-        TextEditingController(text: title);
-    final TextEditingController contentController =
-        TextEditingController(text: text);
-    final TextEditingController authorController =
-        TextEditingController(text: author);
+    final TextEditingController nameController =
+        TextEditingController(text: name);
+    final TextEditingController phoneController =
+        TextEditingController(text: phone);
+    final TextEditingController openTimeController =
+        TextEditingController(text: openTime);
+    final TextEditingController addressController =
+        TextEditingController(text: address);
 
     ImageTool imageTool = ImageTool();
-    ArticleService articleService = ArticleService();
+    ConsultantService consultantService = ConsultantService();
 
     ImageFileCubit imageFileCubit = context.read<ImageFileCubit>();
     imageFileCubit.changeImageFile(null);
 
-    String newThumbnail = thumbnail;
+    String newPhotoUrl = photoUrl;
+    String newProvince = province;
 
     PreferredSizeWidget header() {
       return AppBar(
@@ -57,10 +63,12 @@ class DetailArticleAdminPage extends StatelessWidget {
               onPressed: () async {
                 final navigator = Navigator.of(context);
                 final messanger = ScaffoldMessenger.of(context);
-                if ((imageFileCubit.state == null && newThumbnail.isEmpty) ||
-                    titleController.text.isEmpty ||
-                    contentController.text.isEmpty ||
-                    authorController.text.isEmpty) {
+                if ((imageFileCubit.state == null && newPhotoUrl.isEmpty) ||
+                    nameController.text.isEmpty ||
+                    phoneController.text.isEmpty ||
+                    openTimeController.text.isEmpty ||
+                    addressController.text.isEmpty ||
+                    newProvince.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       backgroundColor: primaryColor,
@@ -70,34 +78,36 @@ class DetailArticleAdminPage extends StatelessWidget {
                 } else {
                   try {
                     if (imageFileCubit.state != null) {
-                      if (thumbnail.isNotEmpty) {
-                        await imageTool.deleteImage(thumbnail);
+                      if (photoUrl.isNotEmpty) {
+                        await imageTool.deleteImage(photoUrl);
                       }
                       await imageTool.uploadImage(
-                          imageFileCubit.state!, 'article');
-                      newThumbnail = imageTool.imageUrl!;
+                          imageFileCubit.state!, 'consultant');
+                      newPhotoUrl = imageTool.imageUrl!;
                     }
 
                     if (id.isEmpty) {
-                      await articleService.addArticle(
-                        ArticleModel(
+                      await consultantService.addConsultant(
+                        ConsultantModel(
                           id: id,
-                          title: titleController.text,
-                          content: contentController.text,
-                          author: authorController.text,
-                          thumbnail: newThumbnail,
-                          date: Timestamp.now(),
+                          name: nameController.text,
+                          photoUrl: newPhotoUrl,
+                          phone: phoneController.text,
+                          openTime: openTimeController.text,
+                          address: addressController.text,
+                          province: newProvince,
                         ),
                       );
                     } else {
-                      await articleService.updateArticle(
-                        ArticleModel(
+                      await consultantService.updateConsultant(
+                        ConsultantModel(
                           id: id,
-                          title: titleController.text,
-                          content: contentController.text,
-                          author: authorController.text,
-                          thumbnail: newThumbnail,
-                          date: Timestamp.now(),
+                          name: nameController.text,
+                          photoUrl: newPhotoUrl,
+                          phone: phoneController.text,
+                          openTime: openTimeController.text,
+                          address: addressController.text,
+                          province: newProvince,
                         ),
                       );
                     }
@@ -132,7 +142,7 @@ class DetailArticleAdminPage extends StatelessWidget {
           color: primaryColor,
         ),
         title: Text(
-          'Write Article',
+          'Add Consultant',
           style: primaryColorText.copyWith(
             fontSize: 18,
             fontWeight: medium,
@@ -152,14 +162,14 @@ class DetailArticleAdminPage extends StatelessWidget {
               builder: (context, imageFile) {
                 DecorationImage imageThumbnail() {
                   if (imageFile == null) {
-                    if (thumbnail.isEmpty) {
+                    if (photoUrl.isEmpty) {
                       return const DecorationImage(
                         image: AssetImage("assets/empty_image.png"),
                         fit: BoxFit.cover,
                       );
                     } else {
                       return DecorationImage(
-                        image: NetworkImage(thumbnail),
+                        image: NetworkImage(photoUrl),
                         fit: BoxFit.cover,
                       );
                     }
@@ -185,20 +195,27 @@ class DetailArticleAdminPage extends StatelessWidget {
         );
       }
 
-      Widget inputTitle() {
+      Widget inputName() {
         return FormConsultantAndArticle(
-            controller: titleController, minlines: 1, title: 'Title');
+            controller: nameController, minlines: 1, title: 'Name');
       }
 
-      Widget inputAuthor() {
+      Widget inputPhone() {
         return FormConsultantAndArticle(
-            controller: authorController, minlines: 1, title: 'Author');
+            controller: phoneController, minlines: 1, title: 'Phone');
       }
 
-      Widget inputContent() {
+      Widget inputOpenTime() {
         return FormConsultantAndArticle(
-            controller: contentController, minlines: 14, title: 'Content');
+            controller: openTimeController, minlines: 1, title: 'Open Time');
       }
+
+      Widget inputAddress() {
+        return FormConsultantAndArticle(
+            controller: addressController, minlines: 1, title: 'Address');
+      }
+
+      newProvince = 'Ngayogayakarta';
 
       return ListView(
         padding: EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 24),
@@ -232,27 +249,22 @@ class DetailArticleAdminPage extends StatelessWidget {
               ),
             ),
           ),
-          Text('Title', style: darkText.copyWith(fontSize: 16)),
+          Text('Name', style: darkText.copyWith(fontSize: 16)),
           const SizedBox(height: 10),
-          inputTitle(),
-          const SizedBox(
-            height: 20,
-          ),
-          Text('Author', style: darkText.copyWith(fontSize: 16)),
-          const SizedBox(height: 10),
-          inputAuthor(),
+          inputName(),
           const SizedBox(height: 20),
-          Text(
-            'Content',
-            style: darkText.copyWith(
-              fontSize: 16,
-            ),
-          ),
+          Text('Phone', style: darkText.copyWith(fontSize: 16)),
           const SizedBox(height: 10),
-          inputContent(),
-          const SizedBox(
-            height: 20,
-          )
+          inputPhone(),
+          const SizedBox(height: 20),
+          Text('Open Time', style: darkText.copyWith(fontSize: 16)),
+          const SizedBox(height: 10),
+          inputOpenTime(),
+          const SizedBox(height: 20),
+          Text('Address', style: darkText.copyWith(fontSize: 16)),
+          const SizedBox(height: 10),
+          inputAddress(),
+          const SizedBox(height: 20)
         ],
       );
     }
