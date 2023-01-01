@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moodly/cubit/auth_cubit.dart';
 import 'package:moodly/cubit/chat_admin_page_cubit.dart';
 import 'package:moodly/cubit/chat_input_cubit.dart';
 import 'package:moodly/cubit/image_file_cubit.dart';
@@ -35,13 +36,14 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => ImageFileCubit()),
         BlocProvider(create: (context) => ChatAdminPageCubit()),
         BlocProvider(create: (context) => ChatInputCubit()),
+        BlocProvider(create: (context) => AuthCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         routes: {
           '/': (context) => const SplashScreen(),
-          '/sign-up': (context) => SignUpPage(),
-          '/sign-in': (context) => SignInPage(),
+          '/sign-up': (context) => const SignUpPage(),
+          '/sign-in': (context) => const SignInPage(),
           '/home-user': (context) => const HomeUserPage(),
           '/article-user': (context) => const ArticlesUserPage(),
           '/tracking': (context) => const TrackingPage(),

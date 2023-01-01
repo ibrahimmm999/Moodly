@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moodly/cubit/auth_cubit.dart';
 import '../../shared/theme.dart';
 import '../widgets/custom_text_form_field.dart';
 import 'widgets/custom_button.dart';
 
 class SignUpPage extends StatelessWidget {
-  SignUpPage({super.key});
-  final TextEditingController fullNameController =
-      TextEditingController(text: '');
-  final TextEditingController usernameController =
-      TextEditingController(text: '');
-  final TextEditingController emailController = TextEditingController(text: '');
-  final TextEditingController passwordController =
-      TextEditingController(text: '');
+  const SignUpPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Inisialisasi
+    final TextEditingController fullNameController =
+        TextEditingController(text: '');
+    final TextEditingController usernameController =
+        TextEditingController(text: '');
+    final TextEditingController emailController =
+        TextEditingController(text: '');
+    final TextEditingController passwordController =
+        TextEditingController(text: '');
+
+    AuthCubit authCubit = context.read<AuthCubit>();
+
     Widget inputFullName() {
       return CustomTextFormField(
         icon: Icon(
@@ -23,7 +29,7 @@ class SignUpPage extends StatelessWidget {
           color: primaryColor,
         ),
         hintText: 'Your Full Name',
-        controller: emailController,
+        controller: fullNameController,
         radiusBorder: defaultRadius,
       );
     }
@@ -35,7 +41,7 @@ class SignUpPage extends StatelessWidget {
           color: primaryColor,
         ),
         hintText: 'Your Username',
-        controller: emailController,
+        controller: usernameController,
         radiusBorder: defaultRadius,
       );
     }
@@ -63,15 +69,43 @@ class SignUpPage extends StatelessWidget {
     }
 
     Widget submitButton() {
-      return CustomButton(
-          radiusButton: defaultRadius,
-          buttonColor: primaryColor,
-          buttonText: "Sign Up",
-          widthButton: double.infinity,
-          onPressed: () {
+      return BlocConsumer<AuthCubit, AuthState>(
+        bloc: authCubit,
+        listener: (context, state) {
+          if (state is AuthSuccess) {
             Navigator.pushNamed(context, '/home-user');
-          },
-          heightButton: 50);
+          } else if (state is AuthFailed) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.error),
+                backgroundColor: primaryColor,
+              ),
+            );
+          }
+        },
+        builder: (context, state) {
+          if (state is AuthLoading) {
+            return Center(
+              child: CircularProgressIndicator(color: dark),
+            );
+          }
+          return CustomButton(
+            radiusButton: defaultRadius,
+            buttonColor: primaryColor,
+            buttonText: "Sign Up",
+            widthButton: double.infinity,
+            heightButton: 50,
+            onPressed: () {
+              authCubit.signUp(
+                email: emailController.text,
+                password: passwordController.text,
+                name: fullNameController.text,
+                username: usernameController.text,
+              );
+            },
+          );
+        },
+      );
     }
 
     return Scaffold(

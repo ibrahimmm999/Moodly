@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moodly/cubit/auth_cubit.dart';
 
 import 'shared/theme.dart';
 import 'widgets/custom_button.dart';
 import 'widgets/custom_text_form_field.dart';
 
 class SignInPage extends StatelessWidget {
-  SignInPage({Key? key}) : super(key: key);
+  const SignInPage({Key? key}) : super(key: key);
 
-  final TextEditingController emailController = TextEditingController(text: '');
-  final TextEditingController passwordController =
-      TextEditingController(text: '');
   @override
   Widget build(BuildContext context) {
+    // Inisialisasi
+    final TextEditingController emailController =
+        TextEditingController(text: '');
+    final TextEditingController passwordController =
+        TextEditingController(text: '');
+
+    AuthCubit authCubit = context.read<AuthCubit>();
+
     Widget inputEmail() {
       return CustomTextFormField(
         icon: Icon(
@@ -35,15 +42,40 @@ class SignInPage extends StatelessWidget {
     }
 
     Widget submitButton() {
-      return CustomButton(
-          radiusButton: defaultRadius,
-          buttonColor: primaryColor,
-          buttonText: "Sign In",
-          widthButton: double.infinity,
-          onPressed: () {
-            Navigator.pushNamed(context, '/home-admin');
-          },
-          heightButton: 50);
+      return BlocConsumer<AuthCubit, AuthState>(
+        bloc: authCubit,
+        listener: (context, state) {
+          if (state is AuthSuccess) {
+            Navigator.pushNamed(context, '/home-user');
+          } else if (state is AuthFailed) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.error),
+                backgroundColor: primaryColor,
+              ),
+            );
+          }
+        },
+        builder: (context, state) {
+          if (state is AuthLoading) {
+            return Center(
+              child: CircularProgressIndicator(color: dark),
+            );
+          }
+          return CustomButton(
+              radiusButton: defaultRadius,
+              buttonColor: primaryColor,
+              buttonText: "Sign In",
+              widthButton: double.infinity,
+              onPressed: () {
+                authCubit.signIn(
+                  email: emailController.text,
+                  password: passwordController.text,
+                );
+              },
+              heightButton: 50);
+        },
+      );
     }
 
     return Scaffold(
