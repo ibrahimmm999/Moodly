@@ -46,7 +46,11 @@ class SignInPage extends StatelessWidget {
         bloc: authCubit,
         listener: (context, state) {
           if (state is AuthSuccess) {
-            Navigator.pushNamed(context, '/home-user');
+            if (state.user.role == 'user') {
+              Navigator.pushNamed(context, '/home-user');
+            } else if (state.user.role == 'admin') {
+              Navigator.pushNamed(context, '/home-admin');
+            }
           } else if (state is AuthFailed) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(

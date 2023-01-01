@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moodly/cubit/consultant_save_cubit.dart';
 import 'package:moodly/cubit/image_file_cubit.dart';
 import 'package:moodly/models/consultant_model.dart';
 import 'package:moodly/service/consultant_service.dart';
@@ -43,13 +44,14 @@ class DetailConsultantAdminPage extends StatelessWidget {
         TextEditingController(text: address);
 
     ImageTool imageTool = ImageTool();
-    ConsultantService consultantService = ConsultantService();
 
     ImageFileCubit imageFileCubit = context.read<ImageFileCubit>();
     imageFileCubit.changeImageFile(null);
 
-    String newPhotoUrl = photoUrl;
-    String newProvince = province;
+    ConsultantSaveCubit consultantSaveCubit =
+        context.read<ConsultantSaveCubit>();
+
+    String newProvince = 'Ngayogayakarta';
 
     PreferredSizeWidget header() {
       return AppBar(
@@ -59,77 +61,53 @@ class DetailConsultantAdminPage extends StatelessWidget {
         actions: [
           Container(
             margin: const EdgeInsets.only(right: 10, bottom: 3),
-            child: IconButton(
-              onPressed: () async {
-                final navigator = Navigator.of(context);
-                final messanger = ScaffoldMessenger.of(context);
-                if ((imageFileCubit.state == null && newPhotoUrl.isEmpty) ||
-                    nameController.text.isEmpty ||
-                    phoneController.text.isEmpty ||
-                    openTimeController.text.isEmpty ||
-                    addressController.text.isEmpty ||
-                    newProvince.isEmpty) {
+            child: BlocConsumer<ConsultantSaveCubit, ConsultantSaveState>(
+              bloc: consultantSaveCubit,
+              listener: (context, state) {
+                if (state is ConsultantSaveSuccess) {
+                  Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      backgroundColor: primaryColor,
-                      content: const Text('Form is required!'),
+                    const SnackBar(
+                      content: Text('Data saved successfully!'),
                     ),
                   );
-                } else {
-                  try {
-                    if (imageFileCubit.state != null) {
-                      if (photoUrl.isNotEmpty) {
-                        await imageTool.deleteImage(photoUrl);
-                      }
-                      await imageTool.uploadImage(
-                          imageFileCubit.state!, 'consultant');
-                      newPhotoUrl = imageTool.imageUrl!;
-                    }
-
-                    if (id.isEmpty) {
-                      await consultantService.addConsultant(
-                        ConsultantModel(
-                          id: id,
-                          name: nameController.text,
-                          photoUrl: newPhotoUrl,
-                          phone: phoneController.text,
-                          openTime: openTimeController.text,
-                          address: addressController.text,
-                          province: newProvince,
-                        ),
-                      );
-                    } else {
-                      await consultantService.updateConsultant(
-                        ConsultantModel(
-                          id: id,
-                          name: nameController.text,
-                          photoUrl: newPhotoUrl,
-                          phone: phoneController.text,
-                          openTime: openTimeController.text,
-                          address: addressController.text,
-                          province: newProvince,
-                        ),
-                      );
-                    }
-                    // Berhasil
-                    navigator.pop();
-                    messanger.showSnackBar(const SnackBar(
-                        content: Text('Data saved successfully!')));
-                  } catch (e) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        backgroundColor: primaryColor,
-                        content: Text(e.toString()),
-                      ),
-                    );
-                  }
+                } else if (state is ConsultantSaveFailed) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(state.error),
+                      backgroundColor: primaryColor,
+                    ),
+                  );
                 }
               },
-              icon: const Icon(
-                Icons.check_rounded,
-              ),
-              iconSize: 24,
-              color: secondaryColor,
+              builder: (context, state) {
+                if (state is ConsultantSaveLoading) {
+                  return Center(
+                    child: CircularProgressIndicator(color: dark),
+                  );
+                }
+                return IconButton(
+                  onPressed: () {
+                    consultantSaveCubit.save(
+                      image: imageFileCubit.state,
+                      consultant: ConsultantModel(
+                        id: id,
+                        name: nameController.text,
+                        photoUrl: photoUrl,
+                        phone: phoneController.text,
+                        openTime: openTimeController.text,
+                        address: addressController.text,
+                        province: newProvince,
+                      ),
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.check_rounded,
+                  ),
+                  iconSize: 24,
+                  color: secondaryColor,
+                );
+              },
             ),
           )
         ],
@@ -214,8 +192,6 @@ class DetailConsultantAdminPage extends StatelessWidget {
         return FormConsultantAndArticle(
             controller: addressController, minlines: 1, title: 'Address');
       }
-
-      newProvince = 'Ngayogayakarta';
 
       return ListView(
         padding: EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 24),

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moodly/cubit/article_save_cubit.dart';
 import 'package:moodly/cubit/image_file_cubit.dart';
 import 'package:moodly/models/article_model.dart';
 import 'package:moodly/service/article_service.dart';
@@ -38,12 +39,11 @@ class DetailArticleAdminPage extends StatelessWidget {
         TextEditingController(text: author);
 
     ImageTool imageTool = ImageTool();
-    ArticleService articleService = ArticleService();
 
     ImageFileCubit imageFileCubit = context.read<ImageFileCubit>();
     imageFileCubit.changeImageFile(null);
 
-    String newThumbnail = thumbnail;
+    ArticleSaveCubit articleSaveCubit = context.read<ArticleSaveCubit>();
 
     PreferredSizeWidget header() {
       return AppBar(
@@ -53,75 +53,54 @@ class DetailArticleAdminPage extends StatelessWidget {
         actions: [
           Container(
             margin: const EdgeInsets.only(right: 10, bottom: 3),
-            child: IconButton(
-              onPressed: () async {
-                final navigator = Navigator.of(context);
-                final messanger = ScaffoldMessenger.of(context);
-                if ((imageFileCubit.state == null && newThumbnail.isEmpty) ||
-                    titleController.text.isEmpty ||
-                    contentController.text.isEmpty ||
-                    authorController.text.isEmpty) {
+            child: BlocConsumer<ArticleSaveCubit, ArticleSaveState>(
+              bloc: articleSaveCubit,
+              listener: (context, state) {
+                if (state is ArticleSaveSuccess) {
+                  Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      backgroundColor: primaryColor,
-                      content: const Text('Form is required!'),
+                    const SnackBar(
+                      content: Text('Data saved successfully!'),
                     ),
                   );
-                } else {
-                  try {
-                    if (imageFileCubit.state != null) {
-                      if (thumbnail.isNotEmpty) {
-                        await imageTool.deleteImage(thumbnail);
-                      }
-                      await imageTool.uploadImage(
-                          imageFileCubit.state!, 'article');
-                      newThumbnail = imageTool.imageUrl!;
-                    }
-
-                    if (id.isEmpty) {
-                      await articleService.addArticle(
-                        ArticleModel(
-                          id: id,
-                          title: titleController.text,
-                          content: contentController.text,
-                          author: authorController.text,
-                          thumbnail: newThumbnail,
-                          date: Timestamp.now(),
-                        ),
-                      );
-                    } else {
-                      await articleService.updateArticle(
-                        ArticleModel(
-                          id: id,
-                          title: titleController.text,
-                          content: contentController.text,
-                          author: authorController.text,
-                          thumbnail: newThumbnail,
-                          date: Timestamp.now(),
-                        ),
-                      );
-                    }
-                    // Berhasil
-                    navigator.pop();
-                    messanger.showSnackBar(const SnackBar(
-                        content: Text('Data saved successfully!')));
-                  } catch (e) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        backgroundColor: primaryColor,
-                        content: Text(e.toString()),
-                      ),
-                    );
-                  }
+                } else if (state is ArticleSaveFailed) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(state.error),
+                      backgroundColor: primaryColor,
+                    ),
+                  );
                 }
               },
-              icon: const Icon(
-                Icons.check_rounded,
-              ),
-              iconSize: 24,
-              color: secondaryColor,
+              builder: (context, state) {
+                if (state is ArticleSaveLoading) {
+                  return Center(
+                    child: CircularProgressIndicator(color: dark),
+                  );
+                }
+                return IconButton(
+                  onPressed: () {
+                    articleSaveCubit.save(
+                      image: imageFileCubit.state,
+                      article: ArticleModel(
+                        id: id,
+                        title: titleController.text,
+                        content: contentController.text,
+                        author: authorController.text,
+                        thumbnail: thumbnail,
+                        date: Timestamp.now(),
+                      ),
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.check_rounded,
+                  ),
+                  iconSize: 24,
+                  color: secondaryColor,
+                );
+              },
             ),
-          )
+          ),
         ],
         leading: IconButton(
           onPressed: () {
