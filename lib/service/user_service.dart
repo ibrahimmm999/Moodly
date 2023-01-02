@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:moodly/models/user_model.dart';
 
 class UserService {
@@ -23,13 +24,25 @@ class UserService {
     }
   }
 
-  Future<bool> usernameCheck(String username, int number) async {
+  Future<bool> usernameCheck(
+      {required String username, required bool isEdit}) async {
     final result =
         await _userReference.where("username", isEqualTo: username).get();
-    return result.docs.length <= number;
+    if (isEdit) {
+      if (result.docs.isEmpty) {
+        return true;
+      } else if (result.docs.length == 1) {
+        return result.docs.first['id'] ==
+            FirebaseAuth.instance.currentUser!.uid;
+      } else {
+        return false;
+      }
+    } else {
+      return result.docs.isEmpty;
+    }
   }
 
-  Future<UserModel> updateUser(
+  Future<void> editProfile(
       String id, String name, String username, String photoUrl) async {
     try {
       DocumentReference docUser = _userReference.doc(id);
@@ -38,8 +51,6 @@ class UserService {
         'username': username,
         'photoUrl': photoUrl,
       });
-
-      return await getUserbyId(id);
     } catch (e) {
       rethrow;
     }

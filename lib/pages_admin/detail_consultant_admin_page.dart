@@ -63,12 +63,14 @@ class DetailConsultantAdminPage extends StatelessWidget {
             listener: (context, state) {
               if (state is ConsultantSaveSuccess) {
                 Navigator.pop(context);
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Data saved successfully!'),
                   ),
                 );
               } else if (state is ConsultantSaveFailed) {
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(state.error),

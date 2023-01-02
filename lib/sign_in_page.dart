@@ -52,6 +52,7 @@ class SignInPage extends StatelessWidget {
               Navigator.pushNamed(context, '/home-admin');
             }
           } else if (state is AuthFailed) {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.error),

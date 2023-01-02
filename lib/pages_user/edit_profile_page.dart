@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moodly/cubit/auth_cubit.dart';
 import 'package:moodly/cubit/image_file_cubit.dart';
 import 'package:moodly/cubit/image_url_cubit.dart';
+import 'package:moodly/cubit/user_update_cubit.dart';
 import 'package:moodly/service/image_service.dart';
 import 'package:moodly/shared/theme.dart';
 import 'package:moodly/widgets/custom_text_form_field.dart';
@@ -31,6 +32,7 @@ class EditProfilePage extends StatelessWidget {
     ImageUrlCubit imageUrlCubit = context.read<ImageUrlCubit>();
     imageUrlCubit.changeImageUrl(photoUrl);
 
+    UserUpdateCubit userUpdateCubit = context.read<UserUpdateCubit>();
     AuthCubit authCubit = context.read<AuthCubit>();
 
     final TextEditingController fullNameController =
@@ -59,12 +61,20 @@ class EditProfilePage extends StatelessWidget {
           },
         ),
         actions: [
-          BlocConsumer<AuthCubit, AuthState>(
-            bloc: authCubit,
+          BlocConsumer<UserUpdateCubit, UserUpdateState>(
+            bloc: userUpdateCubit,
             listener: (context, state) {
-              if (state is AuthSuccess) {
+              if (state is UserUpdateSuccess) {
+                authCubit.getCurrentUser(id);
                 Navigator.pop(context);
-              } else if (state is AuthFailed) {
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Data saved successfully!'),
+                  ),
+                );
+              } else if (state is UserUpdateFailed) {
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(state.error),
@@ -74,7 +84,7 @@ class EditProfilePage extends StatelessWidget {
               }
             },
             builder: (context, state) {
-              if (state is AuthLoading) {
+              if (state is UserUpdateLoading) {
                 return Padding(
                   padding: const EdgeInsets.all(4),
                   child: Center(
@@ -84,7 +94,7 @@ class EditProfilePage extends StatelessWidget {
               }
               return IconButton(
                 onPressed: () {
-                  authCubit.updateUser(
+                  userUpdateCubit.editProfile(
                     id: id,
                     image: imageFileCubit.state,
                     name: fullNameController.text,

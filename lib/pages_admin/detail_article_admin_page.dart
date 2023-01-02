@@ -55,12 +55,14 @@ class DetailArticleAdminPage extends StatelessWidget {
             listener: (context, state) {
               if (state is ArticleSaveSuccess) {
                 Navigator.pop(context);
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Data saved successfully!'),
                   ),
                 );
               } else if (state is ArticleSaveFailed) {
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(state.error),

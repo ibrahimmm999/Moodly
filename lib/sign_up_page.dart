@@ -75,6 +75,7 @@ class SignUpPage extends StatelessWidget {
           if (state is AuthSuccess) {
             Navigator.pushNamed(context, '/home-user');
           } else if (state is AuthFailed) {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.error),
