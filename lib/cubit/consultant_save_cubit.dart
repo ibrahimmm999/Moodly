@@ -16,9 +16,9 @@ class ConsultantSaveCubit extends Cubit<ConsultantSaveState> {
     ImageTool imageTool = ImageTool();
     ConsultantService consultantService = ConsultantService();
 
-    String newPhotoUrl = consultant.photoUrl;
+    String newPhotoUrl = '';
 
-    if ((image == null && newPhotoUrl.isEmpty) ||
+    if ((image == null && consultant.photoUrl.isEmpty) ||
         consultant.name.isEmpty ||
         consultant.phone.isEmpty ||
         consultant.openTime.isEmpty ||
@@ -28,11 +28,13 @@ class ConsultantSaveCubit extends Cubit<ConsultantSaveState> {
     } else {
       try {
         if (image != null) {
-          if (newPhotoUrl.isNotEmpty) {
-            await imageTool.deleteImage(newPhotoUrl);
+          if (consultant.photoUrl.isNotEmpty) {
+            await imageTool.deleteImage(consultant.photoUrl);
           }
           await imageTool.uploadImage(image, 'consultant');
           newPhotoUrl = imageTool.imageUrl!;
+        } else {
+          newPhotoUrl = consultant.photoUrl;
         }
 
         if (consultant.id.isEmpty) {

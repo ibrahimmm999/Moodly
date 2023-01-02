@@ -58,56 +58,56 @@ class DetailConsultantAdminPage extends StatelessWidget {
         backgroundColor: white,
         centerTitle: true,
         actions: [
-          Container(
-            margin: const EdgeInsets.only(right: 10, bottom: 3),
-            child: BlocConsumer<ConsultantSaveCubit, ConsultantSaveState>(
-              bloc: consultantSaveCubit,
-              listener: (context, state) {
-                if (state is ConsultantSaveSuccess) {
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Data saved successfully!'),
-                    ),
-                  );
-                } else if (state is ConsultantSaveFailed) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(state.error),
-                      backgroundColor: primaryColor,
-                    ),
-                  );
-                }
-              },
-              builder: (context, state) {
-                if (state is ConsultantSaveLoading) {
-                  return Center(
-                    child: CircularProgressIndicator(color: dark),
-                  );
-                }
-                return IconButton(
-                  onPressed: () {
-                    consultantSaveCubit.save(
-                      image: imageFileCubit.state,
-                      consultant: ConsultantModel(
-                        id: id,
-                        name: nameController.text,
-                        photoUrl: photoUrl,
-                        phone: phoneController.text,
-                        openTime: openTimeController.text,
-                        address: addressController.text,
-                        province: newProvince,
-                      ),
-                    );
-                  },
-                  icon: const Icon(
-                    Icons.check_rounded,
+          BlocConsumer<ConsultantSaveCubit, ConsultantSaveState>(
+            bloc: consultantSaveCubit,
+            listener: (context, state) {
+              if (state is ConsultantSaveSuccess) {
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Data saved successfully!'),
                   ),
-                  iconSize: 24,
-                  color: secondaryColor,
                 );
-              },
-            ),
+              } else if (state is ConsultantSaveFailed) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.error),
+                    backgroundColor: primaryColor,
+                  ),
+                );
+              }
+            },
+            builder: (context, state) {
+              if (state is ConsultantSaveLoading) {
+                return Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: Center(
+                    child: CircularProgressIndicator(color: dark),
+                  ),
+                );
+              }
+              return IconButton(
+                onPressed: () {
+                  consultantSaveCubit.save(
+                    image: imageFileCubit.state,
+                    consultant: ConsultantModel(
+                      id: id,
+                      name: nameController.text,
+                      photoUrl: photoUrl,
+                      phone: phoneController.text,
+                      openTime: openTimeController.text,
+                      address: addressController.text,
+                      province: newProvince,
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.check,
+                ),
+                iconSize: 24,
+                color: secondaryColor,
+              );
+            },
           )
         ],
         leading: IconButton(

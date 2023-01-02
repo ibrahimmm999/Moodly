@@ -15,7 +15,6 @@ import 'package:moodly/pages_admin/home_admin_page.dart';
 import 'package:moodly/pages_admin/tracking_question_page.dart';
 import 'package:moodly/pages_user/articles_user_page.dart';
 import 'package:moodly/pages_user/consultant_user_page.dart';
-import 'package:moodly/pages_user/edit_profile_page.dart';
 import 'package:moodly/pages_user/home_user_page.dart';
 import 'package:moodly/pages_user/tracking_page.dart';
 
@@ -54,7 +53,6 @@ class MyApp extends StatelessWidget {
           '/article-user': (context) => const ArticlesUserPage(),
           '/tracking': (context) => const TrackingPage(),
           '/consultant-user': (context) => const ConsultantUserPage(),
-          '/edit-profile': (context) => EditProfilePage(),
           '/home-admin': (context) => const HomeAdminPage(),
           '/chat-list-admin': (context) => const ChatListAdminPage(),
           '/consultant-admin': (context) => const ConsultantsAdminPage(),

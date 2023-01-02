@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:moodly/cubit/auth_cubit.dart';
 import 'package:moodly/models/article_model.dart';
+import 'package:moodly/pages_user/edit_profile_page.dart';
 import 'package:moodly/pages_user/help_chat_user_page.dart';
 import 'package:moodly/pages_user/support_chat_user_page.dart';
 import 'package:moodly/shared/theme.dart';
@@ -90,7 +91,17 @@ class HomeUserPage extends StatelessWidget {
                   elevation: 4,
                   onSelected: (value) {
                     if (value == 0) {
-                      Navigator.pushNamed(context, '/edit-profile');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EditProfilePage(
+                            id: state.user.id,
+                            name: state.user.name,
+                            photoUrl: state.user.photoUrl,
+                            username: state.user.username,
+                          ),
+                        ),
+                      );
                     } else {
                       Navigator.pushNamed(context, '/sign-in');
                     }

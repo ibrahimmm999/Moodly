@@ -23,9 +23,25 @@ class UserService {
     }
   }
 
-  Future<bool> usernameCheck(String username) async {
+  Future<bool> usernameCheck(String username, int number) async {
     final result =
         await _userReference.where("username", isEqualTo: username).get();
-    return result.docs.isEmpty;
+    return result.docs.length <= number;
+  }
+
+  Future<UserModel> updateUser(
+      String id, String name, String username, String photoUrl) async {
+    try {
+      DocumentReference docUser = _userReference.doc(id);
+      await docUser.update({
+        'name': name,
+        'username': username,
+        'photoUrl': photoUrl,
+      });
+
+      return await getUserbyId(id);
+    } catch (e) {
+      rethrow;
+    }
   }
 }

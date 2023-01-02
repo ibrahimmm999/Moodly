@@ -50,55 +50,55 @@ class DetailArticleAdminPage extends StatelessWidget {
         backgroundColor: white,
         centerTitle: true,
         actions: [
-          Container(
-            margin: const EdgeInsets.only(right: 10, bottom: 3),
-            child: BlocConsumer<ArticleSaveCubit, ArticleSaveState>(
-              bloc: articleSaveCubit,
-              listener: (context, state) {
-                if (state is ArticleSaveSuccess) {
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Data saved successfully!'),
-                    ),
-                  );
-                } else if (state is ArticleSaveFailed) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(state.error),
-                      backgroundColor: primaryColor,
-                    ),
-                  );
-                }
-              },
-              builder: (context, state) {
-                if (state is ArticleSaveLoading) {
-                  return Center(
-                    child: CircularProgressIndicator(color: dark),
-                  );
-                }
-                return IconButton(
-                  onPressed: () {
-                    articleSaveCubit.save(
-                      image: imageFileCubit.state,
-                      article: ArticleModel(
-                        id: id,
-                        title: titleController.text,
-                        content: contentController.text,
-                        author: authorController.text,
-                        thumbnail: thumbnail,
-                        date: Timestamp.now(),
-                      ),
-                    );
-                  },
-                  icon: const Icon(
-                    Icons.check_rounded,
+          BlocConsumer<ArticleSaveCubit, ArticleSaveState>(
+            bloc: articleSaveCubit,
+            listener: (context, state) {
+              if (state is ArticleSaveSuccess) {
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Data saved successfully!'),
                   ),
-                  iconSize: 24,
-                  color: secondaryColor,
                 );
-              },
-            ),
+              } else if (state is ArticleSaveFailed) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.error),
+                    backgroundColor: primaryColor,
+                  ),
+                );
+              }
+            },
+            builder: (context, state) {
+              if (state is ArticleSaveLoading) {
+                return Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: Center(
+                    child: CircularProgressIndicator(color: dark),
+                  ),
+                );
+              }
+              return IconButton(
+                onPressed: () {
+                  articleSaveCubit.save(
+                    image: imageFileCubit.state,
+                    article: ArticleModel(
+                      id: id,
+                      title: titleController.text,
+                      content: contentController.text,
+                      author: authorController.text,
+                      thumbnail: thumbnail,
+                      date: Timestamp.now(),
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.check,
+                ),
+                iconSize: 24,
+                color: secondaryColor,
+              );
+            },
           ),
         ],
         leading: IconButton(

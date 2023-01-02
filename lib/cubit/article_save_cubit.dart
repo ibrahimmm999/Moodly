@@ -17,9 +17,9 @@ class ArticleSaveCubit extends Cubit<ArticleSaveState> {
     ImageTool imageTool = ImageTool();
     ArticleService articleService = ArticleService();
 
-    String newThumbnail = article.thumbnail;
+    String newThumbnail = '';
 
-    if ((image == null && newThumbnail.isEmpty) ||
+    if ((image == null && article.thumbnail.isEmpty) ||
         article.title.isEmpty ||
         article.content.isEmpty ||
         article.author.isEmpty) {
@@ -27,11 +27,13 @@ class ArticleSaveCubit extends Cubit<ArticleSaveState> {
     } else {
       try {
         if (image != null) {
-          if (newThumbnail.isNotEmpty) {
-            await imageTool.deleteImage(newThumbnail);
+          if (article.thumbnail.isNotEmpty) {
+            await imageTool.deleteImage(article.thumbnail);
           }
           await imageTool.uploadImage(image, 'article');
           newThumbnail = imageTool.imageUrl!;
+        } else {
+          newThumbnail = article.thumbnail;
         }
 
         if (article.id.isEmpty) {
