@@ -17,7 +17,9 @@ class ArticleTileAdmin extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const DetailArticleUserPage(),
+            builder: (context) => DetailArticleUserPage(
+              article: article,
+            ),
           ),
         );
       },

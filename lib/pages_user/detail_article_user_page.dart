@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:moodly/models/article_model.dart';
 
+import '../service/time_converter.dart';
 import '../shared/theme.dart';
 
 class DetailArticleUserPage extends StatelessWidget {
-  const DetailArticleUserPage({super.key});
+  final ArticleModel article;
+  const DetailArticleUserPage({super.key, required this.article});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +46,7 @@ class DetailArticleUserPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Kesehatan Mental : Gejala, Faktor dan Penanganan",
+                      article.title,
                       overflow: TextOverflow.clip,
                       style: darkText.copyWith(
                           fontSize: 14, fontWeight: FontWeight.w600),
@@ -52,14 +55,14 @@ class DetailArticleUserPage extends StatelessWidget {
                       height: 4,
                     ),
                     Text(
-                      "19 september 2022",
+                      ConvertTime().convertToAgo(article.date),
                       style: darkText.copyWith(fontSize: 12),
                     ),
                     const SizedBox(
                       height: 4,
                     ),
                     Text(
-                      "Yuni Rahmawati",
+                      article.author,
                       style: secondaryColorText.copyWith(fontSize: 12),
                     )
                   ],
@@ -72,12 +75,11 @@ class DetailArticleUserPage extends StatelessWidget {
 
       Widget articleImage() {
         return Container(
-            height: 177,
+            height: 200,
             width: double.infinity,
             decoration: BoxDecoration(
-                image: const DecorationImage(
-                    image: AssetImage("assets/example/article_banner.png"),
-                    fit: BoxFit.cover),
+                image: DecorationImage(
+                    image: NetworkImage(article.thumbnail), fit: BoxFit.cover),
                 borderRadius: BorderRadius.circular(defaultRadius)));
       }
 
@@ -85,23 +87,26 @@ class DetailArticleUserPage extends StatelessWidget {
         return Container(
           margin: const EdgeInsets.only(top: 28),
           child: Text(
-            "Sahabat Ukhuwah, sepertinya sudah tidak heran jika mendengar kata depresi, stres dan frustasi. Bukan cuma mendengar, mungkin Sahabat pernah bertemu dengan orang-orang yang memiliki atau penyintas gangguan seperti ini. Hal ini berhubungan dengan kesehatan mental seseorang. Bagaimana mengetahui kesehatan mental seseorang? Dan sebenarnya, perlu kah kita menjaga kesehatan mental kita? Mari simak artikel ini sampai habis.\n\nApa itu Kesehatan Mental? Menurt World Health Organization (WHO), kesehatan mental adalah kondisi sejahtera seseorang. Dimana, individu mampu nyadari kemampuan yang ia miliki. Mengatasi tekanan dan stres dalam kehidupan sehari-hari, bekerja produktif, dan mampu berkontribusi aktif di lingkungan atau komunitasnya. Ada beberapa hal yang mencakup kesehatan mental seperti, kenyamanan emosional, psikologi dan hubungan sosial. Dan itu semua dapat mempengaruhi cara berfikir seseorang, Dan juga mempengaruhi cara mengatasi stress, menjalani hubungan dengan orang lain dan membuat keputusan. Kesehatan mental merupakan hal yang penting mulai dari anak-anak, remaja hingga dewasa.",
+            article.content,
             style: darkText.copyWith(fontSize: 12),
           ),
         );
       }
 
       return Expanded(
-        child: ListView(
-          padding: EdgeInsets.all(defaultMargin),
-          children: [
-            headerArticle(),
-            const SizedBox(
-              height: 12,
-            ),
-            articleImage(),
-            articleText()
-          ],
+        child: Container(
+          color: white,
+          child: ListView(
+            padding: EdgeInsets.all(defaultMargin),
+            children: [
+              headerArticle(),
+              const SizedBox(
+                height: 12,
+              ),
+              articleImage(),
+              articleText()
+            ],
+          ),
         ),
       );
     }
