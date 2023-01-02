@@ -7,9 +7,13 @@ class ChatInput extends StatelessWidget {
   const ChatInput({
     Key? key,
     required this.chatController,
+    required this.onTapMessage,
+    required this.onTapImage,
   }) : super(key: key);
 
   final TextEditingController chatController;
+  final Function() onTapMessage;
+  final Function() onTapImage;
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +65,7 @@ class ChatInput extends StatelessWidget {
                       borderRadius: BorderRadius.circular(defaultRadius),
                       child: InkWell(
                         borderRadius: BorderRadius.circular(defaultRadius),
+                        onTap: onTapMessage,
                         child: SizedBox(
                           width: 45,
                           height: 45,
@@ -71,10 +76,6 @@ class ChatInput extends StatelessWidget {
                             ),
                           ),
                         ),
-                        onTap: () {
-                          chatController.clear();
-                          FocusManager.instance.primaryFocus?.unfocus();
-                        },
                       ),
                     )
                   : Material(
@@ -82,6 +83,7 @@ class ChatInput extends StatelessWidget {
                       borderRadius: BorderRadius.circular(defaultRadius),
                       child: InkWell(
                         borderRadius: BorderRadius.circular(defaultRadius),
+                        onTap: onTapImage,
                         child: SizedBox(
                           width: 45,
                           height: 45,
@@ -92,10 +94,6 @@ class ChatInput extends StatelessWidget {
                             ),
                           ),
                         ),
-                        onTap: () {
-                          chatController.clear();
-                          FocusManager.instance.primaryFocus?.unfocus();
-                        },
                       ),
                     );
             },

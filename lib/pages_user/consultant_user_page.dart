@@ -66,9 +66,7 @@ class ConsultantUserPage extends StatelessWidget {
                     child: Text(e),
                   ))
               .toList(),
-          onChanged: (val) {
-            print(val);
-          },
+          onChanged: (val) {},
         ),
       );
     }

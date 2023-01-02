@@ -79,7 +79,11 @@ class ChatAdminPage extends StatelessWidget {
       return Column(
         children: [
           Expanded(child: chat()),
-          ChatInput(chatController: chatController),
+          ChatInput(
+            chatController: chatController,
+            onTapImage: () {},
+            onTapMessage: () {},
+          ),
         ],
       );
     }
