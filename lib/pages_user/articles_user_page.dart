@@ -20,12 +20,12 @@ class ArticlesUserPage extends StatelessWidget {
             Navigator.pop(context);
           },
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
-          color: secondaryColor,
+          color: primaryColor,
           iconSize: 16,
         ),
         title: Text(
           'Articles',
-          style: secondaryColorText.copyWith(
+          style: primaryColorText.copyWith(
             fontSize: 18,
             fontWeight: medium,
           ),

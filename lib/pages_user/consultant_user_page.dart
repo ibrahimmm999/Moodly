@@ -42,45 +42,34 @@ class ConsultantUserPage extends StatelessWidget {
     Widget location() {
       return Container(
         margin: const EdgeInsets.only(top: 12, bottom: 24),
-        padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(defaultRadius), color: white),
         child: DropdownButtonFormField(
-            style: darkText,
-            dropdownColor: white,
-            borderRadius: BorderRadius.circular(defaultRadius),
-            decoration: InputDecoration(
-                border: const OutlineInputBorder(
-                    borderSide: BorderSide(width: 0, style: BorderStyle.none)),
-                hintText: "Select Your City...",
-                prefixIcon: Icon(
-                  Icons.location_on,
-                  color: primaryColor,
-                )),
-            items: loc
-                .map((e) => DropdownMenuItem(
-                      value: e,
-                      child: Text(e),
-                    ))
-                .toList(),
-            onChanged: (val) {}),
-        // child: Row(
-        //   children: [
-        //     Icon(
-        //       Icons.location_pin,
-        //       size: 20,
-        //       color: primaryColor,
-        //     ),
-        //     const SizedBox(width: 12),
-        //     Text(
-        //       'Yogyakarta',
-        //       style: darkText.copyWith(
-        //         fontSize: 12,
-        //         fontWeight: medium,
-        //       ),
-        //     )
-        //   ],
-        // ),
+          alignment: Alignment.center,
+          style: darkText.copyWith(fontSize: 12),
+          dropdownColor: white,
+          borderRadius: BorderRadius.circular(defaultRadius),
+          decoration: InputDecoration(
+              contentPadding: EdgeInsets.all(defaultRadius),
+              border: const OutlineInputBorder(
+                borderSide: BorderSide(width: 0, style: BorderStyle.none),
+              ),
+              hintText: "Select Your City...",
+              hintStyle: greyText.copyWith(fontSize: 12),
+              prefixIcon: Icon(
+                Icons.location_on,
+                color: primaryColor,
+              )),
+          items: loc
+              .map((e) => DropdownMenuItem(
+                    value: e,
+                    child: Text(e),
+                  ))
+              .toList(),
+          onChanged: (val) {
+            print(val);
+          },
+        ),
       );
     }
 
