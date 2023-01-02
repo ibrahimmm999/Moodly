@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moodly/cubit/auth_cubit.dart';
 import 'package:moodly/shared/theme.dart';
 import 'package:moodly/widgets/feature_admin_tile.dart';
 
@@ -7,88 +9,110 @@ class HomeAdminPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AuthCubit authCubit = context.read<AuthCubit>();
+
     Widget header() {
-      return Row(
-        children: [
-          Expanded(
-            child: Row(
+      return BlocBuilder<AuthCubit, AuthState>(
+        bloc: authCubit,
+        builder: (context, state) {
+          if (state is AuthSuccess) {
+            return Row(
               children: [
-                Container(
-                  width: 54,
-                  height: 54,
-                  margin: const EdgeInsets.only(right: 16),
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: AssetImage('assets/profile_default.png'),
-                        fit: BoxFit.cover,
-                      )),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Expanded(
+                    child: Row(
                   children: [
-                    Row(
+                    Container(
+                      width: 54,
+                      height: 54,
+                      margin: const EdgeInsets.only(right: 16),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: state.user.photoUrl.isEmpty
+                            ? const DecorationImage(
+                                image: AssetImage('assets/profile_default.png'),
+                                fit: BoxFit.cover,
+                              )
+                            : DecorationImage(
+                                image: NetworkImage(state.user.photoUrl),
+                                fit: BoxFit.cover,
+                              ),
+                      ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Hi, ',
-                          style: darkText.copyWith(
-                            fontSize: 16,
-                            fontWeight: medium,
-                          ),
+                        Row(
+                          children: [
+                            Text(
+                              'Hi, ',
+                              style: darkText.copyWith(
+                                fontSize: 16,
+                                fontWeight: medium,
+                              ),
+                            ),
+                            Text(
+                              state.user.name,
+                              style: primaryColorText.copyWith(
+                                fontSize: 16,
+                                fontWeight: medium,
+                              ),
+                            )
+                          ],
                         ),
                         Text(
-                          'Admin',
-                          style: primaryColorText.copyWith(
+                          'How are you today?',
+                          style: darkText.copyWith(
                             fontSize: 16,
                             fontWeight: medium,
                           ),
                         )
                       ],
-                    ),
-                    Text(
-                      'How are you today?',
-                      style: darkText.copyWith(
-                        fontSize: 16,
-                        fontWeight: medium,
-                      ),
                     )
+                  ],
+                )),
+                PopupMenuButton(
+                  icon: Icon(
+                    Icons.settings,
+                    color: grey,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(defaultRadius),
+                  ),
+                  elevation: 4,
+                  onSelected: (value) {
+                    if (value == 0) {
+                      Navigator.pushNamed(context, '/edit-profile');
+                    } else {
+                      Navigator.pushNamed(context, '/sign-in');
+                    }
+                  },
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      value: 0,
+                      child: Text(
+                        'Edit Profile',
+                        style: darkText,
+                      ),
+                    ),
+                    PopupMenuItem(
+                      onTap: () {
+                        authCubit.signOut();
+                      },
+                      value: 1,
+                      child: Text(
+                        'Logout',
+                        style: primaryColorText,
+                      ),
+                    ),
                   ],
                 )
               ],
-            ),
-          ),
-          PopupMenuButton(
-            icon: Icon(
-              Icons.settings,
-              color: grey,
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(defaultRadius),
-            ),
-            elevation: 4,
-            onSelected: (value) {
-              if (value == 0) {
-                Navigator.pushNamed(context, '/edit-profile');
-              } else {}
-            },
-            itemBuilder: (context) => [
-              PopupMenuItem(
-                value: 0,
-                child: Text(
-                  'Edit Profile',
-                  style: darkText,
-                ),
-              ),
-              PopupMenuItem(
-                value: 1,
-                child: Text(
-                  'Logout',
-                  style: primaryColorText,
-                ),
-              ),
-            ],
-          )
-        ],
+            );
+          }
+          return Center(
+            child: CircularProgressIndicator(color: dark),
+          );
+        },
       );
     }
 

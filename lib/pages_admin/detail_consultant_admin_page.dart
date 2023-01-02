@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moodly/cubit/consultant_save_cubit.dart';
 import 'package:moodly/cubit/image_file_cubit.dart';
 import 'package:moodly/models/consultant_model.dart';
-import 'package:moodly/service/consultant_service.dart';
 import 'package:moodly/service/image_service.dart';
 import 'package:moodly/widgets/form_consultant_article.dart';
 

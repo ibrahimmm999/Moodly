@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moodly/cubit/image_file_cubit.dart';
+import 'package:moodly/cubit/image_url_cubit.dart';
 import 'package:moodly/service/image_service.dart';
 import 'package:moodly/shared/theme.dart';
 import 'package:moodly/widgets/custom_text_form_field.dart';
@@ -21,6 +22,7 @@ class EditProfilePage extends StatelessWidget {
     ImageTool imageTool = ImageTool();
     ImageFileCubit imageFileCubit = context.read<ImageFileCubit>();
     imageFileCubit.changeImageFile(null);
+    ImageUrlCubit imageUrlCubit = context.read<ImageUrlCubit>();
 
     PreferredSizeWidget header() {
       return AppBar(
@@ -87,29 +89,42 @@ class EditProfilePage extends StatelessWidget {
           children: [
             Center(
               child: BlocBuilder<ImageFileCubit, File?>(
+                bloc: imageFileCubit,
                 builder: (context, imageFile) {
-                  DecorationImage imageProfile() {
-                    if (imageFile == null) {
-                      return const DecorationImage(
-                        image: AssetImage('assets/profile_default.png'),
-                        fit: BoxFit.cover,
-                      );
-                    } else {
-                      return DecorationImage(
-                        image: FileImage(imageFile),
-                        fit: BoxFit.cover,
-                      );
-                    }
-                  }
+                  return BlocBuilder<ImageUrlCubit, String>(
+                    bloc: imageUrlCubit,
+                    builder: (context, imageUrl) {
+                      DecorationImage imageProfile() {
+                        if (imageFile == null) {
+                          if (imageUrl.isEmpty) {
+                            return const DecorationImage(
+                              image: AssetImage('assets/profile_default.png'),
+                              fit: BoxFit.cover,
+                            );
+                          } else {
+                            return DecorationImage(
+                              image: NetworkImage(imageUrl),
+                              fit: BoxFit.cover,
+                            );
+                          }
+                        } else {
+                          return DecorationImage(
+                            image: FileImage(imageFile),
+                            fit: BoxFit.cover,
+                          );
+                        }
+                      }
 
-                  return Container(
-                    margin: EdgeInsets.only(top: defaultMargin, bottom: 12),
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: imageProfile(),
-                    ),
+                      return Container(
+                        margin: EdgeInsets.only(top: defaultMargin, bottom: 12),
+                        width: 100,
+                        height: 100,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: imageProfile(),
+                        ),
+                      );
+                    },
                   );
                 },
               ),

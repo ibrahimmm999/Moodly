@@ -7,6 +7,7 @@ import 'package:moodly/cubit/chat_admin_page_cubit.dart';
 import 'package:moodly/cubit/chat_input_cubit.dart';
 import 'package:moodly/cubit/consultant_save_cubit.dart';
 import 'package:moodly/cubit/image_file_cubit.dart';
+import 'package:moodly/cubit/image_url_cubit.dart';
 import 'package:moodly/pages_admin/articles_admin_page.dart';
 import 'package:moodly/pages_admin/chat_list_admin_page.dart';
 import 'package:moodly/pages_admin/consultants_admin_page.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => ImageFileCubit()),
+        BlocProvider(create: (context) => ImageUrlCubit()),
         BlocProvider(create: (context) => ChatAdminPageCubit()),
         BlocProvider(create: (context) => ChatInputCubit()),
         BlocProvider(create: (context) => AuthCubit()),

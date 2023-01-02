@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moodly/cubit/article_save_cubit.dart';
 import 'package:moodly/cubit/image_file_cubit.dart';
 import 'package:moodly/models/article_model.dart';
-import 'package:moodly/service/article_service.dart';
 import 'package:moodly/service/image_service.dart';
 import 'package:moodly/widgets/form_consultant_article.dart';
 
