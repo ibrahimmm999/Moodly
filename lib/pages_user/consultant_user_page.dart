@@ -6,6 +6,14 @@ class ConsultantUserPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<String> loc = [
+      "Yogyakarta",
+      "Jakarta",
+      "Bandung",
+      "Raja Ampat",
+      "Bali",
+      "Medan"
+    ];
     PreferredSizeWidget header() {
       return AppBar(
         toolbarHeight: 70,
@@ -37,23 +45,42 @@ class ConsultantUserPage extends StatelessWidget {
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(defaultRadius), color: white),
-        child: Row(
-          children: [
-            Icon(
-              Icons.location_pin,
-              size: 20,
-              color: primaryColor,
-            ),
-            const SizedBox(width: 12),
-            Text(
-              'Yogyakarta',
-              style: darkText.copyWith(
-                fontSize: 12,
-                fontWeight: medium,
-              ),
-            )
-          ],
-        ),
+        child: DropdownButtonFormField(
+            style: darkText,
+            dropdownColor: white,
+            borderRadius: BorderRadius.circular(defaultRadius),
+            decoration: InputDecoration(
+                border: const OutlineInputBorder(
+                    borderSide: BorderSide(width: 0, style: BorderStyle.none)),
+                hintText: "Select Your City...",
+                prefixIcon: Icon(
+                  Icons.location_on,
+                  color: primaryColor,
+                )),
+            items: loc
+                .map((e) => DropdownMenuItem(
+                      value: e,
+                      child: Text(e),
+                    ))
+                .toList(),
+            onChanged: (val) {}),
+        // child: Row(
+        //   children: [
+        //     Icon(
+        //       Icons.location_pin,
+        //       size: 20,
+        //       color: primaryColor,
+        //     ),
+        //     const SizedBox(width: 12),
+        //     Text(
+        //       'Yogyakarta',
+        //       style: darkText.copyWith(
+        //         fontSize: 12,
+        //         fontWeight: medium,
+        //       ),
+        //     )
+        //   ],
+        // ),
       );
     }
 
