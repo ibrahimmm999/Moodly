@@ -20,4 +20,12 @@ class ArticleService {
       rethrow;
     }
   }
+
+  Future<void> deleteArticle(ArticleModel article) async {
+    try {
+      await _articlesReference.doc(article.id).delete();
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
