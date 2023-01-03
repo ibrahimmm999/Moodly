@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moodly/cubit/article_save_cubit.dart';
 import 'package:moodly/cubit/auth_cubit.dart';
+import 'package:moodly/cubit/change_location_cubit.dart';
 import 'package:moodly/cubit/chat_admin_page_cubit.dart';
 import 'package:moodly/cubit/chat_input_cubit.dart';
 import 'package:moodly/cubit/consultant_save_cubit.dart';
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => UserUpdateCubit()),
         BlocProvider(create: (context) => SendChatCubit()),
         BlocProvider(create: (context) => StatusHelpCubit()),
+        BlocProvider(create: (context) => ChangeLocationCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
