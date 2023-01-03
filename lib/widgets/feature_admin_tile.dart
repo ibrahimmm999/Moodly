@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:moodly/models/user_model.dart';
 import 'package:moodly/shared/theme.dart';
 
 class FeatureAdminTile extends StatelessWidget {
@@ -64,26 +67,59 @@ class FeatureAdminTile extends StatelessWidget {
               ),
             ),
             isChat
-                ? Row(
-                    children: [
-                      Text('unread', style: whiteText),
-                      Container(
-                        margin: const EdgeInsets.only(left: 8),
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: white,
+                ? StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                    stream: FirebaseFirestore.instance
+                        .collection('users')
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.active) {
+                        var users = snapshot.data!.docs
+                            .map((e) => UserModel.fromJson(e.data()))
+                            .toList();
+                        var unread = 0;
+                        for (var element in users) {
+                          for (var a in element.helpChatList) {
+                            if (!(a.isRead)) {
+                              unread += 1;
+                            }
+                          }
+                          for (var a in element.supportChatList) {
+                            if (!(a.isRead)) {
+                              unread += 1;
+                            }
+                          }
+                        }
+                        return unread == 0
+                            ? const SizedBox()
+                            : Row(
+                                children: [
+                                  Text('unread', style: whiteText),
+                                  Container(
+                                    margin: const EdgeInsets.only(left: 8),
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: white,
+                                    ),
+                                    child: Text(
+                                      unread.toString(),
+                                      style: primaryColorText.copyWith(
+                                        fontWeight: medium,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              );
+                      }
+                      return Center(
+                        child: LoadingAnimationWidget.twistingDots(
+                          leftDotColor: secondaryColor,
+                          rightDotColor: primaryColor,
+                          size: 24,
                         ),
-                        child: Text(
-                          '10',
-                          style: primaryColorText.copyWith(
-                            fontWeight: medium,
-                            fontSize: 12,
-                          ),
-                        ),
-                      )
-                    ],
-                  )
+                      );
+                    })
                 : const SizedBox(),
           ],
         ),

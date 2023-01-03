@@ -40,4 +40,28 @@ class ChatService {
       rethrow;
     }
   }
+
+  Future<void> updateRead(String id, bool isHelpChat) async {
+    try {
+      DocumentSnapshot user = await _userReference.doc(id).get();
+
+      if (isHelpChat) {
+        List array =
+            (user.data() as Map<String, dynamic>)['helpChatList'].toList();
+        for (var element in array) {
+          element['isRead'] = true;
+        }
+        await _userReference.doc(id).update({'helpChatList': array});
+      } else {
+        List array =
+            (user.data() as Map<String, dynamic>)['supportChatList'].toList();
+        for (var element in array) {
+          element['isRead'] = true;
+        }
+        await _userReference.doc(id).update({'supportChatList': array});
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

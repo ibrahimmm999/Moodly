@@ -33,6 +33,7 @@ class ChatTile extends StatelessWidget {
   Widget build(BuildContext context) {
     StatusHelpCubit statusHelpCubit = context.read<StatusHelpCubit>();
     statusHelpCubit.changeStatus(isCompleted);
+    ChatService chatService = ChatService();
 
     return GestureDetector(
       onTap: () {
@@ -47,6 +48,7 @@ class ChatTile extends StatelessWidget {
             ),
           ),
         );
+        chatService.updateRead(userId, isHelpMessage);
       },
       child: Container(
         margin: const EdgeInsets.only(
