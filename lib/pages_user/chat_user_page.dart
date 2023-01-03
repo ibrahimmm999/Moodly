@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moodly/models/help_chat_model.dart';
 import 'package:moodly/models/support_chat_model.dart';
+import 'package:moodly/models/user_model.dart';
 import 'package:moodly/service/chat_service.dart';
 import 'package:moodly/service/image_service.dart';
 import 'package:moodly/shared/theme.dart';
@@ -92,16 +93,16 @@ class ChatUserPage extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.active) {
               var chats = [];
               if (isSupportChat) {
-                chats = ((snapshot.data!.data()
-                        as Map<String, dynamic>)['supportChatList'] as List)
-                    .map((e) => SupportChatModel.fromJson(e))
-                    .toList();
+                chats = UserModel.fromJson(
+                        snapshot.data!.data() as Map<String, dynamic>)
+                    .supportChatList;
               } else {
-                chats = ((snapshot.data!.data()
-                        as Map<String, dynamic>)['helpChatList'] as List)
-                    .map((e) => HelpChatModel.fromJson(e))
-                    .toList();
-                statusHelpCubit.changeStatus(chats.last.isCompleted);
+                chats = UserModel.fromJson(
+                        snapshot.data!.data() as Map<String, dynamic>)
+                    .helpChatList;
+                if (chats.isNotEmpty) {
+                  statusHelpCubit.changeStatus(chats.last.isCompleted);
+                }
               }
               return ListView(
                 padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
