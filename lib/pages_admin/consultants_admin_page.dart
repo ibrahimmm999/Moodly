@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:moodly/models/consultant_model.dart';
 import 'package:moodly/pages_admin/detail_consultant_admin_page.dart';
+import 'package:moodly/service/consultant_service.dart';
 import 'package:moodly/shared/theme.dart';
 import 'package:moodly/widgets/custom_button.dart';
 
@@ -139,7 +140,41 @@ class ConsultantsAdminPage extends StatelessWidget {
                   color: white,
                   borderRadius: BorderRadius.circular(defaultRadius),
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text('Confirm', style: primaryColorText),
+                            content: Text(
+                              'Delete this data?',
+                              style: darkText,
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  'NO',
+                                  style: darkText,
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  ConsultantService().deleteArticle(consultant);
+                                  Navigator.of(context).pop(true);
+                                },
+                                child: Text(
+                                  'YES',
+                                  style: darkText,
+                                ),
+                              )
+                            ],
+                          );
+                        },
+                      );
+                    },
                     borderRadius: BorderRadius.circular(defaultRadius),
                     child: SizedBox(
                       height: 30,
