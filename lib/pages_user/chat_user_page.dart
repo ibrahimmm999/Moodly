@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:moodly/models/help_chat_model.dart';
 import 'package:moodly/models/support_chat_model.dart';
 import 'package:moodly/models/user_model.dart';
@@ -117,8 +118,10 @@ class ChatUserPage extends StatelessWidget {
               );
             }
             return Center(
-              child: CircularProgressIndicator(
-                color: dark,
+              child: LoadingAnimationWidget.twistingDots(
+                leftDotColor: secondaryColor,
+                rightDotColor: primaryColor,
+                size: 60,
               ),
             );
           });

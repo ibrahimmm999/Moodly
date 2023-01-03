@@ -1,11 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:moodly/pages_admin/chat_admin_page.dart';
+import 'package:moodly/service/time_converter.dart';
 import 'package:moodly/shared/theme.dart';
 
 class ChatTile extends StatelessWidget {
   const ChatTile(
       {required this.name,
       required this.imageUrl,
+      required this.userId,
+      required this.lastMessage,
+      required this.lastDate,
       this.isCompleted = false,
       this.isHelpMessage = false,
       this.unreadCount = 0,
@@ -14,6 +19,9 @@ class ChatTile extends StatelessWidget {
 
   final String imageUrl;
   final String name;
+  final String userId;
+  final String lastMessage;
+  final Timestamp lastDate;
   final int unreadCount;
   final bool isCompleted;
   final bool isHelpMessage;
@@ -57,7 +65,7 @@ class ChatTile extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'ini last messege'.replaceAll("\n", " "),
+                        lastMessage.replaceAll("\n", " "),
                         style: greyText.copyWith(
                           fontWeight: light,
                         ),
@@ -110,7 +118,7 @@ class ChatTile extends StatelessWidget {
                             ),
                           ),
                     Text(
-                      '12.00',
+                      ConvertTime().convertToAgo(lastDate),
                       style: greyText.copyWith(fontSize: 10),
                     ),
                   ],

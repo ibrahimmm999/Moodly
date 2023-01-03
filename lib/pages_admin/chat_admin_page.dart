@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:moodly/shared/theme.dart';
 import 'package:moodly/widgets/chat_bubble.dart';
 import 'package:moodly/widgets/chat_input.dart';
-import 'package:moodly/widgets/image_bubble.dart';
 
 class ChatAdminPage extends StatelessWidget {
   const ChatAdminPage({super.key});
@@ -55,22 +54,8 @@ class ChatAdminPage extends StatelessWidget {
       return ListView(
         padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
         children: [
-          ChatBubble(
-            date: Timestamp.now(),
-            text: 'halooo',
-            isSender: true,
-          ),
           ChatBubble(date: Timestamp.now(), text: 'halooo'),
           ChatBubble(date: Timestamp.now(), text: 'halooo'),
-          ImageBubble(
-            date: Timestamp.now(),
-            imageUrl: 'assets/example/article2_example.png',
-          ),
-          ImageBubble(
-            date: Timestamp.now(),
-            imageUrl: 'assets/example/article1_example.png',
-            isSender: true,
-          ),
         ],
       );
     }

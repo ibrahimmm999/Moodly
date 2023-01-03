@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:moodly/cubit/chat_admin_page_cubit.dart';
+import 'package:moodly/models/user_model.dart';
 import 'package:moodly/shared/theme.dart';
 import 'package:moodly/widgets/chat_tile.dart';
 
@@ -10,8 +13,6 @@ class ChatListAdminPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // INISIALISASI
-    bool isEmptyHelpChat = false;
-    bool isEmptySupportChat = false;
     ChatAdminPageCubit chatAdminPageCubit = context.read<ChatAdminPageCubit>();
     chatAdminPageCubit.changeChatAdminPage(0);
 
@@ -141,51 +142,95 @@ class ChatListAdminPage extends StatelessWidget {
     }
 
     Widget supportChat() {
-      return isEmptySupportChat
-          // ignore: dead_code
-          ? emptyChat()
-          // ignore: dead_code
-          : Expanded(
-              child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                children: const [
-                  ChatTile(name: 'name', imageUrl: 'imageUrl', unreadCount: 3),
-                  ChatTile(name: 'name', imageUrl: 'imageUrl', unreadCount: 5),
-                  ChatTile(name: 'name', imageUrl: 'imageUrl'),
-                  ChatTile(name: 'name', imageUrl: 'imageUrl'),
-                  ChatTile(name: 'name', imageUrl: 'imageUrl'),
-                  ChatTile(name: 'name', imageUrl: 'imageUrl'),
-                  ChatTile(name: 'name', imageUrl: 'imageUrl'),
-                  ChatTile(name: 'name', imageUrl: 'imageUrl'),
-                ],
+      return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+          stream: FirebaseFirestore.instance
+              .collection('users')
+              .where('supportChatList', isNotEqualTo: []).snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.active) {
+              var users = snapshot.data!.docs
+                  .map((e) => UserModel.fromJson(e.data()))
+                  .toList();
+              users.sort((b, a) => a.supportChatList.last.date
+                  .compareTo(b.supportChatList.last.date));
+              return users.isEmpty
+                  ? emptyChat()
+                  : Expanded(
+                      child: ListView(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        children: users.map((e) {
+                          int unread = 0;
+                          for (var element in e.supportChatList) {
+                            if (!(element.isRead)) {
+                              unread += 1;
+                            }
+                          }
+                          return ChatTile(
+                            userId: e.id,
+                            name: e.name,
+                            imageUrl: e.photoUrl,
+                            unreadCount: unread,
+                            lastMessage: e.supportChatList.last.message,
+                            lastDate: e.supportChatList.last.date,
+                          );
+                        }).toList(),
+                      ),
+                    );
+            }
+            return Expanded(
+              child: LoadingAnimationWidget.twistingDots(
+                leftDotColor: secondaryColor,
+                rightDotColor: primaryColor,
+                size: 60,
               ),
             );
+          });
     }
 
     Widget helpChat() {
-      return isEmptyHelpChat
-          // ignore: dead_code
-          ? emptyChat()
-          // ignore: dead_code
-          : Expanded(
-              child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                children: const [
-                  ChatTile(
-                    name: 'name',
-                    imageUrl: 'imageUrl',
-                    isHelpMessage: true,
-                    isCompleted: false,
-                  ),
-                  ChatTile(
-                    name: 'name',
-                    imageUrl: 'imageUrl',
-                    isHelpMessage: true,
-                    isCompleted: true,
-                  ),
-                ],
+      return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+          stream: FirebaseFirestore.instance
+              .collection('users')
+              .where('helpChatList', isNotEqualTo: []).snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.active) {
+              var users = snapshot.data!.docs
+                  .map((e) => UserModel.fromJson(e.data()))
+                  .toList();
+              users.sort((b, a) =>
+                  a.helpChatList.last.date.compareTo(b.helpChatList.last.date));
+              return users.isEmpty
+                  ? emptyChat()
+                  : Expanded(
+                      child: ListView(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        children: users.map((e) {
+                          int unread = 0;
+                          for (var element in e.helpChatList) {
+                            if (!(element.isRead)) {
+                              unread += 1;
+                            }
+                          }
+                          return ChatTile(
+                            userId: e.id,
+                            name: e.name,
+                            imageUrl: e.photoUrl,
+                            unreadCount: unread,
+                            lastMessage: e.helpChatList.last.message,
+                            lastDate: e.helpChatList.last.date,
+                          );
+                        }).toList(),
+                      ),
+                    );
+            }
+            return Expanded(
+              child: LoadingAnimationWidget.twistingDots(
+                leftDotColor: secondaryColor,
+                rightDotColor: primaryColor,
+                size: 60,
               ),
             );
+          });
     }
 
     Widget content(int index) {
