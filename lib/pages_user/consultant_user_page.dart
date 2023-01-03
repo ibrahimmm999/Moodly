@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moodly/models/province.dart';
 import 'package:moodly/shared/theme.dart';
 
 class ConsultantUserPage extends StatelessWidget {
@@ -6,14 +7,7 @@ class ConsultantUserPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<String> loc = [
-      "Yogyakarta",
-      "Jakarta",
-      "Bandung",
-      "Raja Ampat",
-      "Bali",
-      "Medan"
-    ];
+    print(Provinces().listOfProvinces);
     PreferredSizeWidget header() {
       return AppBar(
         toolbarHeight: 70,
@@ -60,7 +54,8 @@ class ConsultantUserPage extends StatelessWidget {
                 Icons.location_on,
                 color: primaryColor,
               )),
-          items: loc
+          items: Provinces()
+              .listOfProvinces
               .map((e) => DropdownMenuItem(
                     value: e,
                     child: Text(e),
