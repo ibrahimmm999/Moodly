@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moodly/models/help_chat_model.dart';
 import 'package:moodly/models/support_chat_model.dart';
 import 'package:moodly/service/chat_service.dart';
@@ -9,6 +10,7 @@ import 'package:moodly/shared/theme.dart';
 import 'package:moodly/widgets/chat_bubble.dart';
 import 'package:moodly/widgets/chat_input.dart';
 import 'package:moodly/widgets/image_preview_send.dart';
+import 'package:moodly/cubit/status_help_cubit.dart';
 
 class ChatUserPage extends StatelessWidget {
   const ChatUserPage({required this.isSupportChat, super.key});
@@ -21,6 +23,7 @@ class ChatUserPage extends StatelessWidget {
     String userId = FirebaseAuth.instance.currentUser!.uid;
     ChatService chatService = ChatService();
     ImageTool imageTool = ImageTool();
+    StatusHelpCubit statusHelpCubit = context.read<StatusHelpCubit>();
 
     PreferredSizeWidget header() {
       return AppBar(
@@ -52,12 +55,25 @@ class ChatUserPage extends StatelessWidget {
                       fontWeight: medium,
                     ),
                   ),
-                  Text(
-                    'Uncomplete Status',
-                    style: primaryColorText.copyWith(
-                      fontSize: 12,
-                      fontWeight: medium,
-                    ),
+                  BlocBuilder<StatusHelpCubit, bool>(
+                    bloc: statusHelpCubit,
+                    builder: (context, state) {
+                      return !state
+                          ? Text(
+                              'Uncomplete Status',
+                              style: primaryColorText.copyWith(
+                                fontSize: 12,
+                                fontWeight: medium,
+                              ),
+                            )
+                          : Text(
+                              'Complete Status',
+                              style: secondaryColorText.copyWith(
+                                fontSize: 12,
+                                fontWeight: medium,
+                              ),
+                            );
+                    },
                   ),
                 ],
               ),
@@ -83,8 +99,9 @@ class ChatUserPage extends StatelessWidget {
               } else {
                 chats = ((snapshot.data!.data()
                         as Map<String, dynamic>)['helpChatList'] as List)
-                    .map((e) => SupportChatModel.fromJson(e))
+                    .map((e) => HelpChatModel.fromJson(e))
                     .toList();
+                statusHelpCubit.changeStatus(chats.last.isCompleted);
               }
               return ListView(
                 padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
