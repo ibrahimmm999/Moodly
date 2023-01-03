@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:moodly/models/consultant_model.dart';
 import 'package:moodly/pages_admin/detail_consultant_admin_page.dart';
 import 'package:moodly/shared/theme.dart';
@@ -186,8 +187,10 @@ class ConsultantsAdminPage extends StatelessWidget {
             );
           }
           return Center(
-            child: CircularProgressIndicator(
-              color: dark,
+            child: LoadingAnimationWidget.twistingDots(
+              leftDotColor: secondaryColor,
+              rightDotColor: primaryColor,
+              size: 60,
             ),
           );
         },

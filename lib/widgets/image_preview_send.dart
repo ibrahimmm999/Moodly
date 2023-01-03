@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:moodly/cubit/image_file_cubit.dart';
 import 'package:moodly/cubit/send_chat_cubit.dart';
 import 'package:moodly/service/image_service.dart';
@@ -100,8 +101,9 @@ class ImagePreviewSend extends StatelessWidget {
               if (state is SendChatLoading) {
                 return Padding(
                   padding: const EdgeInsets.all(4),
-                  child: Center(
-                    child: CircularProgressIndicator(color: dark),
+                  child: LoadingAnimationWidget.staggeredDotsWave(
+                    color: primaryColor,
+                    size: 55,
                   ),
                 );
               }

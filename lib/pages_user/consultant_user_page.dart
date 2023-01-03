@@ -45,7 +45,7 @@ class ConsultantUserPage extends StatelessWidget {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(defaultRadius), color: white),
         child: DropdownButtonFormField(
-          alignment: Alignment.center,
+          alignment: Alignment.centerLeft,
           style: darkText.copyWith(fontSize: 12),
           dropdownColor: white,
           borderRadius: BorderRadius.circular(defaultRadius),

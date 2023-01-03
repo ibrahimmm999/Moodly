@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../widgets/article_tile_user.dart';
 import '../../shared/theme.dart';
@@ -62,8 +63,10 @@ class ArticlesUserPage extends StatelessWidget {
             );
           }
           return Center(
-            child: CircularProgressIndicator(
-              color: dark,
+            child: LoadingAnimationWidget.twistingDots(
+              leftDotColor: secondaryColor,
+              rightDotColor: primaryColor,
+              size: 60,
             ),
           );
         },

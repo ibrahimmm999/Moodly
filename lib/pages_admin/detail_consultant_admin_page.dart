@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:moodly/cubit/consultant_save_cubit.dart';
 import 'package:moodly/cubit/image_file_cubit.dart';
 import 'package:moodly/models/consultant_model.dart';
@@ -81,10 +82,12 @@ class DetailConsultantAdminPage extends StatelessWidget {
             },
             builder: (context, state) {
               if (state is ConsultantSaveLoading) {
-                return Padding(
-                  padding: const EdgeInsets.all(4),
-                  child: Center(
-                    child: CircularProgressIndicator(color: dark),
+                return Container(
+                  margin: const EdgeInsets.only(right: 12),
+                  child: LoadingAnimationWidget.twistingDots(
+                    leftDotColor: secondaryColor,
+                    rightDotColor: primaryColor,
+                    size: 24,
                   ),
                 );
               }

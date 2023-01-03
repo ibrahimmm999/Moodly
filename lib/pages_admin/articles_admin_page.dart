@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:moodly/models/article_model.dart';
 import 'package:moodly/pages_admin/detail_article_admin_page.dart';
 import 'package:moodly/widgets/article_tile_admin.dart';
@@ -64,8 +65,10 @@ class ArticlesAdminPage extends StatelessWidget {
             );
           }
           return Center(
-            child: CircularProgressIndicator(
-              color: dark,
+            child: LoadingAnimationWidget.twistingDots(
+              leftDotColor: secondaryColor,
+              rightDotColor: primaryColor,
+              size: 60,
             ),
           );
         },
