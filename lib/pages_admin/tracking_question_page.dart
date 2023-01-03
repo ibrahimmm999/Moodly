@@ -48,7 +48,7 @@ class TrackingQuestionPage extends StatelessWidget {
       );
     }
 
-    Widget inputQuestoin() {
+    Widget inputQuestion() {
       return TextFormField(
           controller: questionController,
           cursorColor: primaryColor,
@@ -78,7 +78,7 @@ class TrackingQuestionPage extends StatelessWidget {
             const SizedBox(
               height: 4,
             ),
-            inputQuestoin()
+            inputQuestion()
           ],
         ),
       );
