@@ -36,7 +36,7 @@ class ImagePreview extends StatelessWidget {
 
     Widget content() {
       return PhotoView(
-        imageProvider: AssetImage(imageUrl),
+        imageProvider: NetworkImage(imageUrl),
       );
     }
 

@@ -44,14 +44,6 @@ class SendChatCubit extends Cubit<SendChatState> {
     try {
       emit(SendChatLoading());
       await imageTool.uploadImage(imageFile, 'chatImageHelp');
-      await chatService.addSupportChat(
-        SupportChatModel(
-          date: Timestamp.now(),
-          message: text,
-          imageUrl: imageTool.imageUrl!,
-        ),
-        userId,
-      );
       await chatService.addHelpChat(
         HelpChatModel(
           date: Timestamp.now(),
