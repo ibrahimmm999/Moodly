@@ -8,38 +8,68 @@ import 'package:image_picker/image_picker.dart';
 class ImageTool {
   File? _imageFile;
   String? _imageUrl;
+  CroppedFile? _croppedImage;
 
   Future pickImage() async {
-    final pickedImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    _imageFile = pickedImage != null ? File(pickedImage.path) : null;
+    try {
+      final pickedImage =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+      _imageFile = pickedImage != null ? File(pickedImage.path) : null;
 
-    if (_imageFile != null) {
-      _imageFile = await _cropImage(imageFile: _imageFile);
+      if (_imageFile != null) {
+        _imageFile = await cropImage(imageFile: _imageFile);
+      }
+    } catch (e) {
+      rethrow;
     }
   }
 
-  Future<File?> _cropImage({required File? imageFile}) async {
-    CroppedFile? croppedImage =
-        await ImageCropper().cropImage(sourcePath: imageFile!.path);
-    return croppedImage != null ? File(croppedImage.path) : null;
+  Future pickImageNotCrop() async {
+    try {
+      final pickedImage =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+      _imageFile = pickedImage != null ? File(pickedImage.path) : null;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<File?> cropImage({required File? imageFile}) async {
+    try {
+      _croppedImage =
+          await ImageCropper().cropImage(sourcePath: imageFile!.path);
+      return _croppedImage != null ? File(_croppedImage!.path) : null;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future uploadImage(File imageFile, String reference) async {
-    String fileName = basename(imageFile.path);
+    try {
+      String fileName = basename(imageFile.path);
 
-    Reference storageReference =
-        FirebaseStorage.instance.ref(reference).child(fileName);
+      Reference storageReference =
+          FirebaseStorage.instance.ref(reference).child(fileName);
 
-    await storageReference.putFile(imageFile);
-    _imageUrl = await storageReference.getDownloadURL();
+      await storageReference.putFile(imageFile);
+      _imageUrl = await storageReference.getDownloadURL();
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future deleteImage(String url) async {
-    await FirebaseStorage.instance.refFromURL(url).delete();
+    try {
+      await FirebaseStorage.instance.refFromURL(url).delete();
+    } catch (e) {
+      rethrow;
+    }
   }
 
   File? get imagetFile => _imageFile;
+
+  File? get croppedImageFile =>
+      _croppedImage != null ? File(_croppedImage!.path) : null;
 
   String? get imageUrl => _imageUrl;
 }

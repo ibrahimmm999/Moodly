@@ -7,11 +7,13 @@ class ChatInput extends StatelessWidget {
   const ChatInput({
     Key? key,
     required this.chatController,
+    this.isSendImage = false,
     required this.onTapMessage,
     required this.onTapImage,
   }) : super(key: key);
 
   final TextEditingController chatController;
+  final bool isSendImage;
   final Function() onTapMessage;
   final Function() onTapImage;
 
@@ -59,7 +61,7 @@ class ChatInput extends StatelessWidget {
           BlocBuilder<ChatInputCubit, String>(
             bloc: chatInputCubit,
             builder: (context, state) {
-              return state.isNotEmpty
+              return (state.isNotEmpty || isSendImage)
                   ? Material(
                       color: secondaryColor,
                       borderRadius: BorderRadius.circular(defaultRadius),

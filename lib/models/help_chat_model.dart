@@ -6,6 +6,7 @@ class HelpChatModel extends Equatable {
   final String message;
   final String imageUrl;
   final bool isRead;
+  final bool isUser;
   final bool isCompleted;
 
   const HelpChatModel({
@@ -13,6 +14,7 @@ class HelpChatModel extends Equatable {
     this.message = '',
     this.imageUrl = '',
     this.isRead = false,
+    this.isUser = true,
     this.isCompleted = false,
   });
 
@@ -22,6 +24,7 @@ class HelpChatModel extends Equatable {
       message: json['message'],
       imageUrl: json['imageUrl'],
       isRead: json['isRead'],
+      isUser: json['isUser'],
       isCompleted: json['isCompleted'],
     );
   }
@@ -31,6 +34,7 @@ class HelpChatModel extends Equatable {
         'message': message,
         'imageUrl': imageUrl,
         'isRead': isRead,
+        'isUser': isUser,
         'isCompleted': isCompleted,
       };
 
@@ -40,6 +44,7 @@ class HelpChatModel extends Equatable {
         message,
         imageUrl,
         isRead,
+        isUser,
         isCompleted,
       ];
 }

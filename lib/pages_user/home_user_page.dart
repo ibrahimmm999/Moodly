@@ -4,9 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:moodly/cubit/auth_cubit.dart';
 import 'package:moodly/models/article_model.dart';
+import 'package:moodly/pages_user/chat_user_page.dart';
 import 'package:moodly/pages_user/edit_profile_page.dart';
-import 'package:moodly/pages_user/help_chat_user_page.dart';
-import 'package:moodly/pages_user/support_chat_user_page.dart';
 import 'package:moodly/shared/theme.dart';
 import 'package:moodly/widgets/article_tile_user.dart';
 import 'package:moodly/widgets/bar_chart.dart';
@@ -408,7 +407,8 @@ class HomeUserPage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const SupportChatUserPage()),
+                    builder: (context) =>
+                        const ChatUserPage(isSupportChat: true)),
               );
             },
             elevation: 4,
@@ -426,7 +426,8 @@ class HomeUserPage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const HelpChatUserPage()),
+                    builder: (context) =>
+                        const ChatUserPage(isSupportChat: false)),
               );
             },
             elevation: 4,
