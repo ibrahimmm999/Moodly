@@ -26,22 +26,18 @@ class ChatService {
     }
   }
 
-  // Future<void> readMessege(String id) async {
-  //   try {
-  //     var user = await _userReference.doc(id).get();
-  //     var helpChat = UserModel.fromJson(user.data() as Map<String, dynamic>)
-  //         .supportChatList
-  //         .toList()
-  //         .map(
-  //           (e) => e.toJson().update('isRead', (value) => true),
-  //         )
-  //         .toList();
+  Future<void> updateHelpStatus(String id, bool status) async {
+    try {
+      DocumentSnapshot user = await _userReference.doc(id).get();
 
-  //     await _userReference.doc(id).update({
-  //       'supportChatList': helpChat,
-  //     });
-  //   } catch (e) {
-  //     rethrow;
-  //   }
-  // }
+      List array =
+          (user.data() as Map<String, dynamic>)['helpChatList'].toList();
+
+      array.last['isCompleted'] = status;
+
+      await _userReference.doc(id).update({'helpChatList': array});
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:moodly/cubit/chat_admin_page_cubit.dart';
 import 'package:moodly/models/user_model.dart';
 import 'package:moodly/shared/theme.dart';
@@ -141,107 +140,77 @@ class ChatListAdminPage extends StatelessWidget {
       );
     }
 
-    Widget supportChat() {
+    Widget chatList(int index) {
       return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-          stream: FirebaseFirestore.instance
-              .collection('users')
-              .where('supportChatList', isNotEqualTo: []).snapshots(),
+          stream: FirebaseFirestore.instance.collection('users').snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.active) {
               var users = snapshot.data!.docs
                   .map((e) => UserModel.fromJson(e.data()))
                   .toList();
-              users.sort((b, a) => a.supportChatList.last.date
-                  .compareTo(b.supportChatList.last.date));
-              return users.isEmpty
-                  ? emptyChat()
-                  : Expanded(
-                      child: ListView(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        children: users.map((e) {
-                          int unread = 0;
-                          for (var element in e.supportChatList) {
-                            if (!(element.isRead)) {
-                              unread += 1;
-                            }
-                          }
-                          return ChatTile(
-                            userId: e.id,
-                            name: e.name,
-                            imageUrl: e.photoUrl,
-                            unreadCount: unread,
-                            lastMessage: e.supportChatList.last.message,
-                            lastDate: e.supportChatList.last.date,
-                          );
-                        }).toList(),
-                      ),
-                    );
-            }
-            return Expanded(
-              child: LoadingAnimationWidget.twistingDots(
-                leftDotColor: secondaryColor,
-                rightDotColor: primaryColor,
-                size: 60,
-              ),
-            );
-          });
-    }
 
-    Widget helpChat() {
-      return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-          stream: FirebaseFirestore.instance
-              .collection('users')
-              .where('helpChatList', isNotEqualTo: []).snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.active) {
-              var users = snapshot.data!.docs
-                  .map((e) => UserModel.fromJson(e.data()))
-                  .toList();
-              users.sort((b, a) =>
-                  a.helpChatList.last.date.compareTo(b.helpChatList.last.date));
-              return users.isEmpty
-                  ? emptyChat()
-                  : Expanded(
-                      child: ListView(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        children: users.map((e) {
-                          int unread = 0;
-                          for (var element in e.helpChatList) {
-                            if (!(element.isRead)) {
-                              unread += 1;
-                            }
-                          }
-                          return ChatTile(
-                            userId: e.id,
-                            name: e.name,
-                            imageUrl: e.photoUrl,
-                            unreadCount: unread,
-                            lastMessage: e.helpChatList.last.message,
-                            lastDate: e.helpChatList.last.date,
-                          );
-                        }).toList(),
-                      ),
-                    );
-            }
-            return Expanded(
-              child: LoadingAnimationWidget.twistingDots(
-                leftDotColor: secondaryColor,
-                rightDotColor: primaryColor,
-                size: 60,
-              ),
-            );
-          });
-    }
+              if (index == 0) {
+                users.removeWhere((element) => element.supportChatList.isEmpty);
+                users.sort((b, a) => a.supportChatList.last.date
+                    .compareTo(b.supportChatList.last.date));
 
-    Widget content(int index) {
-      switch (index) {
-        case 0:
-          return supportChat();
-        case 1:
-          return helpChat();
-        default:
-          return supportChat();
-      }
+                return users.isEmpty
+                    ? emptyChat()
+                    : Expanded(
+                        child: ListView(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          children: users.map((e) {
+                            int unread = 0;
+                            for (var element in e.supportChatList) {
+                              if (!(element.isRead)) {
+                                unread += 1;
+                              }
+                            }
+                            return ChatTile(
+                              userId: e.id,
+                              name: e.name,
+                              photoUrl: e.photoUrl,
+                              unreadCount: unread,
+                              lastMessage: e.supportChatList.last.message,
+                              lastDate: e.supportChatList.last.date,
+                            );
+                          }).toList(),
+                        ),
+                      );
+              } else {
+                users.removeWhere((element) => element.helpChatList.isEmpty);
+                users.sort((b, a) => a.helpChatList.last.date
+                    .compareTo(b.helpChatList.last.date));
+
+                return users.isEmpty
+                    ? emptyChat()
+                    : Expanded(
+                        child: ListView(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          children: users.map((e) {
+                            int unread = 0;
+                            for (var element in e.helpChatList) {
+                              if (!(element.isRead)) {
+                                unread += 1;
+                              }
+                            }
+                            return ChatTile(
+                              userId: e.id,
+                              name: e.name,
+                              photoUrl: e.photoUrl,
+                              unreadCount: unread,
+                              lastMessage: e.helpChatList.last.message,
+                              lastDate: e.helpChatList.last.date,
+                              isHelpMessage: true,
+                              isCompleted: e.helpChatList.last.isCompleted,
+                            );
+                          }).toList(),
+                        ),
+                      );
+              }
+            }
+            return const SizedBox();
+          });
     }
 
     return Scaffold(
@@ -252,7 +221,7 @@ class ChatListAdminPage extends StatelessWidget {
           return Column(
             children: [
               switchContent(state),
-              content(state),
+              chatList(state),
             ],
           );
         },
