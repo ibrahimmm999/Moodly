@@ -8,7 +8,9 @@ import 'package:moodly/cubit/image_file_cubit.dart';
 import 'package:moodly/models/consultant_model.dart';
 import 'package:moodly/service/image_service.dart';
 import 'package:moodly/widgets/form_consultant_article.dart';
+import 'package:moodly/cubit/change_location_cubit.dart';
 
+import '../models/province.dart';
 import '../shared/theme.dart';
 
 class DetailConsultantAdminPage extends StatelessWidget {
@@ -51,7 +53,9 @@ class DetailConsultantAdminPage extends StatelessWidget {
     ConsultantSaveCubit consultantSaveCubit =
         context.read<ConsultantSaveCubit>();
 
-    String newProvince = 'Ngayogayakarta';
+    ChangeLocationCubit changeLocationCubit =
+        context.read<ChangeLocationCubit>();
+    changeLocationCubit.change('');
 
     PreferredSizeWidget header() {
       return AppBar(
@@ -91,27 +95,31 @@ class DetailConsultantAdminPage extends StatelessWidget {
                   ),
                 );
               }
-              return IconButton(
-                onPressed: () {
-                  consultantSaveCubit.save(
-                    image: imageFileCubit.state,
-                    consultant: ConsultantModel(
-                      id: id,
-                      name: nameController.text,
-                      photoUrl: photoUrl,
-                      phone: phoneController.text,
-                      openTime: openTimeController.text,
-                      address: addressController.text,
-                      province: newProvince,
-                    ),
-                  );
-                },
-                icon: const Icon(
-                  Icons.check,
-                ),
-                iconSize: 24,
-                color: secondaryColor,
-              );
+              return BlocBuilder<ChangeLocationCubit, String>(
+                  bloc: changeLocationCubit,
+                  builder: (context, state) {
+                    return IconButton(
+                      onPressed: () {
+                        consultantSaveCubit.save(
+                          image: imageFileCubit.state,
+                          consultant: ConsultantModel(
+                            id: id,
+                            name: nameController.text,
+                            photoUrl: photoUrl,
+                            phone: phoneController.text,
+                            openTime: openTimeController.text,
+                            address: addressController.text,
+                            province: state,
+                          ),
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.check,
+                      ),
+                      iconSize: 24,
+                      color: secondaryColor,
+                    );
+                  });
             },
           )
         ],
@@ -132,6 +140,41 @@ class DetailConsultantAdminPage extends StatelessWidget {
         ),
         elevation: 0,
         automaticallyImplyLeading: false,
+      );
+    }
+
+    Widget location() {
+      return Container(
+        margin: const EdgeInsets.only(top: 12, bottom: 24),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(defaultRadius), color: white),
+        child: DropdownButtonFormField(
+          alignment: Alignment.centerLeft,
+          style: darkText.copyWith(fontSize: 12),
+          dropdownColor: white,
+          borderRadius: BorderRadius.circular(defaultRadius),
+          decoration: InputDecoration(
+              contentPadding: EdgeInsets.all(defaultRadius),
+              hintText: "Select Province",
+              border: const OutlineInputBorder(
+                borderSide: BorderSide(width: 0, style: BorderStyle.none),
+              ),
+              hintStyle: darkText.copyWith(fontSize: 12),
+              prefixIcon: Icon(
+                Icons.location_on,
+                color: primaryColor,
+              )),
+          items: Provinces()
+              .listOfProvinces
+              .map((e) => DropdownMenuItem(
+                    value: e,
+                    child: Text(e),
+                  ))
+              .toList(),
+          onChanged: (val) {
+            changeLocationCubit.change(val.toString());
+          },
+        ),
       );
     }
 
@@ -244,7 +287,10 @@ class DetailConsultantAdminPage extends StatelessWidget {
           Text('Address', style: darkText.copyWith(fontSize: 16)),
           const SizedBox(height: 10),
           inputAddress(),
-          const SizedBox(height: 20)
+          const SizedBox(height: 20),
+          Text('Province', style: darkText.copyWith(fontSize: 16)),
+          const SizedBox(height: 10),
+          location()
         ],
       );
     }
