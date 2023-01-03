@@ -53,10 +53,10 @@ class ConsultantUserPage extends StatelessWidget {
           borderRadius: BorderRadius.circular(defaultRadius),
           decoration: InputDecoration(
               contentPadding: EdgeInsets.all(defaultRadius),
+              hintText: "Select Your City...",
               border: const OutlineInputBorder(
                 borderSide: BorderSide(width: 0, style: BorderStyle.none),
               ),
-              hintText: "Select Your City...",
               hintStyle: greyText.copyWith(fontSize: 12),
               prefixIcon: Icon(
                 Icons.location_on,
@@ -137,7 +137,7 @@ class ConsultantUserPage extends StatelessWidget {
                   )
                 ],
               ),
-            )
+            ),
           ],
         ),
       );
