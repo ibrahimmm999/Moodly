@@ -16,10 +16,12 @@ class SendChatCubit extends Cubit<SendChatState> {
   ImageTool imageTool = ImageTool();
   ChatService chatService = ChatService();
 
-  void sendImageSupport(
-      {required File imageFile,
-      required String text,
-      required String userId}) async {
+  void sendImageSupport({
+    required File imageFile,
+    required String text,
+    required String userId,
+    required bool isUser,
+  }) async {
     try {
       emit(SendChatLoading());
       await imageTool.uploadImage(imageFile, 'chatImageSupport');
@@ -28,6 +30,7 @@ class SendChatCubit extends Cubit<SendChatState> {
           date: Timestamp.now(),
           message: text,
           imageUrl: imageTool.imageUrl!,
+          isUser: isUser,
         ),
         userId,
       );
@@ -37,10 +40,12 @@ class SendChatCubit extends Cubit<SendChatState> {
     }
   }
 
-  void sendImageHelp(
-      {required File imageFile,
-      required String text,
-      required String userId}) async {
+  void sendImageHelp({
+    required File imageFile,
+    required String text,
+    required String userId,
+    required bool isUser,
+  }) async {
     try {
       emit(SendChatLoading());
       await imageTool.uploadImage(imageFile, 'chatImageHelp');
@@ -49,6 +54,7 @@ class SendChatCubit extends Cubit<SendChatState> {
           date: Timestamp.now(),
           message: text,
           imageUrl: imageTool.imageUrl!,
+          isUser: isUser,
         ),
         userId,
       );

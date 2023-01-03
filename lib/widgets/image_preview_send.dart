@@ -13,9 +13,13 @@ import 'package:photo_view/photo_view.dart';
 
 class ImagePreviewSend extends StatelessWidget {
   const ImagePreviewSend(
-      {required this.isSupportChat, required this.imageFile, super.key});
+      {required this.isSupportChat,
+      required this.imageFile,
+      this.isUser = true,
+      super.key});
 
   final bool isSupportChat;
+  final bool isUser;
   final File imageFile;
 
   @override
@@ -70,7 +74,8 @@ class ImagePreviewSend extends StatelessWidget {
         bloc: imageFileCubit,
         builder: (context, state) {
           return PhotoView(
-            imageProvider: FileImage(state!),
+            imageProvider:
+                state == null ? FileImage(imageFile) : FileImage(state),
           );
         },
       );
@@ -117,12 +122,14 @@ class ImagePreviewSend extends StatelessWidget {
                       imageFile: imageFileCubit.state!,
                       text: chatController.text,
                       userId: userId,
+                      isUser: isUser,
                     );
                   } else {
                     sendChatCubit.sendImageHelp(
                       imageFile: imageFileCubit.state!,
                       text: chatController.text,
                       userId: userId,
+                      isUser: isUser,
                     );
                   }
                   chatController.clear();

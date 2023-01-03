@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:moodly/service/time_converter.dart';
 import 'package:moodly/shared/theme.dart';
 import 'package:moodly/widgets/image_preview.dart';
 
@@ -90,7 +91,7 @@ class ChatBubble extends StatelessWidget {
                             )
                           : const SizedBox(),
                       Text(
-                        '12.00',
+                        ConvertTime().convertToAgo(date),
                         style: whiteText.copyWith(
                           fontWeight: regular,
                           fontSize: 8,

@@ -169,7 +169,7 @@ class ChatListAdminPage extends StatelessWidget {
                             return ChatTile(
                               userId: e.id,
                               name: e.name,
-                              imageUrl: e.photoUrl,
+                              photoUrl: e.photoUrl,
                               unreadCount: unread,
                               lastMessage: e.supportChatList.last.message,
                               lastDate: e.supportChatList.last.date,
@@ -197,7 +197,7 @@ class ChatListAdminPage extends StatelessWidget {
                             return ChatTile(
                               userId: e.id,
                               name: e.name,
-                              imageUrl: e.photoUrl,
+                              photoUrl: e.photoUrl,
                               unreadCount: unread,
                               lastMessage: e.helpChatList.last.message,
                               lastDate: e.helpChatList.last.date,

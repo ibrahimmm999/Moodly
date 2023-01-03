@@ -10,7 +10,7 @@ import 'package:moodly/shared/theme.dart';
 class ChatTile extends StatelessWidget {
   const ChatTile(
       {required this.name,
-      required this.imageUrl,
+      required this.photoUrl,
       required this.userId,
       required this.lastMessage,
       required this.lastDate,
@@ -20,7 +20,7 @@ class ChatTile extends StatelessWidget {
       Key? key})
       : super(key: key);
 
-  final String imageUrl;
+  final String photoUrl;
   final String name;
   final String userId;
   final String lastMessage;
@@ -38,7 +38,14 @@ class ChatTile extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const ChatAdminPage()),
+          MaterialPageRoute(
+            builder: (context) => ChatAdminPage(
+              isSupportChat: !isHelpMessage,
+              name: name,
+              photoUrl: photoUrl,
+              userId: userId,
+            ),
+          ),
         );
       },
       child: Container(
@@ -51,11 +58,17 @@ class ChatTile extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(100),
-                  child: Image.asset(
-                    'assets/profile_default.png',
-                    width: 54,
-                    fit: BoxFit.cover,
-                  ),
+                  child: photoUrl.isEmpty
+                      ? Image.asset(
+                          'assets/profile_default.png',
+                          width: 54,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.network(
+                          photoUrl,
+                          width: 54,
+                          fit: BoxFit.cover,
+                        ),
                 ),
                 const SizedBox(
                   width: 12,
