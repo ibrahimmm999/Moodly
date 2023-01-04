@@ -9,8 +9,10 @@ import 'package:moodly/cubit/chat_input_cubit.dart';
 import 'package:moodly/cubit/consultant_save_cubit.dart';
 import 'package:moodly/cubit/image_file_cubit.dart';
 import 'package:moodly/cubit/image_url_cubit.dart';
+import 'package:moodly/cubit/question_form_cubit.dart';
 import 'package:moodly/cubit/send_chat_cubit.dart';
 import 'package:moodly/cubit/status_help_cubit.dart';
+import 'package:moodly/cubit/tracking_cubit.dart';
 import 'package:moodly/cubit/user_update_cubit.dart';
 import 'package:moodly/pages_admin/articles_admin_page.dart';
 import 'package:moodly/pages_admin/chat_list_admin_page.dart';
@@ -50,6 +52,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => SendChatCubit()),
         BlocProvider(create: (context) => StatusHelpCubit()),
         BlocProvider(create: (context) => ChangeLocationCubit()),
+        BlocProvider(create: (context) => QuestionFormCubit()),
+        BlocProvider(create: (context) => TrackingCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -64,7 +68,7 @@ class MyApp extends StatelessWidget {
           '/home-admin': (context) => const HomeAdminPage(),
           '/chat-list-admin': (context) => const ChatListAdminPage(),
           '/consultant-admin': (context) => const ConsultantsAdminPage(),
-          '/tracking-admin': (context) => TrackingQuestionPage(),
+          '/tracking-admin': (context) => const TrackingQuestionPage(),
           '/article-admin': (context) => const ArticlesAdminPage(),
         },
       ),

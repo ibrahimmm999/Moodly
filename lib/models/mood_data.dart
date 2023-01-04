@@ -13,7 +13,7 @@ class MoodDataModel extends Equatable {
   factory MoodDataModel.fromJson(Map<String, dynamic> json) {
     return MoodDataModel(
       date: json['date'],
-      score: json['score'],
+      score: json['score'].toDouble(),
     );
   }
 
