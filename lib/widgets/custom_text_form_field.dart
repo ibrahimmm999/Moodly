@@ -32,7 +32,7 @@ class CustomTextFormField extends StatelessWidget {
       builder: (context, state) {
         return TextFormField(
             controller: controller,
-            obscureText: state,
+            obscureText: isPassword ? state : false,
             cursorColor: primaryColor,
             decoration: InputDecoration(
                 suffixIcon: Visibility(
