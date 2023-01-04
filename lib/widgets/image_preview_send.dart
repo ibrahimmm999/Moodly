@@ -58,8 +58,17 @@ class ImagePreviewSend extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () async {
-              await imageTool.cropImage(imageFile: imageFile);
-              imageFileCubit.changeImageFile(imageTool.croppedImageFile);
+              try {
+                await imageTool.cropImage(imageFile: imageFile);
+                imageFileCubit.changeImageFile(imageTool.croppedImageFile);
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: primaryColor,
+                    content: Text(e.toString()),
+                  ),
+                );
+              }
             },
             icon: const Icon(Icons.crop),
             color: primaryColor,
@@ -93,7 +102,7 @@ class ImagePreviewSend extends StatelessWidget {
               if (state is SendChatSuccess) {
                 Navigator.pop(context);
               } else if (state is SendChatFailed) {
-                ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     backgroundColor: primaryColor,

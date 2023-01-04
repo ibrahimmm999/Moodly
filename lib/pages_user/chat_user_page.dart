@@ -134,15 +134,24 @@ class ChatUserPage extends StatelessWidget {
           ChatInput(
             chatController: chatController,
             onTapImage: () async {
-              final navigator = Navigator.of(context);
-              await imageTool.pickImageNotCrop();
-              if (imageTool.imagetFile != null) {
-                navigator.push(
-                  MaterialPageRoute(
-                    builder: (context) => ImagePreviewSend(
-                      imageFile: imageTool.imagetFile!,
-                      isSupportChat: isSupportChat,
+              try {
+                final navigator = Navigator.of(context);
+                await imageTool.pickImageNotCrop();
+                if (imageTool.imagetFile != null) {
+                  navigator.push(
+                    MaterialPageRoute(
+                      builder: (context) => ImagePreviewSend(
+                        imageFile: imageTool.imagetFile!,
+                        isSupportChat: isSupportChat,
+                      ),
                     ),
+                  );
+                }
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: primaryColor,
+                    content: Text(e.toString()),
                   ),
                 );
               }
