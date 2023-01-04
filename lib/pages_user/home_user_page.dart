@@ -318,46 +318,70 @@ class HomeUserPage extends StatelessWidget {
               'Weekly Mood',
               style: darkText.copyWith(fontWeight: medium, fontSize: 14),
             ),
-            Container(
-              padding: const EdgeInsets.all(24),
-              margin: const EdgeInsets.only(top: 8),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(defaultRadius),
-                color: white,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  BarChart(
-                    value: 0.5,
-                    time: Timestamp.now(),
+            StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+              stream: FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(userId)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.active) {
+                  var moodList = UserModel.fromJson(
+                          snapshot.data!.data() as Map<String, dynamic>)
+                      .moodDataList;
+
+                  List<MoodDataModel> weekly = [];
+                  var date = DateTime.now();
+                  date = DateTime(date.year, date.month, date.day);
+                  for (var i = 0; i < 7; i++) {
+                    var contain = moodList.where(
+                      (element) {
+                        var elmtDate = element.date.toDate();
+                        return DateTime(
+                                elmtDate.year, elmtDate.month, elmtDate.day) ==
+                            date;
+                      },
+                    );
+
+                    if (contain.isNotEmpty) {
+                      weekly.add(contain.first);
+                    } else {
+                      weekly.add(MoodDataModel(
+                          date: Timestamp.fromDate(date), score: 0));
+                    }
+
+                    var before = DateTime(date.year, date.month, date.day - 1);
+                    date = before;
+                  }
+
+                  return Container(
+                    padding: const EdgeInsets.all(24),
+                    margin: const EdgeInsets.only(top: 8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(defaultRadius),
+                      color: white,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: weekly
+                          .map((e) => BarChart(
+                                value: e.score / 100,
+                                time: e.date,
+                              ))
+                          .toList()
+                          .reversed
+                          .toList(),
+                    ),
+                  );
+                }
+
+                return Center(
+                  child: LoadingAnimationWidget.twistingDots(
+                    leftDotColor: secondaryColor,
+                    rightDotColor: primaryColor,
+                    size: 24,
                   ),
-                  BarChart(
-                    value: 0.5,
-                    time: Timestamp.now(),
-                  ),
-                  BarChart(
-                    value: 1,
-                    time: Timestamp.now(),
-                  ),
-                  BarChart(
-                    value: 0.75,
-                    time: Timestamp.now(),
-                  ),
-                  BarChart(
-                    value: 1,
-                    time: Timestamp.now(),
-                  ),
-                  BarChart(
-                    value: 0.25,
-                    time: Timestamp.now(),
-                  ),
-                  BarChart(
-                    value: 0.5,
-                    time: Timestamp.now(),
-                  ),
-                ],
-              ),
+                );
+              },
             ),
           ],
         ),
