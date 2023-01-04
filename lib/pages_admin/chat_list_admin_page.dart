@@ -151,8 +151,19 @@ class ChatListAdminPage extends StatelessWidget {
 
               if (index == 0) {
                 users.removeWhere((element) => element.supportChatList.isEmpty);
-                users.sort((b, a) => a.supportChatList.last.date
-                    .compareTo(b.supportChatList.last.date));
+                users.sort((a, b) {
+                  if (a.supportChatList.last.isRead !=
+                      b.supportChatList.last.isRead) {
+                    if (a.supportChatList.last.isRead) {
+                      return 1;
+                    } else {
+                      return -1;
+                    }
+                  } else {
+                    return b.supportChatList.last.date
+                        .compareTo(a.supportChatList.last.date);
+                  }
+                });
 
                 return users.isEmpty
                     ? emptyChat()
@@ -179,9 +190,28 @@ class ChatListAdminPage extends StatelessWidget {
                       );
               } else {
                 users.removeWhere((element) => element.helpChatList.isEmpty);
-                users.sort((b, a) => a.helpChatList.last.date
-                    .compareTo(b.helpChatList.last.date));
-
+                users.sort((a, b) {
+                  if (a.helpChatList.last.isCompleted !=
+                      b.helpChatList.last.isCompleted) {
+                    if (a.helpChatList.last.isCompleted) {
+                      return 1;
+                    } else {
+                      return -1;
+                    }
+                  } else {
+                    if (a.helpChatList.last.isRead !=
+                        b.helpChatList.last.isRead) {
+                      if (a.helpChatList.last.isRead) {
+                        return 1;
+                      } else {
+                        return -1;
+                      }
+                    } else {
+                      return b.helpChatList.last.date
+                          .compareTo(a.helpChatList.last.date);
+                    }
+                  }
+                });
                 return users.isEmpty
                     ? emptyChat()
                     : Expanded(

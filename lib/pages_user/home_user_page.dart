@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:moodly/cubit/auth_cubit.dart';
 import 'package:moodly/models/article_model.dart';
+import 'package:moodly/models/mood_data.dart';
 import 'package:moodly/models/user_model.dart';
 import 'package:moodly/pages_user/chat_user_page.dart';
 import 'package:moodly/pages_user/edit_profile_page.dart';
@@ -196,94 +197,102 @@ class HomeUserPage extends StatelessWidget {
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.active) {
-                  var moodLast = UserModel.fromJson(
+                  bool isDailyTracking;
+                  MoodDataModel moodLast;
+                  var moodList = UserModel.fromJson(
                           snapshot.data!.data() as Map<String, dynamic>)
-                      .moodDataList
-                      .last;
-                  var isDailyTracking =
-                      DateFormat('dd-MM-yyyy').format(moodLast.date.toDate()) ==
-                          DateFormat('dd-MM-yyyy').format(DateTime.now());
+                      .moodDataList;
 
-                  return isDailyTracking
-                      ? Container(
-                          padding: const EdgeInsets.all(24),
-                          margin: const EdgeInsets.only(top: 8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(defaultRadius),
-                            color: white,
-                          ),
-                          child: Row(
+                  if (moodList.isNotEmpty) {
+                    isDailyTracking = DateFormat('dd-MM-yyyy')
+                            .format(moodList.last.date.toDate()) ==
+                        DateFormat('dd-MM-yyyy').format(DateTime.now());
+                  } else {
+                    isDailyTracking = false;
+                  }
+
+                  if (isDailyTracking) {
+                    moodLast = moodList.last;
+                    return Container(
+                      padding: const EdgeInsets.all(24),
+                      margin: const EdgeInsets.only(top: 8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(defaultRadius),
+                        color: white,
+                      ),
+                      child: Row(
+                        children: [
+                          Column(
                             children: [
-                              Column(
-                                children: [
-                                  Text(
-                                    'Score Today',
-                                    style: secondaryColorText.copyWith(
-                                      fontSize: 12,
-                                      fontWeight: medium,
-                                    ),
-                                  ),
-                                  Text(
-                                    '${moodLast.score.round()}%',
-                                    style: primaryColorText.copyWith(
-                                      fontSize: 32,
-                                      fontWeight: bold,
-                                    ),
-                                  )
-                                ],
+                              Text(
+                                'Score Today',
+                                style: secondaryColorText.copyWith(
+                                  fontSize: 12,
+                                  fontWeight: medium,
+                                ),
                               ),
-                              Expanded(
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'Your feel look bad',
-                                          style: darkText.copyWith(
-                                            fontSize: 14,
-                                            fontWeight: medium,
-                                          ),
-                                        ),
-                                        Image.asset(
-                                          'assets/emote_bad.png',
-                                          width: 32,
-                                        )
-                                      ],
-                                    ),
-                                    moodLast.score < 25
-                                        ? SizedBox(
-                                            width: 120,
-                                            child: TextButton(
-                                              onPressed: () {
-                                                Navigator.pushNamed(context,
-                                                    '/consultant-user');
-                                              },
-                                              style: TextButton.styleFrom(
-                                                backgroundColor: dark,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                ),
-                                              ),
-                                              child: Text(
-                                                'Find Consultant',
-                                                style: whiteText.copyWith(
-                                                  fontSize: 12,
-                                                  fontWeight: medium,
-                                                ),
-                                              ),
-                                            ),
-                                          )
-                                        : const SizedBox(),
-                                  ],
+                              Text(
+                                '${moodLast.score.round()}%',
+                                style: primaryColorText.copyWith(
+                                  fontSize: 32,
+                                  fontWeight: bold,
                                 ),
                               )
                             ],
                           ),
-                        )
-                      : dailyMoodEmpty();
+                          Expanded(
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Your feel look bad',
+                                      style: darkText.copyWith(
+                                        fontSize: 14,
+                                        fontWeight: medium,
+                                      ),
+                                    ),
+                                    Image.asset(
+                                      'assets/emote_bad.png',
+                                      width: 32,
+                                    )
+                                  ],
+                                ),
+                                moodLast.score < 25
+                                    ? SizedBox(
+                                        width: 120,
+                                        child: TextButton(
+                                          onPressed: () {
+                                            Navigator.pushNamed(
+                                                context, '/consultant-user');
+                                          },
+                                          style: TextButton.styleFrom(
+                                            backgroundColor: dark,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                          ),
+                                          child: Text(
+                                            'Find Consultant',
+                                            style: whiteText.copyWith(
+                                              fontSize: 12,
+                                              fontWeight: medium,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : const SizedBox(),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  } else {
+                    return dailyMoodEmpty();
+                  }
                 }
                 return Center(
                   child: LoadingAnimationWidget.twistingDots(

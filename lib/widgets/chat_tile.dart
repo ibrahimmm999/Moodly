@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moodly/cubit/status_help_cubit.dart';
 import 'package:moodly/pages_admin/chat_admin_page.dart';
 import 'package:moodly/service/chat_service.dart';
 import 'package:moodly/service/time_converter.dart';
@@ -31,8 +29,6 @@ class ChatTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    StatusHelpCubit statusHelpCubit = context.read<StatusHelpCubit>();
-    statusHelpCubit.changeStatus(isCompleted);
     ChatService chatService = ChatService();
 
     return GestureDetector(
@@ -93,38 +89,44 @@ class ChatTile extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                       isHelpMessage
-                          ? BlocBuilder<StatusHelpCubit, bool>(
-                              bloc: statusHelpCubit,
-                              builder: (context, state) {
-                                return Material(
-                                  color: state ? secondaryColor : primaryColor,
-                                  borderRadius:
-                                      BorderRadius.circular(defaultRadius),
-                                  child: InkWell(
-                                    onTap: () {
-                                      statusHelpCubit.changeStatus(!state);
-                                      ChatService()
-                                          .updateHelpStatus(userId, !state);
-                                    },
-                                    borderRadius:
-                                        BorderRadius.circular(defaultRadius),
-                                    child: Container(
-                                      padding: const EdgeInsets.all(4),
-                                      child: state
-                                          ? Text(
-                                              'Completed',
-                                              style: whiteText.copyWith(
-                                                  fontSize: 8),
-                                            )
-                                          : Text(
-                                              'Uncompleted',
-                                              style: whiteText.copyWith(
-                                                  fontSize: 8),
-                                            ),
-                                    ),
-                                  ),
-                                );
-                              },
+                          ? Material(
+                              color:
+                                  isCompleted ? secondaryColor : primaryColor,
+                              borderRadius:
+                                  BorderRadius.circular(defaultRadius),
+                              child: InkWell(
+                                onTap: () async {
+                                  try {
+                                    await ChatService()
+                                        .updateHelpStatus(userId, !isCompleted);
+                                  } catch (e) {
+                                    ScaffoldMessenger.of(context)
+                                        .hideCurrentSnackBar();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(e.toString()),
+                                        backgroundColor: primaryColor,
+                                      ),
+                                    );
+                                  }
+                                },
+                                borderRadius:
+                                    BorderRadius.circular(defaultRadius),
+                                child: Container(
+                                  padding: const EdgeInsets.all(4),
+                                  child: isCompleted
+                                      ? Text(
+                                          'Completed',
+                                          style:
+                                              whiteText.copyWith(fontSize: 8),
+                                        )
+                                      : Text(
+                                          'Uncompleted',
+                                          style:
+                                              whiteText.copyWith(fontSize: 8),
+                                        ),
+                                ),
+                              ),
                             )
                           : const SizedBox(),
                     ],

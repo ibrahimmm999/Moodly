@@ -46,17 +46,23 @@ class ChatAdminPage extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(100),
-              child: Image.asset(
-                'assets/profile_default.png',
-                width: 54,
-                fit: BoxFit.cover,
-              ),
+              child: photoUrl.isEmpty
+                  ? Image.asset(
+                      'assets/profile_default.png',
+                      width: 54,
+                      fit: BoxFit.cover,
+                    )
+                  : Image.network(
+                      photoUrl,
+                      width: 54,
+                      fit: BoxFit.cover,
+                    ),
             ),
             const SizedBox(
               width: 12,
             ),
             Text(
-              'Budiman',
+              name,
               style: primaryColorText.copyWith(
                 fontSize: 16,
                 fontWeight: medium,
