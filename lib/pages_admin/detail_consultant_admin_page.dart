@@ -171,6 +171,7 @@ class DetailConsultantAdminPage extends StatelessWidget {
                     child: Text(e),
                   ))
               .toList(),
+          value: province,
           onChanged: (val) {
             changeLocationCubit.change(val.toString());
           },
