@@ -36,7 +36,7 @@ class SignInPage extends StatelessWidget {
         icon: Icon(Icons.lock, color: primaryColor),
         controller: passwordController,
         hintText: 'Your Password',
-        obscureText: true,
+        isPassword: true,
         radiusBorder: defaultRadius,
       );
     }

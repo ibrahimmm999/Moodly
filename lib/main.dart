@@ -9,6 +9,7 @@ import 'package:moodly/cubit/chat_input_cubit.dart';
 import 'package:moodly/cubit/consultant_save_cubit.dart';
 import 'package:moodly/cubit/image_file_cubit.dart';
 import 'package:moodly/cubit/image_url_cubit.dart';
+import 'package:moodly/cubit/obscure_form_cubit.dart';
 import 'package:moodly/cubit/question_form_cubit.dart';
 import 'package:moodly/cubit/send_chat_cubit.dart';
 import 'package:moodly/cubit/status_help_cubit.dart';
@@ -54,6 +55,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => ChangeLocationCubit()),
         BlocProvider(create: (context) => QuestionFormCubit()),
         BlocProvider(create: (context) => TrackingCubit()),
+        BlocProvider(create: (context) => ObscureFormCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

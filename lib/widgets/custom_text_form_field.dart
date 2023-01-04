@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moodly/cubit/obscure_form_cubit.dart';
 
 import '../../shared/theme.dart';
 
@@ -7,7 +9,7 @@ import '../../shared/theme.dart';
 class CustomTextFormField extends StatelessWidget {
   final Icon icon;
   final String hintText;
-  final bool obscureText;
+  final bool isPassword;
   final TextEditingController controller;
   final double radiusBorder;
 
@@ -15,21 +17,42 @@ class CustomTextFormField extends StatelessWidget {
       {Key? key,
       required this.icon,
       required this.radiusBorder,
+      this.isPassword = false,
       this.hintText = '',
-      this.obscureText = false,
       required this.controller})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        TextFormField(
+    ObscureFormCubit obscureFormCubit = context.read<ObscureFormCubit>();
+    obscureFormCubit.change(true);
+
+    return BlocBuilder<ObscureFormCubit, bool>(
+      bloc: obscureFormCubit,
+      builder: (context, state) {
+        return TextFormField(
             controller: controller,
-            obscureText: obscureText,
+            obscureText: state,
             cursorColor: primaryColor,
             decoration: InputDecoration(
+                suffixIcon: Visibility(
+                  visible: isPassword,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(100),
+                    onTap: () {
+                      obscureFormCubit.change(!state);
+                    },
+                    child: state
+                        ? Icon(
+                            Icons.visibility_off,
+                            color: grey,
+                          )
+                        : Icon(
+                            Icons.visibility,
+                            color: primaryColor,
+                          ),
+                  ),
+                ),
                 prefixIcon: icon,
                 hintText: hintText,
                 hintStyle: greyText,
@@ -40,8 +63,8 @@ class CustomTextFormField extends StatelessWidget {
                     borderSide: BorderSide(color: grey)),
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(radiusBorder),
-                    borderSide: BorderSide(color: primaryColor)))),
-      ],
+                    borderSide: BorderSide(color: primaryColor))));
+      },
     );
   }
 }
