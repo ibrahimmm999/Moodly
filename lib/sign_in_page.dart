@@ -84,70 +84,67 @@ class SignInPage extends StatelessWidget {
     }
 
     return Scaffold(
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Container(
-            margin: EdgeInsets.all(defaultMargin),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(
-                "Login",
-                style: primaryColorText.copyWith(
-                    fontSize: 24, fontWeight: semibold),
-              ),
-              Text(
-                "Sign In to Countinue",
-                style: greyText.copyWith(fontSize: 14),
-              ),
-              const SizedBox(
-                height: 70,
-              ),
-              Text(
-                "Email Address",
-                style: darkText.copyWith(fontSize: 16, fontWeight: medium),
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              inputEmail(),
-              const SizedBox(
-                height: 20,
-              ),
-              Text(
-                "Password",
-                style: darkText.copyWith(fontSize: 16, fontWeight: medium),
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              inputPassword(),
-              const SizedBox(
-                height: 30,
-              ),
-              submitButton(),
-              const SizedBox(
-                height: 200,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Don't have an account?",
-                    style: greyText.copyWith(fontSize: 12),
-                  ),
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/sign-up');
-                      },
-                      child: Text(
-                        "Sign Up",
-                        style: secondaryColorText.copyWith(
-                            fontSize: 12, fontWeight: medium),
-                      ))
-                ],
-              )
-            ]),
-          ),
+      body: SafeArea(
+        child: ListView(
+          padding: EdgeInsets.all(defaultMargin),
+          children: [
+            Text(
+              "Login",
+              style:
+                  primaryColorText.copyWith(fontSize: 24, fontWeight: semibold),
+            ),
+            Text(
+              "Sign In to Countinue",
+              style: greyText.copyWith(fontSize: 14),
+            ),
+            const SizedBox(
+              height: 70,
+            ),
+            Text(
+              "Email Address",
+              style: darkText.copyWith(fontSize: 16, fontWeight: medium),
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            inputEmail(),
+            const SizedBox(
+              height: 20,
+            ),
+            Text(
+              "Password",
+              style: darkText.copyWith(fontSize: 16, fontWeight: medium),
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            inputPassword(),
+            const SizedBox(
+              height: 30,
+            ),
+            submitButton(),
+            const SizedBox(
+              height: 200,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Don't have an account?",
+                  style: greyText.copyWith(fontSize: 12),
+                ),
+                TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/sign-up');
+                    },
+                    child: Text(
+                      "Sign Up",
+                      style: secondaryColorText.copyWith(
+                          fontSize: 12, fontWeight: medium),
+                    ))
+              ],
+            )
+          ],
         ),
       ),
     );
