@@ -29,8 +29,6 @@ class ChatTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ChatService chatService = ChatService();
-
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -44,7 +42,6 @@ class ChatTile extends StatelessWidget {
             ),
           ),
         );
-        chatService.updateRead(userId, isHelpMessage);
       },
       child: Container(
         margin: const EdgeInsets.only(

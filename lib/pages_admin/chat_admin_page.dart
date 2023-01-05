@@ -39,6 +39,7 @@ class ChatAdminPage extends StatelessWidget {
         backgroundColor: white,
         leading: IconButton(
           onPressed: () {
+            chatService.updateRead(userId, !isSupportChat);
             Navigator.pop(context);
           },
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
