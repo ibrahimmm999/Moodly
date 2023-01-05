@@ -16,7 +16,6 @@ class MoodDataModel extends Equatable {
       score: json['score'].toDouble(),
     );
   }
-
   Map<String, dynamic> toJson() => {
         'date': date,
         'score': score,

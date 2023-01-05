@@ -25,6 +25,7 @@ import 'package:moodly/pages_user/consultant_user_page.dart';
 import 'package:moodly/pages_user/home_user_page.dart';
 import 'package:moodly/pages_user/tracking_page.dart';
 
+import 'cubit/answer_tracking_cubit.dart';
 import 'sign_up_page.dart';
 import 'splash_screen.dart';
 import 'sign_in_page.dart';
@@ -55,6 +56,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => ChangeLocationCubit()),
         BlocProvider(create: (context) => QuestionFormCubit()),
         BlocProvider(create: (context) => TrackingCubit()),
+        BlocProvider(create: (context) => AnswerTrackingCubit()),
         BlocProvider(create: (context) => ObscureFormCubit()),
       ],
       child: MaterialApp(
