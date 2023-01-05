@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -106,6 +108,12 @@ class ChatUserPage extends StatelessWidget {
                   statusHelpCubit.changeStatus(chats.last.isCompleted);
                 }
               }
+              Timer(
+                Duration.zero,
+                () => scrollController.jumpTo(
+                  scrollController.position.maxScrollExtent,
+                ),
+              );
               return ListView(
                 controller: scrollController,
                 padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
@@ -185,10 +193,12 @@ class ChatUserPage extends StatelessWidget {
                   ),
                 );
               }
-              await scrollController.animateTo(
+              Timer(
+                Duration.zero,
+                () => scrollController.jumpTo(
                   scrollController.position.maxScrollExtent,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeOut);
+                ),
+              );
               chatController.clear();
             },
           ),

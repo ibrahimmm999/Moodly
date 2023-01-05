@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -94,6 +96,12 @@ class ChatAdminPage extends StatelessWidget {
                         snapshot.data!.data() as Map<String, dynamic>)
                     .helpChatList;
               }
+              Timer(
+                Duration.zero,
+                () => scrollController.jumpTo(
+                  scrollController.position.maxScrollExtent,
+                ),
+              );
               return ListView(
                 controller: scrollController,
                 padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
@@ -176,10 +184,12 @@ class ChatAdminPage extends StatelessWidget {
                   ),
                 );
               }
-              await scrollController.animateTo(
+              Timer(
+                Duration.zero,
+                () => scrollController.jumpTo(
                   scrollController.position.maxScrollExtent,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeOut);
+                ),
+              );
               chatController.clear();
             },
           ),
