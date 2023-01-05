@@ -22,6 +22,7 @@ class ChatUserPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextEditingController chatController = TextEditingController(text: '');
+    ScrollController scrollController = ScrollController();
     String userId = FirebaseAuth.instance.currentUser!.uid;
     ChatService chatService = ChatService();
     ImageTool imageTool = ImageTool();
@@ -106,6 +107,7 @@ class ChatUserPage extends StatelessWidget {
                 }
               }
               return ListView(
+                controller: scrollController,
                 padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
                 children: chats
                     .map((e) => ChatBubble(
@@ -162,7 +164,7 @@ class ChatUserPage extends StatelessWidget {
                   await chatService.addSupportChat(
                     SupportChatModel(
                       date: Timestamp.now(),
-                      message: chatController.text,
+                      message: chatController.text.trim(),
                     ),
                     userId,
                   );
@@ -170,7 +172,7 @@ class ChatUserPage extends StatelessWidget {
                   await chatService.addHelpChat(
                     HelpChatModel(
                       date: Timestamp.now(),
-                      message: chatController.text,
+                      message: chatController.text.trim(),
                     ),
                     userId,
                   );
@@ -183,8 +185,11 @@ class ChatUserPage extends StatelessWidget {
                   ),
                 );
               }
+              await scrollController.animateTo(
+                  scrollController.position.maxScrollExtent,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeOut);
               chatController.clear();
-              FocusManager.instance.primaryFocus?.unfocus();
             },
           ),
         ],

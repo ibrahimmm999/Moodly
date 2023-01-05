@@ -82,7 +82,9 @@ class ChatTile extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        lastMessage.replaceAll("\n", " "),
+                        lastMessage.isNotEmpty
+                            ? lastMessage.replaceAll("\n", " ")
+                            : "Image has been received",
                         style: greyText.copyWith(
                           fontWeight: light,
                         ),

@@ -27,6 +27,7 @@ class ChatAdminPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextEditingController chatController = TextEditingController(text: '');
+    ScrollController scrollController = ScrollController();
     ChatService chatService = ChatService();
     ImageTool imageTool = ImageTool();
 
@@ -94,6 +95,7 @@ class ChatAdminPage extends StatelessWidget {
                     .helpChatList;
               }
               return ListView(
+                controller: scrollController,
                 padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
                 children: chats
                     .map((e) => ChatBubble(
@@ -151,7 +153,7 @@ class ChatAdminPage extends StatelessWidget {
                   await chatService.addSupportChat(
                     SupportChatModel(
                       date: Timestamp.now(),
-                      message: chatController.text,
+                      message: chatController.text.trim(),
                       isUser: false,
                     ),
                     userId,
@@ -160,7 +162,7 @@ class ChatAdminPage extends StatelessWidget {
                   await chatService.addHelpChat(
                     HelpChatModel(
                       date: Timestamp.now(),
-                      message: chatController.text,
+                      message: chatController.text.trim(),
                       isUser: false,
                     ),
                     userId,
@@ -174,8 +176,11 @@ class ChatAdminPage extends StatelessWidget {
                   ),
                 );
               }
+              await scrollController.animateTo(
+                  scrollController.position.maxScrollExtent,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeOut);
               chatController.clear();
-              FocusManager.instance.primaryFocus?.unfocus();
             },
           ),
         ],

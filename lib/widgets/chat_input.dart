@@ -61,7 +61,7 @@ class ChatInput extends StatelessWidget {
           BlocBuilder<ChatInputCubit, String>(
             bloc: chatInputCubit,
             builder: (context, state) {
-              return (state.isNotEmpty || isSendImage)
+              return (state.replaceAll(' ', '').isNotEmpty || isSendImage)
                   ? Material(
                       color: secondaryColor,
                       borderRadius: BorderRadius.circular(defaultRadius),

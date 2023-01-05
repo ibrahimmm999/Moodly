@@ -129,14 +129,14 @@ class ImagePreviewSend extends StatelessWidget {
                   if (isSupportChat) {
                     sendChatCubit.sendImageSupport(
                       imageFile: imageFileCubit.state!,
-                      text: chatController.text,
+                      text: chatController.text.trim(),
                       userId: userId,
                       isUser: isUser,
                     );
                   } else {
                     sendChatCubit.sendImageHelp(
                       imageFile: imageFileCubit.state!,
-                      text: chatController.text,
+                      text: chatController.text.trim(),
                       userId: userId,
                       isUser: isUser,
                     );
