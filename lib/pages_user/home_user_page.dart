@@ -247,14 +247,26 @@ class HomeUserPage extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      'Your feel look bad',
+                                      moodLast.score < 25
+                                          ? 'Your feel look bad'
+                                          : moodLast.score < 50
+                                              ? 'Your feel look not bad'
+                                              : moodLast.score < 75
+                                                  ? 'Your feel look good'
+                                                  : 'Your feel look happy',
                                       style: darkText.copyWith(
                                         fontSize: 14,
                                         fontWeight: medium,
                                       ),
                                     ),
                                     Image.asset(
-                                      'assets/emote_bad.png',
+                                      moodLast.score < 25
+                                          ? 'assets/emote_bad.png'
+                                          : moodLast.score < 50
+                                              ? 'assets/emote_not_bad.png'
+                                              : moodLast.score < 75
+                                                  ? 'assets/emote_good.png'
+                                                  : 'assets/emote_happy.png',
                                       width: 32,
                                     )
                                   ],
@@ -264,18 +276,24 @@ class HomeUserPage extends StatelessWidget {
                                         width: 120,
                                         child: TextButton(
                                           onPressed: () {
-                                            Navigator.pushNamed(
-                                                context, '/consultant-user');
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const ChatUserPage(
+                                                        isSupportChat: false),
+                                              ),
+                                            );
                                           },
                                           style: TextButton.styleFrom(
-                                            backgroundColor: dark,
+                                            backgroundColor: primaryColor,
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(12),
                                             ),
                                           ),
                                           child: Text(
-                                            'Find Consultant',
+                                            'Go to help center',
                                             style: whiteText.copyWith(
                                               fontSize: 12,
                                               fontWeight: medium,
