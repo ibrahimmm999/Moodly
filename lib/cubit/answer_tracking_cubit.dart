@@ -2,6 +2,11 @@ import 'package:bloc/bloc.dart';
 
 class AnswerTrackingCubit extends Cubit<List<String>> {
   AnswerTrackingCubit() : super([]);
+
+  void init() {
+    emit(List.from([]));
+  }
+
   void selectAnswer(String answer, int i) {
     if (state.isEmpty) {
       state.add(answer);

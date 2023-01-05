@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:moodly/cubit/answer_tracking_cubit.dart';
+import 'package:moodly/cubit/tracking_cubit.dart';
 import 'package:moodly/models/mood_data.dart';
-import 'package:moodly/service/tracking_service.dart';
 import 'package:moodly/widgets/custom_button.dart';
 import '../shared/theme.dart';
 
@@ -14,7 +14,10 @@ class TrackingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String userId = FirebaseAuth.instance.currentUser!.uid;
-    print(userId);
+    TrackingCubit trackingCubit = context.read<TrackingCubit>();
+
+    context.read<AnswerTrackingCubit>().init();
+
     PreferredSizeWidget header() {
       return AppBar(
         toolbarHeight: 70,
@@ -83,7 +86,7 @@ class TrackingPage extends StatelessWidget {
         );
       }
 
-      Widget trackingTile(String question, String answer, int index) {
+      Widget trackingTile(String question, int index) {
         return BlocBuilder<AnswerTrackingCubit, List<String>>(
           builder: (context, state) {
             return Container(
@@ -119,25 +122,52 @@ class TrackingPage extends StatelessWidget {
       }
 
       Widget submitButton() {
-        return CustomButton(
-            radiusButton: defaultRadius,
-            buttonColor: primaryColor,
-            buttonText: "Submit",
-            widthButton: double.infinity,
-            onPressed: () {
-              double score = 0;
-              for (var element in context.read<AnswerTrackingCubit>().state) {
-                element == "Yes" ? score++ : score += 0;
-              }
-              score = score / context.read<AnswerTrackingCubit>().state.length;
-              score *= 100;
-              MoodDataModel mood =
-                  MoodDataModel(date: Timestamp.now(), score: score);
-              TrackingService().updateScore(userId, mood);
-              Navigator.pushNamedAndRemoveUntil(
-                  context, "/home-user", (route) => false);
-            },
-            heightButton: 50);
+        return BlocConsumer<TrackingCubit, TrackingState>(
+          bloc: trackingCubit,
+          listener: (context, state) {
+            if (state is TrackingSuccess) {
+              Navigator.pop(context);
+            } else if (state is TrackingFailed) {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.error),
+                  backgroundColor: primaryColor,
+                ),
+              );
+            }
+          },
+          builder: (context, state) {
+            if (state is TrackingLoading) {
+              return Center(
+                child: LoadingAnimationWidget.twistingDots(
+                  leftDotColor: secondaryColor,
+                  rightDotColor: primaryColor,
+                  size: 24,
+                ),
+              );
+            }
+            return CustomButton(
+                radiusButton: defaultRadius,
+                buttonColor: primaryColor,
+                buttonText: "Submit",
+                widthButton: double.infinity,
+                onPressed: () {
+                  double score = 0;
+                  for (var element
+                      in context.read<AnswerTrackingCubit>().state) {
+                    element == "Yes" ? score++ : score += 0;
+                  }
+                  score =
+                      score / context.read<AnswerTrackingCubit>().state.length;
+                  score *= 100;
+                  MoodDataModel mood =
+                      MoodDataModel(date: Timestamp.now(), score: score);
+                  trackingCubit.submitAnswer(userId, mood);
+                },
+                heightButton: 50);
+          },
+        );
       }
 
       return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
@@ -149,7 +179,6 @@ class TrackingPage extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.active) {
               var question = (snapshot.data!.data()
                   as Map<String, dynamic>)['listQuestion'] as List;
-
               for (int i = 0; i < question.length; i++) {
                 context.read<AnswerTrackingCubit>().selectAnswer(" ", i);
               }
@@ -160,7 +189,7 @@ class TrackingPage extends StatelessWidget {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      trackingTile(question[index], " ", index),
+                      trackingTile(question[index], index),
                       index + 1 == question.length
                           ? submitButton()
                           : const SizedBox()
