@@ -5,7 +5,7 @@ class ConvertTime {
   String convertToAgo(Timestamp input) {
     Duration diff = DateTime.now().difference(input.toDate());
 
-    if (diff.inDays > 1) {
+    if (diff.inDays > 0) {
       return DateFormat('dd-MM-yyyy').format(input.toDate()).toString();
     } else if (DateFormat('dd-MM-yyyy').format(input.toDate()) ==
         DateFormat('dd-MM-yyyy').format(DateTime.now())) {

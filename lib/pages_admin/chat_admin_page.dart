@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -27,6 +29,7 @@ class ChatAdminPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextEditingController chatController = TextEditingController(text: '');
+    ScrollController scrollController = ScrollController();
     ChatService chatService = ChatService();
     ImageTool imageTool = ImageTool();
 
@@ -36,6 +39,7 @@ class ChatAdminPage extends StatelessWidget {
         backgroundColor: white,
         leading: IconButton(
           onPressed: () {
+            chatService.updateRead(userId, !isSupportChat);
             Navigator.pop(context);
           },
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
@@ -93,7 +97,14 @@ class ChatAdminPage extends StatelessWidget {
                         snapshot.data!.data() as Map<String, dynamic>)
                     .helpChatList;
               }
+              Timer(
+                Duration.zero,
+                () => scrollController.jumpTo(
+                  scrollController.position.maxScrollExtent,
+                ),
+              );
               return ListView(
+                controller: scrollController,
                 padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
                 children: chats
                     .map((e) => ChatBubble(
@@ -151,7 +162,7 @@ class ChatAdminPage extends StatelessWidget {
                   await chatService.addSupportChat(
                     SupportChatModel(
                       date: Timestamp.now(),
-                      message: chatController.text,
+                      message: chatController.text.trim(),
                       isUser: false,
                     ),
                     userId,
@@ -160,7 +171,7 @@ class ChatAdminPage extends StatelessWidget {
                   await chatService.addHelpChat(
                     HelpChatModel(
                       date: Timestamp.now(),
-                      message: chatController.text,
+                      message: chatController.text.trim(),
                       isUser: false,
                     ),
                     userId,
@@ -174,8 +185,13 @@ class ChatAdminPage extends StatelessWidget {
                   ),
                 );
               }
+              Timer(
+                Duration.zero,
+                () => scrollController.jumpTo(
+                  scrollController.position.maxScrollExtent,
+                ),
+              );
               chatController.clear();
-              FocusManager.instance.primaryFocus?.unfocus();
             },
           ),
         ],

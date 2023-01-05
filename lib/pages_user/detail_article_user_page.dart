@@ -49,21 +49,21 @@ class DetailArticleUserPage extends StatelessWidget {
                       article.title,
                       overflow: TextOverflow.clip,
                       style: darkText.copyWith(
-                          fontSize: 14, fontWeight: FontWeight.w600),
+                          fontSize: 16, fontWeight: FontWeight.w600),
                     ),
                     const SizedBox(
                       height: 4,
                     ),
                     Text(
                       ConvertTime().convertToAgo(article.date),
-                      style: darkText.copyWith(fontSize: 12),
+                      style: secondaryColorText.copyWith(fontSize: 12),
                     ),
                     const SizedBox(
                       height: 4,
                     ),
                     Text(
                       article.author,
-                      style: secondaryColorText.copyWith(fontSize: 12),
+                      style: primaryColorText.copyWith(fontSize: 12),
                     )
                   ],
                 ),

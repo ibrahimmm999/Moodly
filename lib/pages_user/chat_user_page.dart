@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +24,7 @@ class ChatUserPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextEditingController chatController = TextEditingController(text: '');
+    ScrollController scrollController = ScrollController();
     String userId = FirebaseAuth.instance.currentUser!.uid;
     ChatService chatService = ChatService();
     ImageTool imageTool = ImageTool();
@@ -105,7 +108,14 @@ class ChatUserPage extends StatelessWidget {
                   statusHelpCubit.changeStatus(chats.last.isCompleted);
                 }
               }
+              Timer(
+                Duration.zero,
+                () => scrollController.jumpTo(
+                  scrollController.position.maxScrollExtent,
+                ),
+              );
               return ListView(
+                controller: scrollController,
                 padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
                 children: chats
                     .map((e) => ChatBubble(
@@ -162,7 +172,7 @@ class ChatUserPage extends StatelessWidget {
                   await chatService.addSupportChat(
                     SupportChatModel(
                       date: Timestamp.now(),
-                      message: chatController.text,
+                      message: chatController.text.trim(),
                     ),
                     userId,
                   );
@@ -170,7 +180,7 @@ class ChatUserPage extends StatelessWidget {
                   await chatService.addHelpChat(
                     HelpChatModel(
                       date: Timestamp.now(),
-                      message: chatController.text,
+                      message: chatController.text.trim(),
                     ),
                     userId,
                   );
@@ -183,8 +193,13 @@ class ChatUserPage extends StatelessWidget {
                   ),
                 );
               }
+              Timer(
+                Duration.zero,
+                () => scrollController.jumpTo(
+                  scrollController.position.maxScrollExtent,
+                ),
+              );
               chatController.clear();
-              FocusManager.instance.primaryFocus?.unfocus();
             },
           ),
         ],
