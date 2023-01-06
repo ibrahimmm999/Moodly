@@ -7,6 +7,8 @@ import 'package:moodly/service/consultant_service.dart';
 import 'package:moodly/shared/theme.dart';
 import 'package:moodly/widgets/custom_button.dart';
 
+import '../service/image_service.dart';
+
 class ConsultantsAdminPage extends StatelessWidget {
   const ConsultantsAdminPage({super.key});
 
@@ -163,6 +165,7 @@ class ConsultantsAdminPage extends StatelessWidget {
                               TextButton(
                                 onPressed: () {
                                   ConsultantService().deleteArticle(consultant);
+                                  ImageTool().deleteImage(consultant.photoUrl);
                                   Navigator.of(context).pop(true);
                                 },
                                 child: Text(
