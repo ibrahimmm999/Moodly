@@ -16,16 +16,18 @@ class ImagePreviewSend extends StatelessWidget {
       {required this.isSupportChat,
       required this.imageFile,
       this.isUser = true,
+      this.userIdAdmin = '',
       super.key});
 
   final bool isSupportChat;
   final bool isUser;
   final File imageFile;
+  final String userIdAdmin;
 
   @override
   Widget build(BuildContext context) {
     TextEditingController chatController = TextEditingController(text: '');
-    String userId = FirebaseAuth.instance.currentUser!.uid;
+    String userIdUser = FirebaseAuth.instance.currentUser!.uid;
     ImageTool imageTool = ImageTool();
 
     ImageFileCubit imageFileCubit = context.read<ImageFileCubit>();
@@ -130,14 +132,14 @@ class ImagePreviewSend extends StatelessWidget {
                     sendChatCubit.sendImageSupport(
                       imageFile: imageFileCubit.state!,
                       text: chatController.text.trim(),
-                      userId: userId,
+                      userId: isUser ? userIdUser : userIdAdmin,
                       isUser: isUser,
                     );
                   } else {
                     sendChatCubit.sendImageHelp(
                       imageFile: imageFileCubit.state!,
                       text: chatController.text.trim(),
-                      userId: userId,
+                      userId: isUser ? userIdUser : userIdAdmin,
                       isUser: isUser,
                     );
                   }

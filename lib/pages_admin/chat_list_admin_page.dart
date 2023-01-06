@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moodly/cubit/chat_admin_page_cubit.dart';
+import 'package:moodly/cubit/unread_help_cubit.dart';
+import 'package:moodly/cubit/unread_support_cubit.dart';
 import 'package:moodly/models/user_model.dart';
 import 'package:moodly/shared/theme.dart';
 import 'package:moodly/widgets/chat_tile.dart';
@@ -13,7 +15,8 @@ class ChatListAdminPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // INISIALISASI
     ChatAdminPageCubit chatAdminPageCubit = context.read<ChatAdminPageCubit>();
-    chatAdminPageCubit.changeChatAdminPage(0);
+    UnreadSupportCubit unreadSupportCubit = context.read<UnreadSupportCubit>();
+    UnreadHelpCubit unreadHelpCubit = context.read<UnreadHelpCubit>();
 
     PreferredSizeWidget header() {
       return AppBar(
@@ -57,9 +60,35 @@ class ChatListAdminPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const SizedBox(),
-                    Text(
-                      'Support Messages',
-                      style: index == 0 ? primaryColorText : greyText,
+                    Row(
+                      children: [
+                        Text(
+                          'Support Messages',
+                          style: index == 0 ? primaryColorText : greyText,
+                        ),
+                        BlocBuilder<UnreadSupportCubit, int>(
+                          builder: (context, state) {
+                            return Visibility(
+                              visible: state != 0,
+                              child: Container(
+                                margin: const EdgeInsets.only(left: 8),
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: primaryColor,
+                                ),
+                                child: Text(
+                                  state.toString(),
+                                  style: whiteText.copyWith(
+                                    fontWeight: medium,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
                     ),
                     Container(
                       height: 2,
@@ -83,9 +112,35 @@ class ChatListAdminPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const SizedBox(),
-                    Text(
-                      'Help Center',
-                      style: index == 1 ? primaryColorText : greyText,
+                    Row(
+                      children: [
+                        Text(
+                          'Help Center',
+                          style: index == 1 ? primaryColorText : greyText,
+                        ),
+                        BlocBuilder<UnreadHelpCubit, int>(
+                          builder: (context, state) {
+                            return Visibility(
+                              visible: state != 0,
+                              child: Container(
+                                margin: const EdgeInsets.only(left: 8),
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: primaryColor,
+                                ),
+                                child: Text(
+                                  state.toString(),
+                                  style: whiteText.copyWith(
+                                    fontWeight: medium,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
                     ),
                     Container(
                       height: 2,
@@ -148,6 +203,23 @@ class ChatListAdminPage extends StatelessWidget {
               var users = snapshot.data!.docs
                   .map((e) => UserModel.fromJson(e.data()))
                   .toList();
+
+              var unreadHelp = 0;
+              var unreadSupport = 0;
+              for (var element in users) {
+                for (var a in element.helpChatList) {
+                  if (!(a.isRead)) {
+                    unreadHelp += 1;
+                  }
+                }
+                for (var a in element.supportChatList) {
+                  if (!(a.isRead)) {
+                    unreadSupport += 1;
+                  }
+                }
+              }
+              unreadHelpCubit.change(unreadHelp);
+              unreadSupportCubit.change(unreadSupport);
 
               if (index == 0) {
                 users.removeWhere((element) => element.supportChatList.isEmpty);

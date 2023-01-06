@@ -44,7 +44,6 @@ class ChatAdminPage extends StatelessWidget {
         backgroundColor: white,
         leading: IconButton(
           onPressed: () {
-            chatService.updateRead(userId, !isSupportChat);
             Navigator.pop(context);
           },
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
@@ -137,6 +136,7 @@ class ChatAdminPage extends StatelessWidget {
                   scrollController.position.maxScrollExtent,
                 ),
               );
+              chatService.updateRead(userId, !isSupportChat);
               return ListView(
                 controller: scrollController,
                 padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
@@ -177,6 +177,7 @@ class ChatAdminPage extends StatelessWidget {
                         imageFile: imageTool.imagetFile!,
                         isSupportChat: isSupportChat,
                         isUser: false,
+                        userIdAdmin: userId,
                       ),
                     ),
                   );

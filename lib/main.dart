@@ -15,6 +15,8 @@ import 'package:moodly/cubit/send_chat_cubit.dart';
 import 'package:moodly/cubit/status_help_cubit.dart';
 import 'package:moodly/cubit/status_recomendation_cubit.dart';
 import 'package:moodly/cubit/tracking_cubit.dart';
+import 'package:moodly/cubit/unread_help_cubit.dart';
+import 'package:moodly/cubit/unread_support_cubit.dart';
 import 'package:moodly/cubit/user_update_cubit.dart';
 import 'package:moodly/pages_admin/articles_admin_page.dart';
 import 'package:moodly/pages_admin/chat_list_admin_page.dart';
@@ -60,6 +62,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => AnswerTrackingCubit()),
         BlocProvider(create: (context) => ObscureFormCubit()),
         BlocProvider(create: (context) => StatusRecomendationCubit()),
+        BlocProvider(create: (context) => UnreadSupportCubit()),
+        BlocProvider(create: (context) => UnreadHelpCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

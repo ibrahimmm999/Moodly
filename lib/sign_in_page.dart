@@ -47,9 +47,11 @@ class SignInPage extends StatelessWidget {
         listener: (context, state) {
           if (state is AuthSuccess) {
             if (state.user.role == 'user') {
-              Navigator.pushNamed(context, '/home-user');
+              Navigator.pushNamedAndRemoveUntil(
+                  context, '/home-user', (route) => false);
             } else if (state.user.role == 'admin') {
-              Navigator.pushNamed(context, '/home-admin');
+              Navigator.pushNamedAndRemoveUntil(
+                  context, '/home-admin', (route) => false);
             }
           } else if (state is AuthFailed) {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
