@@ -8,6 +8,7 @@ class HelpChatModel extends Equatable {
   final bool isRead;
   final bool isUser;
   final bool isCompleted;
+  final bool isRecomendation;
 
   const HelpChatModel({
     required this.date,
@@ -16,6 +17,7 @@ class HelpChatModel extends Equatable {
     this.isRead = false,
     this.isUser = true,
     this.isCompleted = false,
+    this.isRecomendation = false,
   });
 
   factory HelpChatModel.fromJson(Map<String, dynamic> json) {
@@ -26,6 +28,7 @@ class HelpChatModel extends Equatable {
       isRead: json['isRead'],
       isUser: json['isUser'],
       isCompleted: json['isCompleted'],
+      isRecomendation: json['isRecomendation'],
     );
   }
 
@@ -36,6 +39,7 @@ class HelpChatModel extends Equatable {
         'isRead': isRead,
         'isUser': isUser,
         'isCompleted': isCompleted,
+        'isRecomendation': isRecomendation,
       };
 
   @override
@@ -46,5 +50,6 @@ class HelpChatModel extends Equatable {
         isRead,
         isUser,
         isCompleted,
+        isRecomendation,
       ];
 }

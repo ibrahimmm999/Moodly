@@ -41,6 +41,21 @@ class ChatService {
     }
   }
 
+  Future<void> updateRecomendation(String id, bool status) async {
+    try {
+      DocumentSnapshot user = await _userReference.doc(id).get();
+
+      List array =
+          (user.data() as Map<String, dynamic>)['helpChatList'].toList();
+
+      array.last['isRecomendation'] = status;
+
+      await _userReference.doc(id).update({'helpChatList': array});
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<void> updateRead(String id, bool isHelpChat) async {
     try {
       DocumentSnapshot user = await _userReference.doc(id).get();

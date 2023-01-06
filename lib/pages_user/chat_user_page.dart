@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:moodly/cubit/status_recomendation_cubit.dart';
 import 'package:moodly/models/help_chat_model.dart';
 import 'package:moodly/models/support_chat_model.dart';
 import 'package:moodly/models/user_model.dart';
@@ -29,6 +30,11 @@ class ChatUserPage extends StatelessWidget {
     ChatService chatService = ChatService();
     ImageTool imageTool = ImageTool();
     StatusHelpCubit statusHelpCubit = context.read<StatusHelpCubit>();
+    StatusRecomendationCubit statusRecomendationCubit =
+        context.read<StatusRecomendationCubit>();
+
+    statusHelpCubit.changeStatus(false);
+    statusRecomendationCubit.changeStatus(false);
 
     PreferredSizeWidget header() {
       return AppBar(
@@ -106,6 +112,8 @@ class ChatUserPage extends StatelessWidget {
                     .helpChatList;
                 if (chats.isNotEmpty) {
                   statusHelpCubit.changeStatus(chats.last.isCompleted);
+                  statusRecomendationCubit
+                      .changeStatus(chats.last.isRecomendation);
                 }
               }
               Timer(
@@ -181,6 +189,7 @@ class ChatUserPage extends StatelessWidget {
                     HelpChatModel(
                       date: Timestamp.now(),
                       message: chatController.text.trim(),
+                      isRecomendation: statusRecomendationCubit.state,
                     ),
                     userId,
                   );
@@ -206,10 +215,63 @@ class ChatUserPage extends StatelessWidget {
       );
     }
 
+    Widget recomendation() {
+      return BlocBuilder<StatusRecomendationCubit, bool>(
+        bloc: statusRecomendationCubit,
+        builder: (context, state) {
+          return Visibility(
+            visible: state && !isSupportChat,
+            child: Container(
+              margin:
+                  EdgeInsets.symmetric(vertical: 8, horizontal: defaultMargin),
+              padding: const EdgeInsets.all(12),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(defaultRadius),
+                color: dark,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Consultants Recomendation",
+                    style: whiteText,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/consultant-user');
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: Text(
+                      'View',
+                      style: whiteText.copyWith(
+                        fontSize: 12,
+                        fontWeight: medium,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    }
+
     return Scaffold(
       backgroundColor: white2,
       appBar: header(),
-      body: content(),
+      body: Stack(
+        children: [
+          content(),
+          recomendation(),
+        ],
+      ),
     );
   }
 }

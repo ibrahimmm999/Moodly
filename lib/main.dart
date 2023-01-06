@@ -13,6 +13,7 @@ import 'package:moodly/cubit/obscure_form_cubit.dart';
 import 'package:moodly/cubit/question_form_cubit.dart';
 import 'package:moodly/cubit/send_chat_cubit.dart';
 import 'package:moodly/cubit/status_help_cubit.dart';
+import 'package:moodly/cubit/status_recomendation_cubit.dart';
 import 'package:moodly/cubit/tracking_cubit.dart';
 import 'package:moodly/cubit/user_update_cubit.dart';
 import 'package:moodly/pages_admin/articles_admin_page.dart';
@@ -58,6 +59,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => TrackingCubit()),
         BlocProvider(create: (context) => AnswerTrackingCubit()),
         BlocProvider(create: (context) => ObscureFormCubit()),
+        BlocProvider(create: (context) => StatusRecomendationCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:moodly/cubit/status_recomendation_cubit.dart';
 import 'package:moodly/models/help_chat_model.dart';
 import 'package:moodly/models/support_chat_model.dart';
 import 'package:moodly/models/user_model.dart';
@@ -32,6 +34,9 @@ class ChatAdminPage extends StatelessWidget {
     ScrollController scrollController = ScrollController();
     ChatService chatService = ChatService();
     ImageTool imageTool = ImageTool();
+    StatusRecomendationCubit statusRecomendationCubit =
+        context.read<StatusRecomendationCubit>();
+    statusRecomendationCubit.changeStatus(false);
 
     PreferredSizeWidget header() {
       return AppBar(
@@ -74,6 +79,31 @@ class ChatAdminPage extends StatelessWidget {
             ),
           ],
         ),
+        actions: [
+          Visibility(
+            visible: !isSupportChat,
+            child: IconButton(
+              onPressed: () async {
+                try {
+                  await ChatService().updateRecomendation(
+                      userId, !statusRecomendationCubit.state);
+                } catch (e) {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(e.toString()),
+                      backgroundColor: primaryColor,
+                    ),
+                  );
+                }
+              },
+              icon: Icon(
+                Icons.group,
+                color: dark,
+              ),
+            ),
+          )
+        ],
         elevation: 0,
         automaticallyImplyLeading: false,
       );
@@ -96,6 +126,10 @@ class ChatAdminPage extends StatelessWidget {
                 chats = UserModel.fromJson(
                         snapshot.data!.data() as Map<String, dynamic>)
                     .helpChatList;
+                if (chats.isNotEmpty) {
+                  statusRecomendationCubit
+                      .changeStatus(chats.last.isRecomendation);
+                }
               }
               Timer(
                 Duration.zero,
@@ -173,6 +207,7 @@ class ChatAdminPage extends StatelessWidget {
                       date: Timestamp.now(),
                       message: chatController.text.trim(),
                       isUser: false,
+                      isRecomendation: statusRecomendationCubit.state,
                     ),
                     userId,
                   );
@@ -198,10 +233,63 @@ class ChatAdminPage extends StatelessWidget {
       );
     }
 
+    Widget recomendation() {
+      return BlocBuilder<StatusRecomendationCubit, bool>(
+        bloc: statusRecomendationCubit,
+        builder: (context, state) {
+          return Visibility(
+            visible: state && !isSupportChat,
+            child: Container(
+              margin:
+                  EdgeInsets.symmetric(vertical: 8, horizontal: defaultMargin),
+              padding: const EdgeInsets.all(12),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(defaultRadius),
+                color: dark,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Consultants Recomendation",
+                    style: whiteText,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/consultant-user');
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: Text(
+                      'View',
+                      style: whiteText.copyWith(
+                        fontSize: 12,
+                        fontWeight: medium,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    }
+
     return Scaffold(
       backgroundColor: white2,
       appBar: header(),
-      body: content(),
+      body: Stack(
+        children: [
+          content(),
+          recomendation(),
+        ],
+      ),
     );
   }
 }
