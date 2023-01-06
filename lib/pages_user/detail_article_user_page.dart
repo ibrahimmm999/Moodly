@@ -89,6 +89,7 @@ class DetailArticleUserPage extends StatelessWidget {
           child: Text(
             article.content,
             style: darkText.copyWith(fontSize: 12),
+            textAlign: TextAlign.justify,
           ),
         );
       }
