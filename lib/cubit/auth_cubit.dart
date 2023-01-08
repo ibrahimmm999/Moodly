@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:moodly/models/user_model.dart';
 import 'package:moodly/service/auth_service.dart';
 import 'package:moodly/service/user_service.dart';
@@ -26,8 +27,8 @@ class AuthCubit extends Cubit<AuthState> {
 
         emit(AuthSuccess(user));
       }
-    } catch (e) {
-      emit(AuthFailed(e.toString()));
+    } on FirebaseAuthException catch (e) {
+      emit(AuthFailed(e.message.toString()));
     }
   }
 
@@ -37,8 +38,8 @@ class AuthCubit extends Cubit<AuthState> {
       UserModel user =
           await AuthService().signIn(email: email, password: password);
       emit(AuthSuccess(user));
-    } catch (e) {
-      emit(AuthFailed(e.toString()));
+    } on FirebaseAuthException catch (e) {
+      emit(AuthFailed(e.message.toString()));
     }
   }
 
