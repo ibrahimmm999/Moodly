@@ -51,13 +51,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: primaryColor,
+      backgroundColor: white,
       body: Center(
-        child: Container(
-          height: 126.43,
-          width: 131.46,
-          decoration: const BoxDecoration(
-              image: DecorationImage(image: AssetImage("assets/logo.png"))),
+        child: Image.asset(
+          'assets/moodly_logo.png',
+          width: 300,
         ),
       ),
     );
