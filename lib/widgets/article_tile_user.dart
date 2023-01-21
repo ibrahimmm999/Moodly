@@ -25,7 +25,7 @@ class ArticleTileUser extends StatelessWidget {
       },
       child: Container(
         padding: const EdgeInsets.all(4),
-        width: 315,
+        width: double.infinity,
         height: 110,
         margin: const EdgeInsets.only(bottom: 24),
         decoration: BoxDecoration(
